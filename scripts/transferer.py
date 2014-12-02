@@ -1,7 +1,9 @@
 # encoding: UTF-8
 import datetime
 from ectomorph import orm
+import entities
 from messages import rmessages
+import messageassocs
 import migrations
 import re, sys, os
 from optparse import OptionParser
@@ -68,7 +70,23 @@ def single_handle(tbn, pgc, args, options):
     seen.add('0')
   if gat:
     nar = "LOWER(SUBSTR(text, 0, 4)) = '%s'" % (gat.lower(), )
-  query = '''SELECT id, contact_id, connection_id, date, text FROM messagelog_message WHERE (%s) AND (id NOT IN (%s)) AND (NOT transferred) ORDER BY date ASC LIMIT %d''' % (nar, ', '.join(seen), cpt)
+  query = '''
+    SELECT
+      Message.id,
+      Message.contact_id,
+      Message.connection_id,
+      Message.date,
+      Message.text,
+      (SELECT province_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS province_pk,
+      (SELECT district_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS district_pk,
+      (SELECT health_centre_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS health_center_pk
+    FROM
+      messagelog_message Message
+    WHERE
+      (%s) AND (Message.id NOT IN (%s)) AND (NOT Message.transferred)
+    ORDER BY
+      Message.date
+    ASC LIMIT %d''' % (nar, ', '.join(seen), cpt)
   curz.execute(query)
   tot   = curz.rowcount
   if not tot: return False
@@ -98,15 +116,23 @@ def single_handle(tbn, pgc, args, options):
         sys.stdout.write('\r' + rsp[0:maxw])
         sys.stdout.flush()
       try:
-        ans   = rmessages.ThouMessage.parse(org, rep[3])
+        ans, ents = rmessages.ThouMessage.parse(org, messageassocs.ASSOCIATIONS, rep[3])
+        loxn  = {
+          'province_pk': rep[5],
+          'district_pk': rep[6],
+          'health_center_pk': rep[7]
+        }
+        ans.add_extra(loxn)
         mname = str(ans.__class__).split('.')[-1].lower()
         succ  = True
-        nstbs = store_components(mname, ans, org, rep[0])
+        nstbs = store_components(mname, ans, org, rep[0], loxn)
         stbs.add(mname)
         stbs  = stbs.union(nstbs)
+        etbs  = entities.process_entities(ans, ents)
+        stbs  = stbs.union(etbs)
       except rmessages.ThouMsgError, e:
-        store_failures(e, org, rep[0])
-      acrow = store_treatment(rep[0], succ)
+        store_failures(e, org, rep[0], loxn)
+      acrow = store_treatment(rep[0], succ, loxn)
     except UnicodeEncodeError, e:
       # Is this sufficient?
       store_failures(rmessages.ThouMsgError('Badly-encoded message.', [('bad_encoding', None)]), 'Badly-encoded message #%d' % (rep[0], ), rep[0])
@@ -124,11 +150,11 @@ def single_handle(tbn, pgc, args, options):
   pgc.commit()
   return True
 
-def store_components(mname, msg, msgtxt, fid):
+def store_components(mname, msg, msgtxt, fid, loxer):
   princ = {'oldid': fid, 'message': msgtxt}
   auxil = {}
   seen  = set()
-  for k in msg.entries.keys():
+  for k in msg.entries:
     chose = msg.entries[k]
     if chose.several_fields:
       subk  = '%s_%s' % (mname, k)
@@ -138,22 +164,32 @@ def store_components(mname, msg, msgtxt, fid):
       auxil[subk] = naux
     else:
       princ[k]  = chose.data()
+  princ.update(loxer)
   ix  = orm.ORM.store(mname, princ)
-  for k in auxil.keys():
+  for k in auxil:
     val = auxil[k]
     for v in val:
-      orm.ORM.store(k, {'principal': ix, 'value': v})
+      tst = {'principal': ix, 'value': v}
+      tst.update(loxer)
+      orm.ORM.store(k, tst)
   return seen
 
-def store_failures(err, msg, fid):
-  pos = 0
+def store_failures(err, msg, fid, loxer):
+  pos   = 0
   for fc in err.errors:
     fc  = fc[0] if type(fc) == type(('', None)) else fc
-    orm.ORM.store('failed_transfers', {'oldid': fid, 'message': msg, 'failcode': fc, 'failpos': pos})
+    tst = {'oldid': fid, 'message': msg, 'failcode': fc, 'failpos': pos}
+    tst.update(loxer)
+    orm.ORM.store('failed_transfers', tst)
     pos = pos + 1
 
-def store_treatment(fid, stt):
-  return orm.ORM.store(TREATED[0], {'oldid': fid, 'success': stt}, migrations = TREATED[1])
+def store_treatment(fid, stt, loxer):
+  tst = {
+    'oldid': fid,
+    'success': stt
+  }
+  tst.update(loxer)
+  return orm.ORM.store(TREATED[0], tst, migrations = TREATED[1])
 
 def imain(args):
   handle_messages(args, os.environ)
