@@ -1,7 +1,4 @@
 from ectomorph import orm
-# TODO:
-# Transfers.
-# Implement replacement conditions.
 
 class EntityNonExistent(Exception):
   pass
@@ -20,8 +17,7 @@ class Entity:
   required    = []
   unique      = []
   replaces    = False
-  has_one     = []
-  has_many    = []
+  can_have    = lambda _: []
   belongs_to  = None
 
   def __init__(self):
@@ -56,16 +52,17 @@ class Entity:
       if not it.live:
         raise UninitialisedEntity, ('Failed auto-linking %s' % (str(it), ))
       crass = it.__class__
-      if crass in klass.has_one:
-        ans['%s_id' % (it.column(), )]  = it.live
-      elif deep and (crass in klass.has_many):
-        parent  = '%s_id' % (self.column(), )
-        if crass.belongs_to:
-          if crass.belongs_to != klass:
-            raise MistakenOneToOne, str((klass, crass))
-          mods.append((it, parent))
-        else:
-          dem.append(('%s_%s' % (it.column(), self.column()), {('%s_id' % (it.column(), )):it.live}, parent))
+      ihm   = it.can_have()
+      sb2   = self.belongs_to() if klass.belongs_to else None
+      shm   = self.can_have()
+      ib2   = it.belongs_to() if crass.belongs_to else None
+      ans['%s_id' % (it.column(), )]  = it.live
+      parent  = '%s_id' % (self.column(), )
+      # XXX: For now, linking all prior objects.
+      if klass == ib2:
+        mods.append((it, parent))
+      # XXX: For now, no inexplicit many-to-many relationships.
+      # dem.append(('%s_%s' % (it.column(), self.column()), {('%s_id' % (it.column(), )):it.live}, parent))
     ans.update(self.fs)
     return (ans, dem, mods)
 
@@ -115,8 +112,11 @@ class UniqueEntity(Entity):
   def identifier(self):
     ans         = []
     lks, _, _ = self.links(deep = False)
-    for x in self.id_fields():
-      ans.append((x, lks[x]))
+    try:
+      for x in self.id_fields():
+        ans.append((x, lks[x]))
+    except KeyError, e:
+      raise Exception, str((str(e), str(lks)))
     return ans
 
   def load(self):
@@ -135,33 +135,6 @@ class UniqueEntity(Entity):
       return self.fs['indexcol']
     except KeyError:
       raise EntityNonExistent, str(hsh)
-
-class IndangamuntuEntity(UniqueEntity):
-  unique  = ['indangamuntu']
-
-class IndangamuntuRelativeEntity(IndangamuntuEntity):
-  unique  = ['indangamuntu', 'number']
-
-class ANCVisit(UniqueEntity):
-  table     = 'rw_ancvisits'
-  unique    = ['indangamuntu', 'anc']
-
-class PNCVisit(UniqueEntity):
-  table     = 'rw_pncvisits'
-  unique    = ['indangamuntu', 'pnc']
-
-class Pregnancy(IndangamuntuEntity):
-  table     = 'rw_pregnancies'
-  unique    = ['indangamuntu', 'lmp']
-
-class Mother(IndangamuntuEntity):
-  table = 'rw_mothers'
-
-class Child(IndangamuntuRelativeEntity):
-  table = 'rw_children'
-
-class Death(IndangamuntuRelativeEntity):
-  table = 'rw_deaths'
 
 def process_entities(msg, enthash):
   objs, tbls  = load_dependencies(msg, enthash)
