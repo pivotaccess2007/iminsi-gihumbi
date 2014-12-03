@@ -13,12 +13,13 @@ import time as times
 TREATED = ('treated_messages', migrations.TREATED)
 FAILED  = 'failed_transfers'
 
-orm.ORM.connect(dbname = 'thousanddays', user = 'thousanddays', password = 'thousanddays')
+orm.ORM.connect(dbname = 'thousanddays', host = 'localhost', user = 'thousanddays', password = 'thousanddays')
 
 def handle_messages(args, options):
   def gun():
     postgres  = psycopg2.connect(
           dbname = 'thousanddays',
+          host 	 = 'localhost',
             user = 'thousanddays',
         password = 'thousanddays'
     )
