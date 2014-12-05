@@ -250,7 +250,7 @@ class BreastFeedField(NBCField):
   @classmethod
   def expectations(self):
     'The accepted codes. May be booleanisable.'
-    return ['CBF', 'EBF', 'NB']
+    return ['BF1', 'CBF', 'EBF', 'NB']
 
 class InterventionField(CodeField):
   'Field for general interventions.'
@@ -481,7 +481,7 @@ class PregMessage(ThouMessage):
   fields  = [IDField, LMPDateField, DateField, GravidityField, ParityField,
               (PregCodeField, True),
               (SymptomCodeField, True),
-             LocationField, WeightField, ToiletField, HandwashField]
+             LocationField, WeightField, HeightField, ToiletField, HandwashField]
 
   def semantics_check(self, adate):
     'TODO.'
