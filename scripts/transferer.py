@@ -78,9 +78,41 @@ def single_handle(tbn, pgc, args, options):
       Message.connection_id,
       Message.date,
       Message.text,
-      (SELECT province_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS province_pk,
-      (SELECT district_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS district_pk,
-      (SELECT health_centre_id FROM chws_reporter Reporter WHERE Reporter.id = Message.contact_id) AS health_center_pk
+	(SELECT province_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS province_pk,
+	(SELECT district_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+								(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS district_pk,
+	(SELECT health_centre_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS health_center_pk,
+	(SELECT sector_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS sector_pk,
+	(SELECT cell_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS cell_pk,
+	(SELECT village_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS village_pk,
+	(SELECT nation_id FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS nation_pk,
+	(SELECT id FROM chws_reporter Reporter WHERE Reporter.national_id = (SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+								(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS reporter_pk,
+	(SELECT telephone_moh FROM chws_reporter Reporter WHERE Reporter.national_id = 
+									(SELECT name FROM rapidsms_contact WHERE id = Message.contact_id LIMIT 1)
+							    AND Reporter.telephone_moh =
+							(SELECT identity FROM rapidsms_connection WHERE id = Message.connection_id LIMIT 1)) AS reporter_phone
     FROM
       messagelog_message Message
     WHERE
@@ -113,7 +145,14 @@ def single_handle(tbn, pgc, args, options):
     loxn  = {
       'province_pk': rep[5] or 0,
       'district_pk': rep[6] or 0,
-      'health_center_pk': rep[7] or 0
+      'health_center_pk': rep[7] or 0,
+      'sector_pk': rep[8] or 0,
+      'cell_pk': rep[9] or 0,
+      'village_pk': rep[10] or 0,
+      'nation_pk': rep[11] or 0,
+      'reporter_pk': rep[12] or 0,
+      'reporter_phone': rep[13] or '',
+      'report_date': rep[3] or datetime.datetime.now()
     }
     try:
       # _ = org.encode('ascii') # Exception trigger. Necessary?
