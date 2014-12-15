@@ -25,7 +25,7 @@ class Pregnancy(IndangamuntuEntity):
   can_have    = lambda _: [ANCVisit, Child, PNCVisit]
 
   def get_identifiers(self, _, ents):
-    return [('indangamuntu', ents['indangamuntu']), ('lmp', ents['daymonthyear'] - timedelta(days = settings.GESTATION))]
+    return [('indangamuntu', ents['indangamuntu']), ('lmp', ents['birth_date'] - timedelta(days = settings.GESTATION))]
 
 class Mother(IndangamuntuEntity):
   table       = 'rw_mothers'

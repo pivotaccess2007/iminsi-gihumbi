@@ -3,7 +3,7 @@
 
 from abc import ABCMeta, abstractmethod
 import copy
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from parser import *
 
@@ -57,6 +57,46 @@ class LMPDateField(DateField):
     'For now, only checking that the active date (normally today) is after the LMP date supplied.'
     return sdate < adate
 
+class ANCTWODateField(DateField):
+  'Date field, strictly for Second ANC appointment.'
+  # Mostly a disambiguation trick.
+  column_name = 'anc2_date'
+
+  @classmethod
+  def check_gap(self, sdate, adate):
+    'For now, only checking that the active date (normally today) is after the LMP date supplied and before 9 months.'
+    return adate < sdate < adate + timedelta(days = 270)
+
+class DOBDateField(DateField):
+  'Date field, strictly for Date of Birth.'
+  # Mostly a disambiguation trick.
+  column_name = 'birth_date'
+
+  @classmethod
+  def check_gap(self, sdate, adate):
+    'For now, only checking that the active date (normally today) is before or today.'
+    return sdate <= adate
+
+class EmergencyDateField(DateField):
+  'Date field, strictly for Date of Emergency.'
+  # Mostly a disambiguation trick.
+  column_name = 'emergency_date'
+
+  @classmethod
+  def check_gap(self, sdate, adate):
+    'For now, only checking that the active date (normally today) is before or today.'
+    return sdate <= adate
+
+class ANCDateField(DateField):
+  'Date field, strictly for Date of Emergency.'
+  # Mostly a disambiguation trick.
+  column_name = 'anc_date'
+
+  @classmethod
+  def check_gap(self, sdate, adate):
+    'For now, only checking that the active date (normally today) is before or today.'
+    return sdate <= adate
+
 class NumberField(ThouField):
   'The descriptor for number fields.'
 
@@ -107,7 +147,7 @@ class PrevPregField(PregCodeField):
   @classmethod
   def expectations(self):
     'Codes associated with previous pregnancy.'
-    return ['GS', 'MU', 'HD', 'RM']
+    return ['GS', 'MU', 'HD', 'RM', 'OL', 'YG', 'NR', 'KX', 'YJ', 'LZ']
 
 class SymptomCodeField(CodeField):
   'Field for codes associated with symptoms.'
@@ -117,7 +157,7 @@ class SymptomCodeField(CodeField):
   def expectations(self):
     'These are the codes associated with symptoms.'
     return ['AF', 'CH', 'CI', 'CM', 'IB', 'DB', 'DI', 'DS', 'FE', 'FP', 'HY', 'JA', 'MA', 'NP', 'NS',
-            'OE', 'PC', 'RB', 'SA', 'SB', 'VO']
+            'OE', 'PC', 'RB', 'SA', 'SB', 'VO', 'PM']
 
 class RedSymptomCodeField(SymptomCodeField):
   'Field for codes associated with symptoms.'
@@ -478,8 +518,8 @@ Since every message has to be successfully parsed as a Message object, this is t
 
 class PregMessage(ThouMessage):
   'Pregnancy message.'
-  fields  = [IDField, LMPDateField, DateField, GravidityField, ParityField,
-              (PregCodeField, True),
+  fields  = [IDField, LMPDateField, ANCTWODateField, GravidityField, ParityField,
+              (PrevPregField, True),
               (SymptomCodeField, True),
              LocationField, WeightField, HeightField, ToiletField, HandwashField]
 
@@ -497,7 +537,7 @@ class RefMessage(ThouMessage):
 
 class ANCMessage(ThouMessage):
   'Ante-natal care visit message.'
-  fields  = [IDField, DateField, ANCField,
+  fields  = [IDField, ANCDateField, ANCField,
              (SymptomCodeField, True),
              LocationField, WeightField]
 
@@ -507,7 +547,7 @@ class ANCMessage(ThouMessage):
 
 class DepMessage(ThouMessage):
   'Departure message.'
-  fields  = [IDField, NumberField, DateField]
+  fields  = [IDField, NumberField, DOBDateField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -525,7 +565,7 @@ class RiskMessage(ThouMessage):
 
 class RedMessage(ThouMessage):
   'Red alert message.'
-  fields  = [(RedSymptomCodeField, True), LocationField]
+  fields  = [IDField, (RedSymptomCodeField, True), LocationField, WeightField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -533,7 +573,7 @@ class RedMessage(ThouMessage):
 
 class BirMessage(ThouMessage):
   'Birth message.'
-  fields  = [IDField, NumberField, DateField, GenderField,
+  fields  = [IDField, NumberField, DOBDateField, GenderField,
              (SymptomCodeField, True),
              LocationField, BreastFeedField, WeightField]
 
@@ -543,7 +583,7 @@ class BirMessage(ThouMessage):
 
 class ChildMessage(ThouMessage):
   'Child message.'
-  fields  = [IDField, NumberField, DateField, VaccinationField, VaccinationCompletionField,
+  fields  = [IDField, NumberField, DOBDateField, VaccinationField, VaccinationCompletionField,
              (SymptomCodeField, True),
              LocationField, WeightField, MUACField]
 
@@ -553,7 +593,7 @@ class ChildMessage(ThouMessage):
 
 class DeathMessage(ThouMessage):
   'Death message.'
-  fields  = [IDField, NumberField, DateField, LocationField, DeathField]
+  fields  = [IDField, NumberField, DOBDateField, LocationField, DeathField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -571,7 +611,7 @@ class ResultMessage(ThouMessage):
 
 class RedResultMessage(ThouMessage):
   'Red alert result message.'
-  fields  = [IDField, DateField,
+  fields  = [IDField, EmergencyDateField,
              (SymptomCodeField, True),
              LocationField, InterventionField, MotherHealthStatusField]
 
@@ -581,7 +621,7 @@ class RedResultMessage(ThouMessage):
 
 class NBCMessage(ThouMessage):
   'New-born care message.'
-  fields  = [IDField, NumberField, NBCField, DateField,
+  fields  = [IDField, NumberField, NBCField, DOBDateField,
              (SymptomCodeField, True),
              BreastFeedField, NBCInterventionField, NewbornHealthStatusField]
 
@@ -591,7 +631,7 @@ class NBCMessage(ThouMessage):
 
 class PNCMessage(ThouMessage):
   'Post-natal care message.'
-  fields  = [IDField, PNCField, DateField,
+  fields  = [IDField, PNCField, DOBDateField,
              (SymptomCodeField, True),
              InterventionField, MotherHealthStatusField]
 
@@ -601,7 +641,7 @@ class PNCMessage(ThouMessage):
 
 class CCMMessage(ThouMessage):
   'Commmunity Case Management message.'
-  fields  = [IDField, NumberField, DateField,
+  fields  = [IDField, NumberField, DOBDateField,
              (SymptomCodeField, True),
              InterventionField, MUACField]
 
@@ -611,7 +651,7 @@ class CCMMessage(ThouMessage):
 
 class CMRMessage(ThouMessage):
   'Commmunity Management Response message.'
-  fields  = [IDField, NumberField, DateField,
+  fields  = [IDField, NumberField, DOBDateField,
              (SymptomCodeField, True),
              InterventionField, NewbornHealthStatusField]
 
@@ -621,7 +661,7 @@ class CMRMessage(ThouMessage):
 
 class CBNMessage(ThouMessage):
   'Commmunity-Based Nutrition message.'
-  fields  = [IDField, NumberField, DateField, BreastFeedField, HeightField, WeightField, MUACField]
+  fields  = [IDField, NumberField, DOBDateField, BreastFeedField, HeightField, WeightField, MUACField]
 
   def semantics_check(self, adate):
     'TODO.'
