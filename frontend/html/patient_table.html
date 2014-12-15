@@ -91,9 +91,6 @@
   </tr>
 {% endif %}
 </table>
-<h2>Reports</h2>
-{% include 'report_table.html' %} 
-
 
 
 
@@ -107,7 +104,7 @@
       <th>Weight</th>
     </tr>
   </thead>
-  {%  for anc in display.anc_reports.list()|reverse %}
+  {%  for anc in display.anc_reports.list() %}
   <tr>
   <td>
   {{  anc['indexcol'] }}
@@ -121,6 +118,12 @@
   </tr>
   {% endfor %}
   </table>
+  
+  <h2>Reports</h2>
+{% include 'report_table.html' %} 
+
+  
+  
  
   <script src="{{ static_path }}/javascripts/highcharts.js"></script>
   
