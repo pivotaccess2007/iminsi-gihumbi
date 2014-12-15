@@ -1,0 +1,3 @@
+[Sat Dec 13 13:23:10 2014] [error] redmessage
+[Sat Dec 13 13:23:10 2014] [error] redmessage_red_symptom
+[Sat Dec 13 13:23:11 2014] [error] No handlers could be found for logger "backend/kannel-smpp"

@@ -1,0 +1,1956 @@
+2014-12-11 10:57:47,721 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 10:57:47,844 blockingrouter       DEBUG    Started
+2014-12-11 10:57:47,849 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 10:57:47,849 blockingrouter       DEBUG    In filter phase
+2014-12-11 10:57:47,849 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 10:57:47,849 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 10:57:47,850 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 10:57:47,850 blockingrouter       DEBUG    In parse phase
+2014-12-11 10:57:47,850 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 10:57:47,850 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 10:57:47,851 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 10:57:47,877 blockingrouter       DEBUG    In handle phase
+2014-12-11 10:57:47,877 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 10:57:48,142 blockingrouter       DEBUG    Short-circuited
+2014-12-11 10:57:48,142 blockingrouter       DEBUG    In default phase
+2014-12-11 10:57:48,142 blockingrouter       DEBUG    Skipping phase
+2014-12-11 10:57:48,148 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 10:57:48,148 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 10:57:48,148 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 10:57:48,155 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 10:57:48,155 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 10:57:48,159 blockingrouter       DEBUG    Stopping...
+2014-12-11 10:57:48,160 blockingrouter       INFO     Stopped
+2014-12-11 13:33:04,366 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 13:33:04,369 blockingrouter       DEBUG    Started
+2014-12-11 13:33:04,371 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 13:33:04,372 blockingrouter       DEBUG    In filter phase
+2014-12-11 13:33:04,372 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:04,372 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:33:04,372 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 13:33:04,373 blockingrouter       DEBUG    In parse phase
+2014-12-11 13:33:04,373 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:04,373 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:33:04,373 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 13:33:04,398 blockingrouter       DEBUG    In handle phase
+2014-12-11 13:33:04,399 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:04,655 blockingrouter       DEBUG    Short-circuited
+2014-12-11 13:33:04,655 blockingrouter       DEBUG    In default phase
+2014-12-11 13:33:04,655 blockingrouter       DEBUG    Skipping phase
+2014-12-11 13:33:04,656 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 13:33:04,656 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 13:33:04,656 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 13:33:04,665 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 13:33:04,666 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 13:33:04,668 blockingrouter       DEBUG    Stopping...
+2014-12-11 13:33:04,668 blockingrouter       INFO     Stopped
+2014-12-11 13:33:24,746 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 13:33:24,748 blockingrouter       DEBUG    Started
+2014-12-11 13:33:24,752 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 13:33:24,752 blockingrouter       DEBUG    In filter phase
+2014-12-11 13:33:24,752 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:24,752 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:33:24,753 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 13:33:24,753 blockingrouter       DEBUG    In parse phase
+2014-12-11 13:33:24,753 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:24,753 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:33:24,753 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 13:33:24,787 blockingrouter       DEBUG    In handle phase
+2014-12-11 13:33:24,787 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:33:25,040 blockingrouter       DEBUG    Short-circuited
+2014-12-11 13:33:25,041 blockingrouter       DEBUG    In default phase
+2014-12-11 13:33:25,041 blockingrouter       DEBUG    Skipping phase
+2014-12-11 13:33:25,041 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 13:33:25,041 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 13:33:25,042 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 13:33:25,053 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 13:33:25,054 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 13:33:25,056 blockingrouter       DEBUG    Stopping...
+2014-12-11 13:33:25,056 blockingrouter       INFO     Stopped
+2014-12-11 13:42:13,234 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 13:42:13,352 blockingrouter       DEBUG    Started
+2014-12-11 13:42:13,356 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 13:42:13,357 blockingrouter       DEBUG    In filter phase
+2014-12-11 13:42:13,357 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:13,357 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:42:13,358 blockingrouter       DEBUG    In parse phase
+2014-12-11 13:42:13,358 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:13,358 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:42:13,358 blockingrouter       DEBUG    In handle phase
+2014-12-11 13:42:13,359 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:13,378 blockingrouter       DEBUG    Short-circuited
+2014-12-11 13:42:13,379 blockingrouter       DEBUG    In default phase
+2014-12-11 13:42:13,379 blockingrouter       DEBUG    Skipping phase
+2014-12-11 13:42:13,388 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 13:42:13,389 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 13:42:13,389 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 13:42:13,389 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 13:42:13,394 blockingrouter       DEBUG    Stopping...
+2014-12-11 13:42:13,394 blockingrouter       INFO     Stopped
+2014-12-11 13:42:36,292 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 13:42:36,295 blockingrouter       DEBUG    Started
+2014-12-11 13:42:36,299 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 13:42:36,299 blockingrouter       DEBUG    In filter phase
+2014-12-11 13:42:36,299 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:36,299 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:42:36,300 blockingrouter       DEBUG    In parse phase
+2014-12-11 13:42:36,300 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:36,300 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 13:42:36,300 blockingrouter       DEBUG    In handle phase
+2014-12-11 13:42:36,301 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 13:42:36,319 blockingrouter       DEBUG    Short-circuited
+2014-12-11 13:42:36,320 blockingrouter       DEBUG    In default phase
+2014-12-11 13:42:36,320 blockingrouter       DEBUG    Skipping phase
+2014-12-11 13:42:36,324 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 13:42:36,324 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 13:42:36,325 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 13:42:36,325 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 13:42:36,326 blockingrouter       DEBUG    Stopping...
+2014-12-11 13:42:36,327 blockingrouter       INFO     Stopped
+2014-12-11 14:04:58,915 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:04:59,037 blockingrouter       DEBUG    Started
+2014-12-11 14:04:59,041 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:04:59,042 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:04:59,042 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:04:59,042 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:04:59,043 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:04:59,043 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:04:59,043 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:04:59,043 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:04:59,043 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:04:59,064 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:04:59,064 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:04:59,323 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:04:59,323 blockingrouter       DEBUG    In default phase
+2014-12-11 14:04:59,323 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:04:59,329 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:04:59,329 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:04:59,329 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:04:59,353 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:04:59,353 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:04:59,358 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:04:59,358 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:04:59,359 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:04:59,364 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:04:59,364 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:04:59,365 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:04:59,365 blockingrouter       INFO     Stopped
+2014-12-11 14:07:30,821 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:07:30,931 blockingrouter       DEBUG    Started
+2014-12-11 14:07:30,935 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:07:30,936 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:07:30,936 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:07:30,936 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:07:30,936 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:07:30,936 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:07:30,937 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:07:30,937 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:07:30,937 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:07:31,191 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:07:31,191 blockingrouter       DEBUG    In default phase
+2014-12-11 14:07:31,191 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:07:31,194 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:07:31,195 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:07:31,195 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:07:31,195 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:07:31,198 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:07:31,198 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:07:31,198 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:07:31,198 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:07:31,199 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:07:31,199 blockingrouter       INFO     Stopped
+2014-12-11 14:09:16,626 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:09:16,629 blockingrouter       DEBUG    Started
+2014-12-11 14:09:16,633 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:09:16,633 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:09:16,634 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:16,634 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:09:16,634 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:09:16,634 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:16,635 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:09:16,635 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:09:16,635 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:17,123 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:09:17,124 blockingrouter       DEBUG    In default phase
+2014-12-11 14:09:17,124 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:09:17,124 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:09:17,125 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:09:17,125 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:09:17,125 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:09:17,127 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:09:17,127 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:09:17,128 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:09:17,128 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:09:17,129 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:09:17,129 blockingrouter       INFO     Stopped
+2014-12-11 14:09:36,487 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:09:36,489 blockingrouter       DEBUG    Started
+2014-12-11 14:09:36,493 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:09:36,493 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:09:36,493 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:36,493 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:09:36,494 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:09:36,494 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:36,494 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:09:36,494 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:09:36,495 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:09:36,977 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:09:36,977 blockingrouter       DEBUG    In default phase
+2014-12-11 14:09:36,978 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:09:36,978 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:09:36,978 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:09:36,978 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:09:36,979 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:09:36,980 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:09:36,981 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:09:36,981 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:09:36,981 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:09:36,982 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:09:36,983 blockingrouter       INFO     Stopped
+2014-12-11 14:16:39,093 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:16:39,214 blockingrouter       DEBUG    Started
+2014-12-11 14:16:39,218 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:16:39,219 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:16:39,219 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:16:39,219 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:16:39,219 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:16:39,220 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:16:39,220 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:16:39,220 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:16:39,220 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:16:39,722 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:16:39,722 blockingrouter       DEBUG    In default phase
+2014-12-11 14:16:39,722 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:16:39,728 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:16:39,728 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:16:39,728 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:16:39,728 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:16:39,733 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:16:39,733 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:16:39,734 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:16:39,734 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:16:39,735 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:16:39,736 blockingrouter       INFO     Stopped
+2014-12-11 14:18:04,493 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:18:04,496 blockingrouter       DEBUG    Started
+2014-12-11 14:18:04,499 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:18:04,500 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:18:04,500 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:04,500 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:18:04,500 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:18:04,501 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:04,501 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:18:04,501 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:18:04,501 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:04,986 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:18:04,987 blockingrouter       DEBUG    In default phase
+2014-12-11 14:18:04,987 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:18:04,987 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:18:04,988 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:18:04,988 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:18:04,988 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:18:04,990 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:18:04,990 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:18:04,990 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:18:04,991 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:18:04,992 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:18:04,992 blockingrouter       INFO     Stopped
+2014-12-11 14:18:39,893 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:18:40,016 blockingrouter       DEBUG    Started
+2014-12-11 14:18:40,020 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:18:40,020 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:18:40,021 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:40,021 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:18:40,021 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:18:40,021 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:18:40,022 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:40,022 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:18:40,022 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:18:40,046 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:18:40,047 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:18:40,540 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:18:40,541 blockingrouter       DEBUG    In default phase
+2014-12-11 14:18:40,541 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:18:40,545 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:18:40,546 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:18:40,546 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:18:40,558 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:18:40,558 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:18:40,562 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:18:40,562 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:18:40,563 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:18:40,580 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:18:40,580 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:18:40,582 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:18:40,582 blockingrouter       INFO     Stopped
+2014-12-11 14:23:50,145 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:23:50,267 blockingrouter       DEBUG    Started
+2014-12-11 14:23:50,271 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): pre 1234567890123456 he or
+2014-12-11 14:23:50,271 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:23:50,272 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:23:50,272 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:23:50,272 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:23:50,272 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:23:50,273 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:23:50,273 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:23:50,273 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:23:50,291 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:23:50,292 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:23:50,788 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:23:50,788 blockingrouter       DEBUG    In default phase
+2014-12-11 14:23:50,788 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:23:50,794 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Itariki ya nyuma y'imihango igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA Itariki yo gusubira kubonana na muganga igomba kuba yanditse gutya UMUNSI.UKWEZI.UMWAKA ,  Ikosa, kosora wongere ugerageze (Itariki yo gusubira kwipimisha) Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-11 14:23:50,794 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:23:50,794 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:23:50,803 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:23:50,803 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:23:50,808 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:23:50,809 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:23:50,809 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:23:50,825 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:23:50,825 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:23:50,827 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:23:50,827 blockingrouter       INFO     Stopped
+2014-12-11 14:24:36,046 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:24:36,049 blockingrouter       DEBUG    Started
+2014-12-11 14:24:36,052 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:24:36,053 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:24:36,053 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:24:36,053 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:24:36,053 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:24:36,054 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:24:36,054 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:24:36,054 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:24:36,054 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:24:36,079 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:24:36,079 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:24:36,338 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:24:36,339 blockingrouter       DEBUG    In default phase
+2014-12-11 14:24:36,339 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:24:36,339 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:24:36,340 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:24:36,340 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:24:36,345 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:24:36,346 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:24:36,347 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:24:36,348 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:24:36,348 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:24:36,357 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:24:36,357 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:24:36,359 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:24:36,359 blockingrouter       INFO     Stopped
+2014-12-11 14:25:32,003 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:25:32,005 blockingrouter       DEBUG    Started
+2014-12-11 14:25:32,009 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:25:32,009 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:25:32,009 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:25:32,009 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:25:32,010 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:25:32,010 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:25:32,010 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:25:32,010 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:25:32,010 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:25:32,066 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:25:32,066 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:25:32,324 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:25:32,325 blockingrouter       DEBUG    In default phase
+2014-12-11 14:25:32,325 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:25:32,325 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:25:32,325 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:25:32,326 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:25:32,410 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:25:32,411 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:25:32,413 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:25:32,413 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:25:32,413 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:25:32,433 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:25:32,433 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:25:32,435 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:25:32,435 blockingrouter       INFO     Stopped
+2014-12-11 14:26:21,557 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:26:21,666 blockingrouter       DEBUG    Started
+2014-12-11 14:26:21,670 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:26:21,670 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:26:21,671 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:26:21,671 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:26:21,671 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:26:21,671 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:26:21,672 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:26:21,672 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:26:21,672 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:26:21,697 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:26:21,698 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:26:21,943 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:26:21,943 blockingrouter       DEBUG    In default phase
+2014-12-11 14:26:21,943 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:26:21,949 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:26:21,949 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:26:21,949 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:26:21,964 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:26:21,965 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:26:21,969 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:26:21,970 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:26:21,970 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:26:21,986 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:26:21,987 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:26:21,988 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:26:21,989 blockingrouter       INFO     Stopped
+2014-12-11 14:27:10,430 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:27:10,546 blockingrouter       DEBUG    Started
+2014-12-11 14:27:10,550 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:27:10,551 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:27:10,551 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:10,551 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:27:10,552 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:27:10,552 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:27:10,552 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:10,552 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:27:10,552 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:27:10,573 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:27:10,573 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:10,815 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:27:10,815 blockingrouter       DEBUG    In default phase
+2014-12-11 14:27:10,815 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:27:10,820 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:27:10,821 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:27:10,821 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:27:10,829 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:27:10,829 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:27:10,833 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:27:10,834 blockingrouter       INFO     Stopped
+2014-12-11 14:27:26,024 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:27:26,027 blockingrouter       DEBUG    Started
+2014-12-11 14:27:26,031 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:27:26,031 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:27:26,031 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:26,032 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:27:26,032 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:27:26,032 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:27:26,032 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:26,033 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:27:26,033 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:27:26,051 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:27:26,051 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:27:26,299 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:27:26,300 blockingrouter       DEBUG    In default phase
+2014-12-11 14:27:26,300 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:27:26,300 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:27:26,300 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:27:26,301 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:27:26,318 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:27:26,318 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:27:26,320 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:27:26,320 blockingrouter       INFO     Stopped
+2014-12-11 14:28:42,683 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:28:42,806 blockingrouter       DEBUG    Started
+2014-12-11 14:28:42,811 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:28:42,811 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:28:42,811 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:28:42,812 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:28:42,812 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:28:42,812 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:28:42,812 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:28:42,813 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:28:42,813 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:28:42,904 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:28:42,904 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:28:42,924 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:28:42,924 blockingrouter       DEBUG    In default phase
+2014-12-11 14:28:42,924 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:28:42,929 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:28:42,929 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:28:42,930 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:28:42,937 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:28:42,937 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:28:42,942 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:28:42,942 blockingrouter       INFO     Stopped
+2014-12-11 14:29:29,196 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:29:29,301 blockingrouter       DEBUG    Started
+2014-12-11 14:29:29,305 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:29:29,305 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:29:29,306 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:29:29,306 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:29:29,306 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:29:29,307 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:29:29,307 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:29:29,307 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:29:29,307 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:29:29,336 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:29:29,336 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:29:29,359 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:29:29,360 blockingrouter       DEBUG    In default phase
+2014-12-11 14:29:29,360 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:29:29,365 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:29:29,365 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:29:29,366 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:29:29,380 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:29:29,380 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:29:29,385 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:29:29,386 blockingrouter       INFO     Stopped
+2014-12-11 14:33:47,827 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:33:47,954 blockingrouter       DEBUG    Started
+2014-12-11 14:33:47,958 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:33:47,958 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:33:47,959 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:33:47,959 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:33:47,959 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:33:47,959 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:33:47,960 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:33:47,960 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:33:47,960 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:33:47,982 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:33:47,982 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:33:48,006 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:33:48,006 blockingrouter       DEBUG    In default phase
+2014-12-11 14:33:48,006 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:33:48,011 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:33:48,012 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:33:48,012 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:33:48,026 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:33:48,027 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:33:48,032 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:33:48,032 blockingrouter       INFO     Stopped
+2014-12-11 14:36:11,401 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:36:11,515 blockingrouter       DEBUG    Started
+2014-12-11 14:36:11,519 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:36:11,520 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:36:11,520 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:11,520 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:36:11,520 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:36:11,521 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:36:11,521 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:11,521 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:36:11,521 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:36:11,544 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:36:11,545 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:11,719 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:36:11,719 blockingrouter       DEBUG    In default phase
+2014-12-11 14:36:11,719 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:36:11,724 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:36:11,725 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:36:11,725 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:36:11,733 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:36:11,733 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:36:11,738 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:36:11,738 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:36:11,738 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:36:11,755 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:36:11,755 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:36:11,757 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:36:11,757 blockingrouter       INFO     Stopped
+2014-12-11 14:36:57,293 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:36:57,418 blockingrouter       DEBUG    Started
+2014-12-11 14:36:57,422 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:36:57,423 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:36:57,423 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:57,423 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:36:57,424 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:36:57,424 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:36:57,424 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:57,424 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:36:57,424 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:36:57,442 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:36:57,443 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:36:57,647 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:36:57,648 blockingrouter       DEBUG    In default phase
+2014-12-11 14:36:57,648 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:36:57,653 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:36:57,653 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:36:57,654 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:36:57,664 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:36:57,664 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:36:57,668 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:36:57,668 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:36:57,668 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:36:57,675 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:36:57,676 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:36:57,677 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:36:57,677 blockingrouter       INFO     Stopped
+2014-12-11 14:38:02,141 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:38:02,261 blockingrouter       DEBUG    Started
+2014-12-11 14:38:02,265 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:38:02,266 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:38:02,266 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:02,266 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:38:02,266 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:38:02,267 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:38:02,267 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:02,267 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:38:02,267 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:38:02,328 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:38:02,328 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:02,586 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:38:02,587 blockingrouter       DEBUG    In default phase
+2014-12-11 14:38:02,587 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:38:02,592 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:38:02,593 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:38:02,593 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:38:02,618 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:38:02,618 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:38:02,623 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:38:02,623 blockingrouter       INFO     Stopped
+2014-12-11 14:38:38,731 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:38:38,733 blockingrouter       DEBUG    Started
+2014-12-11 14:38:38,736 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:38:38,736 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:38:38,737 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:38,737 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:38:38,737 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:38:38,737 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:38:38,738 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:38,738 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:38:38,738 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:38:38,761 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:38:38,761 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:38:39,008 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:38:39,008 blockingrouter       DEBUG    In default phase
+2014-12-11 14:38:39,008 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:38:39,009 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:38:39,009 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:38:39,009 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:38:39,016 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:38:39,017 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:38:39,018 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:38:39,018 blockingrouter       INFO     Stopped
+2014-12-11 14:40:15,796 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:40:15,908 blockingrouter       DEBUG    Started
+2014-12-11 14:40:15,912 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:40:15,912 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:40:15,913 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:40:15,913 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:40:15,913 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:40:15,913 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:40:15,914 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:40:15,914 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:40:15,914 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:40:15,936 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:40:15,936 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:40:16,201 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:40:16,201 blockingrouter       DEBUG    In default phase
+2014-12-11 14:40:16,201 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:40:16,207 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:40:16,207 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:40:16,207 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:40:16,213 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:40:16,213 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:40:16,218 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:40:16,218 blockingrouter       INFO     Stopped
+2014-12-11 14:42:19,310 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:42:19,312 blockingrouter       DEBUG    Started
+2014-12-11 14:42:19,316 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:42:19,316 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:42:19,317 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:42:19,317 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:42:19,317 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:42:19,317 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:42:19,318 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:42:19,318 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:42:19,318 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:42:19,342 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:42:19,343 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:42:19,595 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:42:19,596 blockingrouter       DEBUG    In default phase
+2014-12-11 14:42:19,596 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:42:19,596 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:42:19,596 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:42:19,597 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:42:19,609 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:42:19,609 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:42:19,611 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:42:19,611 blockingrouter       INFO     Stopped
+2014-12-11 14:57:07,613 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:57:07,719 blockingrouter       DEBUG    Started
+2014-12-11 14:57:07,723 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:57:07,723 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:57:07,723 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:57:07,724 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:57:07,724 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:57:07,724 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:57:07,724 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:57:07,725 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:57:07,725 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:57:07,752 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:57:07,753 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:57:07,993 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:57:07,993 blockingrouter       DEBUG    In default phase
+2014-12-11 14:57:07,993 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:57:07,998 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:57:07,998 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:57:07,998 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:57:08,008 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:57:08,008 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:57:08,012 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:57:08,012 blockingrouter       INFO     Stopped
+2014-12-11 14:59:32,051 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:59:32,171 blockingrouter       DEBUG    Started
+2014-12-11 14:59:32,175 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:59:32,175 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:59:32,175 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:32,175 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:59:32,176 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:59:32,176 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:59:32,176 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:32,176 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:59:32,176 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:59:32,203 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:59:32,203 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:32,442 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:59:32,442 blockingrouter       DEBUG    In default phase
+2014-12-11 14:59:32,443 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:59:32,447 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:59:32,447 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:59:32,448 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:59:32,459 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:59:32,459 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:59:32,463 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:59:32,464 blockingrouter       INFO     Stopped
+2014-12-11 14:59:49,334 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 14:59:49,447 blockingrouter       DEBUG    Started
+2014-12-11 14:59:49,451 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 14:59:49,451 blockingrouter       DEBUG    In filter phase
+2014-12-11 14:59:49,451 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:49,451 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:59:49,452 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:59:49,452 blockingrouter       DEBUG    In parse phase
+2014-12-11 14:59:49,452 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:49,452 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 14:59:49,452 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 14:59:49,480 blockingrouter       DEBUG    In handle phase
+2014-12-11 14:59:49,480 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 14:59:49,725 blockingrouter       DEBUG    Short-circuited
+2014-12-11 14:59:49,725 blockingrouter       DEBUG    In default phase
+2014-12-11 14:59:49,726 blockingrouter       DEBUG    Skipping phase
+2014-12-11 14:59:49,730 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 14:59:49,730 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:59:49,730 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:59:49,747 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:59:49,747 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:59:49,751 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 14:59:49,751 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 14:59:49,752 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 14:59:49,758 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 14:59:49,758 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 14:59:49,759 blockingrouter       DEBUG    Stopping...
+2014-12-11 14:59:49,759 blockingrouter       INFO     Stopped
+2014-12-11 15:00:26,525 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:00:26,630 blockingrouter       DEBUG    Started
+2014-12-11 15:00:26,634 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:00:26,635 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:00:26,635 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:26,635 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:00:26,635 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:00:26,636 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:00:26,636 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:26,636 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:00:26,636 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:00:26,657 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:00:26,657 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:26,896 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:00:26,896 blockingrouter       DEBUG    In default phase
+2014-12-11 15:00:26,896 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:00:26,901 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:00:26,901 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:00:26,901 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:00:26,912 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:00:26,913 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:00:26,917 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:00:26,917 blockingrouter       INFO     Stopped
+2014-12-11 15:00:55,290 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:00:55,402 blockingrouter       DEBUG    Started
+2014-12-11 15:00:55,406 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:00:55,407 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:00:55,407 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:55,407 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:00:55,407 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:00:55,408 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:00:55,408 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:55,408 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:00:55,408 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:00:55,433 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:00:55,434 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:00:55,672 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:00:55,672 blockingrouter       DEBUG    In default phase
+2014-12-11 15:00:55,673 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:00:55,677 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:00:55,677 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:00:55,677 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:00:55,689 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:00:55,689 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:00:55,693 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:00:55,694 blockingrouter       INFO     Stopped
+2014-12-11 15:01:34,485 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:01:34,597 blockingrouter       DEBUG    Started
+2014-12-11 15:01:34,601 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:01:34,602 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:01:34,602 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:01:34,602 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:01:34,602 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:01:34,603 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:01:34,603 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:01:34,603 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:01:34,603 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:01:34,842 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:01:34,843 blockingrouter       DEBUG    In default phase
+2014-12-11 15:01:34,843 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:01:34,851 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:01:34,851 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:01:34,851 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:01:34,852 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:01:34,854 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 15:01:34,854 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:01:34,854 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:01:34,854 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:01:34,855 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:01:34,855 blockingrouter       INFO     Stopped
+2014-12-11 15:02:56,676 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:02:56,741 blockingrouter       DEBUG    Started
+2014-12-11 15:02:56,743 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:02:56,743 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:02:56,743 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:02:56,743 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:02:56,743 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:02:56,743 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:02:56,744 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:02:56,744 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:02:56,744 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:02:56,904 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:02:56,905 blockingrouter       DEBUG    In default phase
+2014-12-11 15:02:56,951 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:02:56,956 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:02:56,957 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:02:56,957 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:02:56,957 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:02:56,959 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 15:02:56,959 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:02:56,959 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:02:56,959 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:02:56,960 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:02:56,960 blockingrouter       INFO     Stopped
+2014-12-11 15:03:23,632 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:03:23,743 blockingrouter       DEBUG    Started
+2014-12-11 15:03:23,747 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:03:23,748 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:03:23,748 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:03:23,748 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:03:23,748 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:03:23,748 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:03:23,749 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:03:23,749 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:03:23,749 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:03:23,806 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:03:23,806 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:03:24,039 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:03:24,039 blockingrouter       DEBUG    In default phase
+2014-12-11 15:03:24,040 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:03:24,044 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:03:24,045 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:03:24,045 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:03:24,062 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:03:24,062 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:03:24,066 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:03:24,066 blockingrouter       INFO     Stopped
+2014-12-11 15:06:38,877 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:06:38,995 blockingrouter       DEBUG    Started
+2014-12-11 15:06:38,999 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:06:38,999 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:06:39,000 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:06:39,000 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:06:39,000 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:06:39,000 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:06:39,000 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:06:39,001 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:06:39,001 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:06:39,021 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:06:39,022 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:06:39,043 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:06:39,044 blockingrouter       DEBUG    In default phase
+2014-12-11 15:06:39,044 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:06:39,048 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 15:06:39,049 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:06:39,049 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:06:39,054 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:06:39,055 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:06:39,059 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:06:39,059 blockingrouter       INFO     Stopped
+2014-12-11 15:07:37,498 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:07:37,612 blockingrouter       DEBUG    Started
+2014-12-11 15:07:37,616 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:07:37,617 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:07:37,617 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:37,617 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:07:37,617 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:07:37,618 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:07:37,618 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:37,618 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:07:37,618 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:07:37,642 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:07:37,642 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:37,664 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:07:37,664 blockingrouter       DEBUG    In default phase
+2014-12-11 15:07:37,664 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:07:37,669 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Ikosa, kosora wongere ugerageze
+2014-12-11 15:07:37,669 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:07:37,669 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:07:37,675 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:07:37,675 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:07:37,679 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:07:37,679 blockingrouter       INFO     Stopped
+2014-12-11 15:07:55,389 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:07:55,507 blockingrouter       DEBUG    Started
+2014-12-11 15:07:55,511 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or
+2014-12-11 15:07:55,512 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:07:55,512 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:55,512 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:07:55,512 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:07:55,512 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:07:55,513 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:55,513 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:07:55,513 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:07:55,574 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:07:55,575 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:07:56,119 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:07:56,120 blockingrouter       DEBUG    In default phase
+2014-12-11 15:07:56,120 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:07:56,124 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Ntibwuzuye, harabura (Ibiro by'umubyeyi), -
+2014-12-11 15:07:56,125 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:07:56,125 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:07:56,141 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:07:56,141 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:07:56,145 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:07:56,146 blockingrouter       INFO     Stopped
+2014-12-11 15:10:29,396 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:10:29,398 blockingrouter       DEBUG    Started
+2014-12-11 15:10:29,402 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:10:29,402 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:10:29,425 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:10:29,425 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:10:30,054 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:10:30,055 blockingrouter       DEBUG    In default phase
+2014-12-11 15:10:30,055 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:10:30,055 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 15:10:30,056 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:10:30,056 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:10:30,069 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:10:30,070 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:10:30,071 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:10:30,072 blockingrouter       INFO     Stopped
+2014-12-11 15:14:24,619 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:14:24,622 blockingrouter       DEBUG    Started
+2014-12-11 15:14:24,625 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 15:14:24,626 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:14:24,626 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:24,626 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:14:24,626 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:14:24,627 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:14:24,627 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:24,627 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:14:24,627 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:14:24,650 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:14:24,651 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:24,908 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:14:24,908 blockingrouter       DEBUG    In default phase
+2014-12-11 15:14:24,909 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:14:24,909 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 15:14:24,909 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:14:24,909 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:14:24,917 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:14:24,917 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:14:24,919 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:14:24,919 blockingrouter       INFO     Stopped
+2014-12-11 15:14:45,691 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 15:14:45,814 blockingrouter       DEBUG    Started
+2014-12-11 15:14:45,818 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 15:14:45,819 blockingrouter       DEBUG    In filter phase
+2014-12-11 15:14:45,819 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:45,819 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:14:45,820 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:14:45,820 blockingrouter       DEBUG    In parse phase
+2014-12-11 15:14:45,820 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:45,820 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 15:14:45,821 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 15:14:45,883 blockingrouter       DEBUG    In handle phase
+2014-12-11 15:14:45,883 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 15:14:46,557 blockingrouter       DEBUG    Short-circuited
+2014-12-11 15:14:46,558 blockingrouter       DEBUG    In default phase
+2014-12-11 15:14:46,558 blockingrouter       DEBUG    Skipping phase
+2014-12-11 15:14:46,563 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 15:14:46,563 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 15:14:46,564 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 15:14:46,572 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 15:14:46,572 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 15:14:46,577 blockingrouter       DEBUG    Stopping...
+2014-12-11 15:14:46,577 blockingrouter       INFO     Stopped
+2014-12-11 16:27:55,619 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:27:55,621 blockingrouter       DEBUG    Started
+2014-12-11 16:27:55,624 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:27:55,624 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:27:55,625 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:27:55,650 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:27:55,650 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:27:56,301 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:27:56,301 blockingrouter       DEBUG    In default phase
+2014-12-11 16:27:56,302 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:27:56,302 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:27:56,302 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:27:56,302 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:27:56,316 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:27:56,317 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:27:56,318 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:27:56,319 blockingrouter       INFO     Stopped
+2014-12-11 16:29:50,971 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:29:50,973 blockingrouter       DEBUG    Started
+2014-12-11 16:29:50,977 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:29:50,977 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:29:50,978 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:29:50,978 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:29:50,978 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:29:50,978 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:29:50,979 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:29:50,979 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:29:50,979 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:29:51,013 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:29:51,013 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:29:51,631 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:29:51,632 blockingrouter       DEBUG    In default phase
+2014-12-11 16:29:51,632 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:29:51,632 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:29:51,633 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:29:51,633 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:29:51,646 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:29:51,647 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:29:51,648 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:29:51,649 blockingrouter       INFO     Stopped
+2014-12-11 16:31:36,826 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:31:36,828 blockingrouter       DEBUG    Started
+2014-12-11 16:31:36,832 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:31:36,832 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:31:36,833 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:31:36,833 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:31:36,833 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:31:36,833 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:31:36,834 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:31:36,834 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:31:36,834 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:31:36,853 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:31:36,854 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:31:37,493 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:31:37,493 blockingrouter       DEBUG    In default phase
+2014-12-11 16:31:37,494 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:31:37,494 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:31:37,494 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:31:37,494 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:31:37,509 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:31:37,509 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:31:37,511 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:31:37,511 blockingrouter       INFO     Stopped
+2014-12-11 16:32:12,054 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:32:12,057 blockingrouter       DEBUG    Started
+2014-12-11 16:32:12,060 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:32:12,060 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:32:12,061 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:32:12,085 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:32:12,086 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:12,726 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:32:12,726 blockingrouter       DEBUG    In default phase
+2014-12-11 16:32:12,726 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:32:12,727 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:32:12,727 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:32:12,727 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:32:12,741 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:32:12,742 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:32:12,743 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:32:12,743 blockingrouter       INFO     Stopped
+2014-12-11 16:32:53,149 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:32:53,152 blockingrouter       DEBUG    Started
+2014-12-11 16:32:53,155 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:32:53,156 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:32:53,156 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:53,156 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:32:53,156 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:32:53,157 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:32:53,157 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:53,157 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:32:53,157 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:32:53,184 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:32:53,184 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:32:53,803 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:32:53,803 blockingrouter       DEBUG    In default phase
+2014-12-11 16:32:53,803 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:32:53,804 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:32:53,804 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:32:53,804 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:32:53,818 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:32:53,818 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:32:53,820 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:32:53,820 blockingrouter       INFO     Stopped
+2014-12-11 16:34:12,270 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:34:12,272 blockingrouter       DEBUG    Started
+2014-12-11 16:34:12,276 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:34:12,276 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:34:12,276 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:34:12,277 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:34:12,277 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:34:12,277 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:34:12,277 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:34:12,278 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:34:12,278 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:34:12,304 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:34:12,304 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:34:13,030 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:34:13,030 blockingrouter       DEBUG    In default phase
+2014-12-11 16:34:13,030 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:34:13,030 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:34:13,030 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:34:13,030 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:34:13,083 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:34:13,084 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:34:13,085 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:34:13,085 blockingrouter       INFO     Stopped
+2014-12-11 16:35:30,269 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:35:30,271 blockingrouter       DEBUG    Started
+2014-12-11 16:35:30,274 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:35:30,274 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:35:30,274 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:35:30,274 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:35:30,275 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:35:30,275 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:35:30,275 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:35:30,275 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:35:30,275 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:35:30,292 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:35:30,293 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:35:30,922 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:35:30,922 blockingrouter       DEBUG    In default phase
+2014-12-11 16:35:30,922 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:35:30,923 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:35:30,923 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:35:30,923 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:35:30,937 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:35:30,937 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:35:30,939 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:35:30,939 blockingrouter       INFO     Stopped
+2014-12-11 16:36:15,342 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:36:15,344 blockingrouter       DEBUG    Started
+2014-12-11 16:36:15,346 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:36:15,346 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:36:15,347 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:36:15,347 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:36:15,347 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:36:15,347 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:36:15,348 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:36:15,348 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:36:15,348 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:36:15,401 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:36:15,402 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:36:16,009 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:36:16,010 blockingrouter       DEBUG    In default phase
+2014-12-11 16:36:16,010 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:36:16,010 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:36:16,010 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:36:16,011 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:36:16,024 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:36:16,024 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:36:16,026 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:36:16,026 blockingrouter       INFO     Stopped
+2014-12-11 16:38:52,133 blockingrouter       INFO     Starting RapidSMS...
+2014-12-11 16:38:52,136 blockingrouter       DEBUG    Started
+2014-12-11 16:38:52,140 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-11 16:38:52,140 blockingrouter       DEBUG    In filter phase
+2014-12-11 16:38:52,140 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:38:52,140 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:38:52,141 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:38:52,141 blockingrouter       DEBUG    In parse phase
+2014-12-11 16:38:52,141 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:38:52,141 blockingrouter       DEBUG    In <app: default> app
+2014-12-11 16:38:52,142 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-11 16:38:52,163 blockingrouter       DEBUG    In handle phase
+2014-12-11 16:38:52,163 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-11 16:38:52,759 blockingrouter       DEBUG    Short-circuited
+2014-12-11 16:38:52,759 blockingrouter       DEBUG    In default phase
+2014-12-11 16:38:52,759 blockingrouter       DEBUG    Skipping phase
+2014-12-11 16:38:52,760 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-11 16:38:52,760 blockingrouter       DEBUG    Out outgoing phase
+2014-12-11 16:38:52,760 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-11 16:38:52,774 blockingrouter       DEBUG    Out <app: default> app
+2014-12-11 16:38:52,774 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-11 16:38:52,776 blockingrouter       DEBUG    Stopping...
+2014-12-11 16:38:52,776 blockingrouter       INFO     Stopped
+2014-12-12 11:47:49,849 blockingrouter       INFO     Starting RapidSMS...
+2014-12-12 11:47:49,885 blockingrouter       DEBUG    Started
+2014-12-12 11:47:49,889 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-12 11:47:49,889 blockingrouter       DEBUG    In filter phase
+2014-12-12 11:47:49,890 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:47:49,890 blockingrouter       DEBUG    In <app: default> app
+2014-12-12 11:47:49,890 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-12 11:47:49,890 blockingrouter       DEBUG    In parse phase
+2014-12-12 11:47:49,891 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:47:49,891 blockingrouter       DEBUG    In <app: default> app
+2014-12-12 11:47:49,891 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-12 11:47:49,960 blockingrouter       DEBUG    In handle phase
+2014-12-12 11:47:49,960 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:47:50,934 blockingrouter       DEBUG    Short-circuited
+2014-12-12 11:47:50,935 blockingrouter       DEBUG    In default phase
+2014-12-12 11:47:50,935 blockingrouter       DEBUG    Skipping phase
+2014-12-12 11:47:50,935 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-12 11:47:50,936 blockingrouter       DEBUG    Out outgoing phase
+2014-12-12 11:47:50,936 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-12 11:47:50,949 blockingrouter       DEBUG    Out <app: default> app
+2014-12-12 11:47:50,949 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-12 11:47:50,951 blockingrouter       DEBUG    Stopping...
+2014-12-12 11:47:50,951 blockingrouter       INFO     Stopped
+2014-12-12 11:49:59,694 blockingrouter       INFO     Starting RapidSMS...
+2014-12-12 11:49:59,696 blockingrouter       DEBUG    Started
+2014-12-12 11:49:59,700 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he or wt55
+2014-12-12 11:49:59,701 blockingrouter       DEBUG    In filter phase
+2014-12-12 11:49:59,701 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:49:59,701 blockingrouter       DEBUG    In <app: default> app
+2014-12-12 11:49:59,701 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-12 11:49:59,701 blockingrouter       DEBUG    In parse phase
+2014-12-12 11:49:59,702 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:49:59,702 blockingrouter       DEBUG    In <app: default> app
+2014-12-12 11:49:59,702 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-12 11:49:59,722 blockingrouter       DEBUG    In handle phase
+2014-12-12 11:49:59,722 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-12 11:50:00,620 blockingrouter       DEBUG    Short-circuited
+2014-12-12 11:50:00,620 blockingrouter       DEBUG    In default phase
+2014-12-12 11:50:00,620 blockingrouter       DEBUG    Skipping phase
+2014-12-12 11:50:00,621 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-12 11:50:00,621 blockingrouter       DEBUG    Out outgoing phase
+2014-12-12 11:50:00,621 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-12 11:50:00,633 blockingrouter       DEBUG    Out <app: default> app
+2014-12-12 11:50:00,633 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-12 11:50:00,635 blockingrouter       DEBUG    Stopping...
+2014-12-12 11:50:00,635 blockingrouter       INFO     Stopped
+2014-12-13 13:23:07,922 blockingrouter       INFO     Starting RapidSMS...
+2014-12-13 13:23:08,295 blockingrouter       DEBUG    Started
+2014-12-13 13:23:08,301 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 mc or wt55
+2014-12-13 13:23:08,301 blockingrouter       DEBUG    In filter phase
+2014-12-13 13:23:08,302 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-13 13:23:08,302 blockingrouter       DEBUG    In <app: default> app
+2014-12-13 13:23:08,303 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-13 13:23:08,303 blockingrouter       DEBUG    In parse phase
+2014-12-13 13:23:08,304 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-13 13:23:08,304 blockingrouter       DEBUG    In <app: default> app
+2014-12-13 13:23:08,304 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-13 13:23:08,730 blockingrouter       DEBUG    In handle phase
+2014-12-13 13:23:08,731 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-13 13:23:11,065 blockingrouter       DEBUG    Short-circuited
+2014-12-13 13:23:11,065 blockingrouter       DEBUG    In default phase
+2014-12-13 13:23:11,066 blockingrouter       DEBUG    Skipping phase
+2014-12-13 13:23:11,266 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-13 13:23:11,266 blockingrouter       DEBUG    Out outgoing phase
+2014-12-13 13:23:11,266 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-13 13:23:11,293 blockingrouter       DEBUG    Out <app: default> app
+2014-12-13 13:23:11,293 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-13 13:23:11,325 blockingrouter       DEBUG    Stopping...
+2014-12-13 13:23:11,333 blockingrouter       INFO     Stopped
+2014-12-15 10:08:44,783 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 10:08:45,110 blockingrouter       DEBUG    Started
+2014-12-15 10:08:45,115 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): Who
+2014-12-15 10:08:45,115 blockingrouter       DEBUG    In filter phase
+2014-12-15 10:08:45,115 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:08:45,115 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:08:45,116 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:08:45,116 blockingrouter       DEBUG    In parse phase
+2014-12-15 10:08:45,116 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:08:45,116 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:08:45,117 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:08:45,399 blockingrouter       DEBUG    In handle phase
+2014-12-15 10:08:45,399 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:08:45,859 blockingrouter       DEBUG    Short-circuited
+2014-12-15 10:08:45,859 blockingrouter       DEBUG    In default phase
+2014-12-15 10:08:45,859 blockingrouter       DEBUG    Skipping phase
+2014-12-15 10:08:45,860 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Uri ASM, uherereye i TEST (TEST), uvuga Kinyarwanda
+2014-12-15 10:08:45,860 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 10:08:45,860 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 10:08:45,877 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 10:08:45,877 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 10:08:45,883 blockingrouter       DEBUG    Stopping...
+2014-12-15 10:08:45,883 blockingrouter       INFO     Stopped
+2014-12-15 10:11:21,276 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 10:11:21,278 blockingrouter       DEBUG    Started
+2014-12-15 10:11:21,280 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): Who
+2014-12-15 10:11:21,280 blockingrouter       DEBUG    In filter phase
+2014-12-15 10:11:21,280 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In parse phase
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:11:21,281 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:11:21,304 blockingrouter       DEBUG    In handle phase
+2014-12-15 10:11:21,305 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:11:21,325 blockingrouter       DEBUG    Short-circuited
+2014-12-15 10:11:21,325 blockingrouter       DEBUG    In default phase
+2014-12-15 10:11:21,325 blockingrouter       DEBUG    Skipping phase
+2014-12-15 10:11:21,326 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Uri ASM, uherereye i TEST (TEST), uvuga Kinyarwanda
+2014-12-15 10:11:21,326 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 10:11:21,326 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 10:11:21,338 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 10:11:21,338 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 10:11:21,343 blockingrouter       DEBUG    Stopping...
+2014-12-15 10:11:21,343 blockingrouter       INFO     Stopped
+2014-12-15 10:12:04,130 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 10:12:04,131 blockingrouter       DEBUG    Started
+2014-12-15 10:12:04,134 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): Pre
+2014-12-15 10:12:04,134 blockingrouter       DEBUG    In filter phase
+2014-12-15 10:12:04,134 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:04,135 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:12:04,135 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:12:04,135 blockingrouter       DEBUG    In parse phase
+2014-12-15 10:12:04,135 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:04,135 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:12:04,136 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:12:04,159 blockingrouter       DEBUG    In handle phase
+2014-12-15 10:12:04,159 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:04,204 blockingrouter       DEBUG    Short-circuited
+2014-12-15 10:12:04,204 blockingrouter       DEBUG    In default phase
+2014-12-15 10:12:04,204 blockingrouter       DEBUG    Skipping phase
+2014-12-15 10:12:04,205 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): Raporo wohereje nta makuru ifite, Andika: PRE INDANGAMUNTU ITARIKI_YIMIHANGO IYOGUSUBIRAYO INSHURO_YASAMYE  IZAVUTSE IBIBAZO_KERA IBISHYA AHO_YAPIMIWE IBIRO UBUREBURE UMUSARANI KANDAGIRA TELEFONI
+2014-12-15 10:12:04,205 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 10:12:04,205 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 10:12:04,225 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 10:12:04,225 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 10:12:04,230 blockingrouter       DEBUG    Stopping...
+2014-12-15 10:12:04,230 blockingrouter       INFO     Stopped
+2014-12-15 10:12:51,502 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 10:12:51,503 blockingrouter       DEBUG    Started
+2014-12-15 10:12:51,505 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): Pre ?jm
+2014-12-15 10:12:51,505 blockingrouter       DEBUG    In filter phase
+2014-12-15 10:12:51,505 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:51,505 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:12:51,506 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:12:51,506 blockingrouter       DEBUG    In parse phase
+2014-12-15 10:12:51,506 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:51,506 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 10:12:51,506 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 10:12:51,524 blockingrouter       DEBUG    In handle phase
+2014-12-15 10:12:51,524 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 10:12:54,202 blockingrouter       DEBUG    Short-circuited
+2014-12-15 10:12:54,202 blockingrouter       DEBUG    In default phase
+2014-12-15 10:12:54,202 blockingrouter       DEBUG    Skipping phase
+2014-12-15 10:12:54,203 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp):  Numero y'irangamuntu igomba kuba imibare 16
+ Ntibwuzuye, harabura (Itariki ya nyuma y'imihango), - Ntibwuzuye, harabura (Itariki yo gusubira kwipimisha), - Ntibwuzuye, harabura (Inshuro yasamye), - Ntibwuzuye, harabura (Umubare w'imbyaro), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo ku nda zabanje), - Ntibwuzuye, harabura (Ibimenyetso by'ibibazo), - Ntibwuzuye, harabura (Aho yasuzumiwe), - Ntibwuzuye, harabura (Ibiro by'umubyeyi), - Ntibwuzuye, harabura (Uburebure bw'umubyeyi), - Ntibwuzuye, harabura (Ubwiherero), - Ntibwuzuye, harabura (Kandagira Ukarabe), -
+2014-12-15 10:12:54,203 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 10:12:54,203 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 10:12:54,213 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 10:12:54,213 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 10:12:54,220 blockingrouter       DEBUG    Stopping...
+2014-12-15 10:12:54,220 blockingrouter       INFO     Stopped
+2014-12-15 11:05:36,791 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:05:36,793 blockingrouter       DEBUG    Started
+2014-12-15 11:05:36,798 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:05:36,798 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:05:36,798 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:05:36,798 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:05:36,798 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:05:36,798 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:05:36,799 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:05:36,799 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:05:36,799 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:05:36,823 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:05:36,824 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:05:37,687 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:05:37,687 blockingrouter       DEBUG    In default phase
+2014-12-15 11:05:37,688 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:05:37,688 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:05:37,688 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:05:37,688 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:05:37,702 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:05:37,702 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:05:37,703 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:05:37,703 blockingrouter       INFO     Stopped
+2014-12-15 11:06:21,888 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:06:21,891 blockingrouter       DEBUG    Started
+2014-12-15 11:06:21,894 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:06:21,895 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:06:21,895 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:06:21,895 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:06:21,895 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:06:21,896 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:06:21,896 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:06:21,896 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:06:21,896 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:06:21,915 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:06:21,916 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:06:22,665 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:06:22,666 blockingrouter       DEBUG    In default phase
+2014-12-15 11:06:22,666 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:06:22,666 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:06:22,667 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:06:22,667 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:06:22,682 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:06:22,682 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:06:22,684 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:06:22,684 blockingrouter       INFO     Stopped
+2014-12-15 11:07:04,734 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:07:04,736 blockingrouter       DEBUG    Started
+2014-12-15 11:07:04,740 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:07:04,740 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:07:04,741 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:07:04,741 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:07:04,741 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:07:04,741 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:07:04,742 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:07:04,742 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:07:04,742 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:07:04,769 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:07:04,770 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:07:05,532 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:07:05,533 blockingrouter       DEBUG    In default phase
+2014-12-15 11:07:05,533 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:07:05,533 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:07:05,534 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:07:05,534 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:07:05,547 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:07:05,548 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:07:05,549 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:07:05,549 blockingrouter       INFO     Stopped
+2014-12-15 11:08:53,508 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:08:53,511 blockingrouter       DEBUG    Started
+2014-12-15 11:08:53,514 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:08:53,515 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:08:53,515 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:08:53,515 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:08:53,515 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:08:53,516 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:08:53,516 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:08:53,516 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:08:53,516 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:08:53,599 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:08:53,599 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:08:54,384 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:08:54,384 blockingrouter       DEBUG    In default phase
+2014-12-15 11:08:54,385 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:08:54,385 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:08:54,385 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:08:54,386 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:08:54,399 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:08:54,399 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:08:54,401 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:08:54,401 blockingrouter       INFO     Stopped
+2014-12-15 11:09:52,697 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:09:52,699 blockingrouter       DEBUG    Started
+2014-12-15 11:09:52,703 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:09:52,703 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:09:52,703 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:09:52,703 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:09:52,704 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:09:52,704 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:09:52,704 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:09:52,704 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:09:52,705 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:09:52,730 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:09:52,731 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:09:53,494 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:09:53,494 blockingrouter       DEBUG    In default phase
+2014-12-15 11:09:53,494 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:09:53,495 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:09:53,495 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:09:53,495 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:09:53,509 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:09:53,509 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:09:53,511 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:09:53,511 blockingrouter       INFO     Stopped
+2014-12-15 11:10:34,285 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:10:34,287 blockingrouter       DEBUG    Started
+2014-12-15 11:10:34,291 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:10:34,291 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:10:34,292 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:10:34,292 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:10:34,292 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:10:34,292 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:10:34,293 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:10:34,293 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:10:34,293 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:10:34,318 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:10:34,318 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:10:35,058 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:10:35,058 blockingrouter       DEBUG    In default phase
+2014-12-15 11:10:35,058 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:10:35,059 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:10:35,059 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:10:35,059 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:10:35,073 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:10:35,074 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:10:35,076 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:10:35,076 blockingrouter       INFO     Stopped
+2014-12-15 11:16:52,677 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:16:52,679 blockingrouter       DEBUG    Started
+2014-12-15 11:16:52,683 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:16:52,683 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:16:52,684 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:16:52,684 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:16:52,684 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:16:52,684 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:16:52,684 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:16:52,685 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:16:52,685 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:16:52,716 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:16:52,716 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:16:53,468 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:16:53,468 blockingrouter       DEBUG    In default phase
+2014-12-15 11:16:53,469 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:16:53,469 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:16:53,469 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:16:53,469 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:16:53,483 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:16:53,483 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:16:53,485 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:16:53,485 blockingrouter       INFO     Stopped
+2014-12-15 11:18:31,196 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:18:31,198 blockingrouter       DEBUG    Started
+2014-12-15 11:18:31,202 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:18:31,202 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:18:31,202 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:18:31,203 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:18:31,203 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:18:31,203 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:18:31,203 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:18:31,203 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:18:31,204 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:18:31,224 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:18:31,224 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:18:31,986 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:18:31,987 blockingrouter       DEBUG    In default phase
+2014-12-15 11:18:31,987 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:18:31,987 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:18:31,988 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:18:31,988 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:18:32,001 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:18:32,002 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:18:32,003 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:18:32,004 blockingrouter       INFO     Stopped
+2014-12-15 11:21:45,145 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:21:45,147 blockingrouter       DEBUG    Started
+2014-12-15 11:21:45,151 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:21:45,151 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:21:45,151 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:21:45,152 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:21:45,152 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:21:45,152 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:21:45,152 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:21:45,152 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:21:45,153 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:21:45,172 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:21:45,173 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:21:45,889 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:21:45,890 blockingrouter       DEBUG    In default phase
+2014-12-15 11:21:45,890 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:21:45,890 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:21:45,891 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:21:45,891 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:21:45,906 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:21:45,907 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:21:45,908 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:21:45,908 blockingrouter       INFO     Stopped
+2014-12-15 11:23:06,700 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:23:06,702 blockingrouter       DEBUG    Started
+2014-12-15 11:23:06,706 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:23:06,706 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:23:06,707 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:06,707 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:23:06,707 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:23:06,707 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:23:06,707 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:06,708 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:23:06,708 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:23:06,736 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:23:06,737 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:07,553 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:23:07,554 blockingrouter       DEBUG    In default phase
+2014-12-15 11:23:07,554 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:23:07,554 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:23:07,555 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:23:07,555 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:23:07,614 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:23:07,615 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:23:07,616 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:23:07,616 blockingrouter       INFO     Stopped
+2014-12-15 11:23:59,102 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:23:59,103 blockingrouter       DEBUG    Started
+2014-12-15 11:23:59,107 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:23:59,107 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:23:59,107 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:59,107 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:23:59,108 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:23:59,108 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:23:59,108 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:59,108 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:23:59,108 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:23:59,135 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:23:59,135 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:23:59,909 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:23:59,909 blockingrouter       DEBUG    In default phase
+2014-12-15 11:23:59,909 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:23:59,910 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:23:59,910 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:23:59,910 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:23:59,924 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:23:59,924 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:23:59,926 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:23:59,926 blockingrouter       INFO     Stopped
+2014-12-15 11:26:04,324 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:26:04,326 blockingrouter       DEBUG    Started
+2014-12-15 11:26:04,329 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:26:04,329 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:04,330 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:26:04,330 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:26:04,375 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:26:04,375 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:05,171 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:26:05,172 blockingrouter       DEBUG    In default phase
+2014-12-15 11:26:05,172 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:26:05,172 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:26:05,173 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:26:05,173 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:26:05,197 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:26:05,198 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:26:05,199 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:26:05,200 blockingrouter       INFO     Stopped
+2014-12-15 11:26:34,690 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:26:34,692 blockingrouter       DEBUG    Started
+2014-12-15 11:26:34,696 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:26:34,696 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:26:34,697 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:34,697 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:26:34,697 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:26:34,697 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:26:34,698 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:34,698 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:26:34,698 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:26:34,718 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:26:34,719 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:26:35,482 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:26:35,482 blockingrouter       DEBUG    In default phase
+2014-12-15 11:26:35,482 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:26:35,483 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:26:35,483 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:26:35,483 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:26:35,496 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:26:35,497 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:26:35,498 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:26:35,499 blockingrouter       INFO     Stopped
+2014-12-15 11:51:07,588 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:51:07,591 blockingrouter       DEBUG    Started
+2014-12-15 11:51:07,594 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:51:07,595 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:51:07,595 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:07,595 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:51:07,595 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:51:07,596 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:51:07,596 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:07,596 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:51:07,596 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:51:07,621 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:51:07,622 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:08,340 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:51:08,340 blockingrouter       DEBUG    In default phase
+2014-12-15 11:51:08,341 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:51:08,341 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:51:08,341 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:51:08,341 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:51:08,355 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:51:08,355 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:51:08,357 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:51:08,357 blockingrouter       INFO     Stopped
+2014-12-15 11:51:42,797 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:51:42,799 blockingrouter       DEBUG    Started
+2014-12-15 11:51:42,803 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:51:42,803 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:51:42,804 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:42,804 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:51:42,804 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:51:42,804 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:51:42,804 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:42,805 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:51:42,805 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:51:42,831 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:51:42,832 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:51:43,582 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:51:43,582 blockingrouter       DEBUG    In default phase
+2014-12-15 11:51:43,583 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:51:43,583 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:51:43,583 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:51:43,583 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:51:43,598 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:51:43,598 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:51:43,600 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:51:43,600 blockingrouter       INFO     Stopped
+2014-12-15 11:52:13,532 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 11:52:13,535 blockingrouter       DEBUG    Started
+2014-12-15 11:52:13,539 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 11:52:13,539 blockingrouter       DEBUG    In filter phase
+2014-12-15 11:52:13,539 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:52:13,539 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:52:13,540 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:52:13,540 blockingrouter       DEBUG    In parse phase
+2014-12-15 11:52:13,540 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:52:13,540 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 11:52:13,541 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 11:52:13,564 blockingrouter       DEBUG    In handle phase
+2014-12-15 11:52:13,564 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 11:52:14,393 blockingrouter       DEBUG    Short-circuited
+2014-12-15 11:52:14,394 blockingrouter       DEBUG    In default phase
+2014-12-15 11:52:14,394 blockingrouter       DEBUG    Skipping phase
+2014-12-15 11:52:14,394 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 11:52:14,394 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 11:52:14,395 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 11:52:14,408 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 11:52:14,409 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 11:52:14,410 blockingrouter       DEBUG    Stopping...
+2014-12-15 11:52:14,410 blockingrouter       INFO     Stopped
+2014-12-15 12:36:03,914 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:36:03,917 blockingrouter       DEBUG    Started
+2014-12-15 12:36:03,920 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:36:03,921 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:36:03,921 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:03,921 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:36:03,922 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:36:03,922 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:36:03,922 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:03,922 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:36:03,922 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:36:03,946 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:36:03,947 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:04,686 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:36:04,687 blockingrouter       DEBUG    In default phase
+2014-12-15 12:36:04,687 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:36:04,687 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:36:04,687 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:36:04,688 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:36:04,702 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:36:04,702 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:36:04,704 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:36:04,704 blockingrouter       INFO     Stopped
+2014-12-15 12:36:48,466 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:36:48,469 blockingrouter       DEBUG    Started
+2014-12-15 12:36:48,472 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:36:48,473 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:36:48,473 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:48,473 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:36:48,473 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:36:48,473 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:36:48,474 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:48,474 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:36:48,474 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:36:48,567 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:36:48,567 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:36:49,307 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:36:49,308 blockingrouter       DEBUG    In default phase
+2014-12-15 12:36:49,308 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:36:49,308 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:36:49,309 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:36:49,309 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:36:49,323 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:36:49,323 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:36:49,325 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:36:49,325 blockingrouter       INFO     Stopped
+2014-12-15 12:38:37,792 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:38:37,795 blockingrouter       DEBUG    Started
+2014-12-15 12:38:37,798 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:38:37,799 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:38:37,799 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:38:37,799 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:38:37,799 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:38:37,800 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:38:37,800 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:38:37,800 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:38:37,800 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:38:37,819 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:38:37,819 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:38:38,569 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:38:38,569 blockingrouter       DEBUG    In default phase
+2014-12-15 12:38:38,569 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:38:38,570 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:38:38,570 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:38:38,570 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:38:38,585 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:38:38,586 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:38:38,587 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:38:38,588 blockingrouter       INFO     Stopped
+2014-12-15 12:39:15,157 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:39:15,159 blockingrouter       DEBUG    Started
+2014-12-15 12:39:15,162 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:39:15,163 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:39:15,184 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:39:15,185 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:39:15,924 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:39:15,924 blockingrouter       DEBUG    In default phase
+2014-12-15 12:39:15,924 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:39:15,925 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:39:15,925 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:39:15,925 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:39:15,940 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:39:15,940 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:39:15,942 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:39:15,942 blockingrouter       INFO     Stopped
+2014-12-15 12:40:22,955 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:40:22,958 blockingrouter       DEBUG    Started
+2014-12-15 12:40:22,961 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:40:22,962 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:40:22,962 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:40:22,962 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:40:22,962 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:40:22,963 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:40:22,963 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:40:22,963 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:40:22,963 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:40:22,982 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:40:22,983 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:40:23,745 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:40:23,746 blockingrouter       DEBUG    In default phase
+2014-12-15 12:40:23,746 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:40:23,746 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:40:23,747 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:40:23,747 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:40:23,760 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:40:23,761 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:40:23,762 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:40:23,763 blockingrouter       INFO     Stopped
+2014-12-15 12:41:04,923 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:41:04,926 blockingrouter       DEBUG    Started
+2014-12-15 12:41:04,929 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:41:04,930 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:41:04,930 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:04,930 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:41:04,930 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:41:04,931 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:41:04,931 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:04,931 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:41:04,931 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:41:04,959 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:41:04,959 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:05,698 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:41:05,698 blockingrouter       DEBUG    In default phase
+2014-12-15 12:41:05,699 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:41:05,699 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:41:05,699 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:41:05,700 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:41:05,714 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:41:05,715 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:41:05,716 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:41:05,717 blockingrouter       INFO     Stopped
+2014-12-15 12:41:42,467 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:41:42,470 blockingrouter       DEBUG    Started
+2014-12-15 12:41:42,474 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:41:42,474 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:41:42,474 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:42,475 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:41:42,475 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:41:42,475 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:41:42,475 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:42,475 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:41:42,476 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:41:42,502 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:41:42,502 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:41:43,265 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:41:43,265 blockingrouter       DEBUG    In default phase
+2014-12-15 12:41:43,265 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:41:43,266 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:41:43,266 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:41:43,266 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:41:43,280 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:41:43,280 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:41:43,282 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:41:43,282 blockingrouter       INFO     Stopped
+2014-12-15 12:42:56,798 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:42:56,800 blockingrouter       DEBUG    Started
+2014-12-15 12:42:56,803 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:42:56,803 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:42:56,803 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:42:56,804 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:42:56,804 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:42:56,804 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:42:56,804 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:42:56,804 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:42:56,805 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:42:56,832 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:42:56,833 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:42:57,584 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:42:57,585 blockingrouter       DEBUG    In default phase
+2014-12-15 12:42:57,585 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:42:57,585 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:42:57,586 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:42:57,586 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:42:57,599 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:42:57,600 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:42:57,601 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:42:57,602 blockingrouter       INFO     Stopped
+2014-12-15 12:45:11,441 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:45:11,444 blockingrouter       DEBUG    Started
+2014-12-15 12:45:11,448 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:45:11,448 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:45:11,448 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:11,448 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:45:11,449 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:45:11,449 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:45:11,449 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:11,449 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:45:11,450 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:45:11,473 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:45:11,473 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:12,177 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:45:12,177 blockingrouter       DEBUG    In default phase
+2014-12-15 12:45:12,178 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:45:12,178 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:45:12,178 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:45:12,178 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:45:12,195 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:45:12,195 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:45:12,197 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:45:12,197 blockingrouter       INFO     Stopped
+2014-12-15 12:45:42,676 blockingrouter       INFO     Starting RapidSMS...
+2014-12-15 12:45:42,679 blockingrouter       DEBUG    Started
+2014-12-15 12:45:42,682 blockingrouter       INFO     Incoming (+250788660270 via kannel-smpp): red 1234567890123456 he mc or wt55
+2014-12-15 12:45:42,683 blockingrouter       DEBUG    In filter phase
+2014-12-15 12:45:42,683 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:42,683 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:45:42,683 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:45:42,684 blockingrouter       DEBUG    In parse phase
+2014-12-15 12:45:42,684 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:42,684 blockingrouter       DEBUG    In <app: default> app
+2014-12-15 12:45:42,684 blockingrouter       DEBUG    In <app: messagelog> app
+2014-12-15 12:45:42,705 blockingrouter       DEBUG    In handle phase
+2014-12-15 12:45:42,705 blockingrouter       DEBUG    In <app: handlers> app
+2014-12-15 12:45:43,435 blockingrouter       DEBUG    Short-circuited
+2014-12-15 12:45:43,435 blockingrouter       DEBUG    In default phase
+2014-12-15 12:45:43,435 blockingrouter       DEBUG    Skipping phase
+2014-12-15 12:45:43,436 blockingrouter       INFO     Outgoing (+250788660270 via kannel-smpp): MURAKOZE, ubutumwa ku kibazo k'umubyeyi ukeneye ubutabazi bwihuse bwatugezeho!
+2014-12-15 12:45:43,436 blockingrouter       DEBUG    Out outgoing phase
+2014-12-15 12:45:43,436 blockingrouter       DEBUG    Out <app: messagelog> app
+2014-12-15 12:45:43,449 blockingrouter       DEBUG    Out <app: default> app
+2014-12-15 12:45:43,450 blockingrouter       DEBUG    Out <app: handlers> app
+2014-12-15 12:45:43,454 blockingrouter       DEBUG    Stopping...
+2014-12-15 12:45:43,454 blockingrouter       INFO     Stopped

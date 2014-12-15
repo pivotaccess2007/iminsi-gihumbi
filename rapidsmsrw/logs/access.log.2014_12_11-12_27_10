@@ -1,0 +1,2 @@
+127.0.0.1 - - [11/Dec/2014:14:27:09 +0200] "GET /backend/kannel-smpp/?id=%2B250788660270&text=red+1234567890123456+he+or&charset=UTF-8&coding=0 HTTP/1.1" 200 199 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"
+127.0.0.1 - - [11/Dec/2014:14:27:25 +0200] "GET /backend/kannel-smpp/?id=%2B250788660270&text=red+1234567890123456+he+or&charset=UTF-8&coding=0 HTTP/1.1" 200 199 "-" "curl/7.22.0 (x86_64-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3"

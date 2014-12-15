@@ -1,0 +1,7 @@
+[Thu Dec 11 14:23:50 2014] [error] 'IncomingMessage' object has no attribute 'id'
+[Thu Dec 11 14:23:50 2014] [error] DONE DATA OBJECT: False
+[Thu Dec 11 14:23:50 2014] [error] No handlers could be found for logger "backend/kannel-smpp"
+[Thu Dec 11 14:24:36 2014] [error] 1198680069759062 'IncomingMessage' object has no attribute 'id'
+[Thu Dec 11 14:24:36 2014] [error] DONE DATA OBJECT: False
+[Thu Dec 11 14:25:32 2014] [error] 1198680069759062 'IncomingMessage' object has no attribute 'id'
+[Thu Dec 11 14:25:32 2014] [error] DONE DATA OBJECT: False

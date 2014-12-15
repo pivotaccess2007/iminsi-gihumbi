@@ -1,0 +1,194 @@
+{% extends request.base_template %}
+{% block title %}CHWs -Uploads{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="/static/webapp/javascripts/jquery.flot.js"></script>
+<script type="text/javascript" src="/static/webapp/javascripts/jquery.flot.pie.pack.js"></script>
+<script type="text/javascript"
+    src="/static/webapp/javascripts/jquery.datepick.min.js"></script>
+<link rel="stylesheet" type="text/css"
+    href="/static/webapp/stylesheets/jquery.datepick.css" />
+<link rel="stylesheet" type="text/css"
+    href="/static/webapp/stylesheets/stats.css" />
+
+<script type="text/javascript"> 
+$(function()
+{
+$('#provchoose').change(function(evt)
+    {	
+        if ($(this).attr('value') != ''){window.location = window.location.pathname + '?province=' +
+        $(this).attr('value');
+	} else {
+			window.location = window.location.pathname;			
+			}
+    });
+
+condDisableDistricts();
+$('#distchoose').change(function()
+    {
+        if ($(this).attr('value') != ''){ window.location = window.location.pathname + '?district=' +
+        $(this).attr('value') + '&province=' + $('#provchoose').attr('value');
+	}
+		else {
+			window.location = window.location.pathname + '?'+ '&province=' + $('#provchoose').attr('value');			
+			}
+    });
+
+condDisableLocations();
+$('#locchoose').change(function()
+    {
+       if ($(this).attr('value') != '') { window.location = window.location.pathname + '?facility=' +
+        $(this).attr('value') + '&province=' + $('#provchoose').attr('value') +
+        '&district=' + $('#distchoose').attr('value') ;
+	} 
+		else{
+			window.location = window.location.pathname + '?' + '&province=' + $('#provchoose').attr('value') +
+        '&district=' + $('#distchoose').attr('value');
+			}
+    });
+
+});
+
+
+function condDisableDistricts()
+{
+    var loc = window.location.toString();
+    if(loc.search(/province/) != -1) return;
+    $('#dst').hide();
+    $('#distchoose').hide();
+}
+
+function condDisableLocations()
+{
+    var loc = window.location.toString();
+    if(loc.search(/district/) != -1) return;
+    $('#hc').hide();
+    $('#locchoose').hide();
+}
+</script>
+
+{% endblock %}
+
+{% block content %}
+    {% load pagination-tags %}
+
+
+<table width="100%"> 
+    <thead>
+	<tr>
+			                    
+                    <td>
+	    <label id = "prv">Province:</label>
+            <select name="province" id="provchoose"><option></option>
+                {%  for prv in prvs %}<option value="{{prv.id}}" {% if prv.selected  %} selected="selected"{% endif %}>{{ prv.name }}</option>{%  endfor %}
+            </select>
+                    </td>
+                    <td>
+	    <label id = "dst">District:</label>
+            <select name="district" id="distchoose"><option></option>
+            	{%  for dst in dsts %}<option value="{{dst.id}}" {% if dst.selected  %} selected="selected"{% endif %}>{{ dst.name }}</option>{%  endfor %}  
+            </select>
+                    </td>
+                    <td>
+	    <label id = "hc">Health Centre:</label>
+            <select name="location" id="locchoose"><option></option>
+              {%  for hc in hcs %}<option value="{{hc.id}}" {% if hc.selected  %} selected="selected"{% endif %}>{{ hc.name }}</option>{%  endfor %}  
+            </select>
+                    </td>
+                    <td>
+                    </td><td></td>
+                </tr>
+        <tr>
+        	<th>Number of CHWs Uploaded(<a href="/chws/view/uploads?excel{%if request.GET.province%}&province={{request.GET.province}}{%endif%}{%if request.GET.district%}&district={{request.GET.district}}{%endif%}{%if request.GET.facility%}&facility={{request.GET.facility}}{%endif%}">Export To Excel</a>)</th>
+		<th>Number of CHWs confirmed(<a href="/chws/confirms?excel{%if request.GET.province%}&province={{request.GET.province}}{%endif%}{%if request.GET.district%}&district={{request.GET.district}}{%endif%}{%if request.GET.facility%}&facility={{request.GET.facility}}{%endif%}">Export To Excel</a>)</th>
+		<th>Number of CHWs pending(<a href="/chws/pendings?excel{%if request.GET.province%}&province={{request.GET.province}}{%endif%}{%if request.GET.district%}&district={{request.GET.district}}{%endif%}{%if request.GET.facility%}&facility={{request.GET.facility}}{%endif%}">Export To Excel</a>)</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+    	
+            <tr>
+            	
+                <td><a href="/admin/chws/reporter">{{regs.count}}</a></td>
+                <td><a href="/chws/confirms">{{confirms.count}}</a></td>
+		<td><a href="/chws/pendings">{{pendings.count}}</a></td>
+		<td><a href="/chws/import">Upload New List</a></td>
+		<td></td>
+            </tr>
+	{% for rep in reporters %}
+        		<tr>
+            	
+                		<th ><!--<a href="/admin/chws/reporter">--> {{rep.role__name}}<!--</a>--></th>
+				<th  ><!--<a href="/admin/chws/reporter">-->{{rep.total}}<!--</a>--></th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+            			<th>&nbsp;</th>
+			</tr>
+        {% endfor %}
+	{% if sup %}
+			<tr>
+            	
+                		<th ><!--<a href="/admin/chws/supervisor">-->Supervisor<!--</a>--></th>
+				<th ><!--<a href="/admin/chws/supervisor">-->{{sup.count}}<!--</a>--></th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+            			<th>&nbsp;</th>
+			</tr>
+	{% endif %}
+	
+    </tbody>
+    
+    <tfoot>
+			
+			
+	</tfoot>
+</table>
+
+
+<table width="100%"> 
+    <thead>
+        <tr>
+        	
+            	<th>Upload Reference</th>
+		<th>District</th>
+		<th>When</th>
+		<th>By</th>
+		
+            
+            
+        </tr>
+    </thead>
+    <tbody>
+    	{% for error in errors.object_list %}
+            <tr>
+            	
+                
+		<td><a href="/chws/view/errors/{{error.upload_ref}}">{{error.upload_ref}}</a></td>
+		<td>{{error.district}}</td>
+		<td>{{error.when}}</td>
+		<td>{{error.by}}</td>
+		
+            </tr>
+        {% endfor %}
+    </tbody>
+    
+    <tfoot>
+			<tr>
+				<td colspan="10">
+					{% paginator errors %}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="10">
+				Matching Errors: {{ errors.paginator.count }}
+				</td>
+			</tr>
+	</tfoot>
+</table>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,102 @@
+1. WHAT WILL YOU DO IF A LOCATION CHANGE or the HIGHRACK CHANGE
+2. WHAT WILL YOU IF A CODE IS ADDED UPDATE OR REMOVED
+3. WHAT WILL YOU DO IF YOU NEED YOUR PROGRAM TO SUPPORT MULTILINGUAL
+
+5. YOU CAN GET ONE key_code comparison to get a status of the objects, or you can try to get a combination of those to get a status of that objects.
+
+EXPORT DB BY excluding some tables
+
+mysqldump -u username -p database --ignore-table=database.table1 --ignore-table=database.table2 > database.sql
+
+
+SMSREPORTTRACK::: 
+
+pregnancytrack:::
+
+patient_id , 
+reporter,
+submission_date,
+lmp_date,
+anc2_date,
+anc3_date,
+anc4_date,
+ed_date,
+pre,
+pre_weight,
+pre_height,
+pre_bmi,
+pre_is_risky,
+pre_is_high_risky,
+anc2,
+anc2_weight,
+anc2_bmi,
+anc2_is_risky,
+anc2_is_high_risky,
+anc2_weight_loss
+anc2_weight_gain
+anc3,
+anc3_weight,
+anc3_bmi,
+anc3_is_risky,
+anc3_is_high_risky,
+anc3_weight_loss
+anc3_weight_gain
+anc4,
+anc4_weight,
+anc4_bmi,
+anc4_is_risky,
+anc4_is_high_risky,
+anc4_weight_loss
+anc4_weight_gain
+miscarriage,
+mdeath,
+delivery,
+pnc1,
+pnc1_sick
+pnc1_well
+pnc1_intervention
+pnc2,
+pnc2_sick
+pnc2_well
+pnc2_intervention
+pnc3,
+pnc3_sick
+pnc3_well
+pnc3_intervention
+
+childtrack:::
+
+birth,
+date_of_birth,
+delivery_home,
+delivery_hospital,
+delivery_clinic,
+delivery_on_route,
+premature,
+pregancytrack,
+nbc1,
+nbc2,
+nbc3,
+nbc4,
+nbc5,
+v1,
+v2,
+v3,
+v4,
+v5,
+v6,   
+
+Current pregnancy: those based on the end filter the edd has not come ======= Meantime solution
+current pregnant mothers: distinct pregnancy by patient_id	      =======
+
+so for pnc and nbc just count days, (date_of_birth + 27 < end_date) nbc and pnc (3, 28, 42)
+
+
+Split Concern
+
+When a ready is pregnant just set up a track for all the services being delivered.
+What abour some not expected like RED alert, Risk, Departure, Refusal, CCM and so on.
+
+Migrate Nutrition.
+Messaging.
+plug sms into messaging

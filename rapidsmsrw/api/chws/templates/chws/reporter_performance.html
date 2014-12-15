@@ -1,0 +1,43 @@
+{% load pagination-tags %}
+<div class="table-wrapper">
+<table width="100%"> 
+    <thead>
+	<tr><th colspan="{{heads|length}}"><a href="/ws/rest/v1/chws/view/performance?csv{%if postqn%}&{{postqn}}{%endif%}" >Export all in CSV</a></th></tr>
+	<tr>
+				<th colspan="{{heads|length}}" align="left">
+					<a href="/ws/rest/v1/chws/view/performance?{%if not request.GET.all %}all=all{%endif%}{%if total != 0 %}&total={{total}}{%endif%}&{%if postqn%}&{{postqn}}{%endif%}" >View All</a>
+				</th>
+			</tr>
+        <tr>
+        	{% for h in heads %}<th>{{h}}</th>{%endfor%}
+        	
+        </tr>
+    </thead>
+    <tbody>
+    	{% for reporter in stats.object_list %}
+            <tr>
+            	{% for h in heads %}
+            	<td>{{reporter|get_item:h}}</td>
+		{% endfor %}
+               
+            </tr>
+        {% endfor %}
+    </tbody>
+    
+    <tfoot>
+		{% if request.GET.all %}
+			<tr>
+				<td colspan="{{heads|length}}">
+					{% paginator stats %}
+				</td>
+			</tr>
+			<tr>
+				<td colspan="{{heads|length}}">
+				Matching Reporters: {{ total }}
+				</td>
+			</tr>
+		{% endif %}
+			
+	</tfoot>
+</table>
+</div>

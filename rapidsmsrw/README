@@ -1,0 +1,34 @@
+1. SET VIRTUAL ENV FOR BOTH manage.py and wsgi.py
+=================================================
+import os
+import sys
+
+
+activate_this = '/home/zigama/projects/python/virtualenvs/rapidsmsrw1000-env/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))
+
+Enable messagelog, chw, messaging
+
+2. python rapidsmsrw/manage.py syncdb
+=====================================
+Creating table django_site
+Creating table rapidsms_app
+Creating table messaging_smsreport
+Creating table messaging_smsreportfield
+Creating table messaging_smslanguage
+Creating table messaging_smsmessage
+Creating table messaging_smsdbconstraint
+
+Creating table chws_registrationconfirmation
+Creating table chws_error
+Creating table chws_warn
+Creating table chws_supervisor
+Creating table chws_datamanager
+Creating table chws_facilitystaff
+Creating table chws_monitorevaluator
+Creating table chws_hospitaldirector
+Creating table chws_healthfacility
+
+
+
+

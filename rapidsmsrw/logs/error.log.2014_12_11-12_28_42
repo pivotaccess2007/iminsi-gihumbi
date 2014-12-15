@@ -1,0 +1,2 @@
+[Thu Dec 11 14:28:42 2014] [error] global name 'msg' is not defined
+[Thu Dec 11 14:28:42 2014] [error] No handlers could be found for logger "backend/kannel-smpp"
