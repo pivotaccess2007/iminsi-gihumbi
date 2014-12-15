@@ -254,6 +254,8 @@ def get_heading_cols( HEADERS = [], LOCS = {}):
 
 def get_initial_locations(LOCS = {}):
 
+  ### ONLY RWANDA
+  LOCS.update({'nation': 1})
   qry = "SELECT indexcol AS province_id, name AS province_name FROM chws__province"
   
   if LOCS.get('nation'):
