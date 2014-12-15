@@ -155,7 +155,11 @@ def single_handle(tbn, pgc, args, options):
       'report_date': rep[3] or datetime.datetime.now()
     }
     try:
-      # _ = org.encode('ascii') # Exception trigger. Necessary?
+      _ = org.encode('ascii') # Exception trigger. Necessary?  ectomorph/orm.py", line 629, in store
+    								#vals.append(elval.decode('utf-8'))
+  								#python2.7/encodings/utf_8.py", line 16, in decode
+    								# return codecs.utf_8_decode(input, errors, True)
+								#UnicodeDecodeError: 'utf8' codec can't decode byte 0xf6 in position 31: invalid start byte 
       if not options.get('BACKGROUND'):
         rsp = ('%d %s%3.1f%%%s' % (pos + 1, gap, pct, pad))
         sys.stdout.write('\r' + rsp[0:maxw])
