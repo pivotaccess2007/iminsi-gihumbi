@@ -3,9 +3,16 @@
 {%  block subtitle %} Messages {%  endblock  %}
 {#  {%  block trunkstyle  %} style="background: url('{{ static_path }}/images/anc.jpg') no-repeat fixed center"{%  endblock  %} #}
 {%  block mainpart  %}
-Total messages: {{  display.total|neat_numbers }}
-<br />
-Successful messages: {{ display.succeeded|neat_numbers }} ({{  display.succpc  }}%)
-<br />
-Failed messages: <a href="./failures">{{ display.failed|neat_numbers }}</a> ({{ display.failpc  }}%)
+<div class="content"><div class="ic"></div>
+  <div class="container_12">
+    
+      <h3 style="text-align: center; font-family: 'Open Sans', sans-serif; font-size:40px; font-weight: lighter;">Messages</h3>
+      <div class="login" method="POST" action="/authentication">
+		Total messages: {{  display.total|neat_numbers }}
+		<br />
+		Successful messages: {{ display.succeeded|neat_numbers }} ({{  display.succpc  }}%)
+		<br />
+		Failed messages: <a href="./failures">{{ display.failed|neat_numbers }}</a> ({{ display.failpc  }}%)
+		</div>
+</div></div>
 {%  endblock  %}

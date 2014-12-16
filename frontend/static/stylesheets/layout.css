@@ -242,7 +242,7 @@ font-size: 17px;
 	
 	height: 26px;
 	display: inline-block;
-	width:55%;
+	width:60%;
 	color:#fff;
 	padding-top:5px;
 	padding-bottom:5px;
@@ -278,11 +278,11 @@ font-size: 17px;
 	height: 30px;
 	display: inline-block;
 	width:30%;
-font-family: 'Open Sans', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-weight:lighter;
 	font-size: 15px;
-color:#fff;
-text-align: center;
+	color:#fff;
+	text-align: center;
 	
 }
 .graphic{
@@ -295,7 +295,7 @@ text-align: center;
 	font-weight:lighter;
 	font-size: 15px;
 	color:#fff;
-text-align: center;
+	text-align: center;
 }
 
 .log{
@@ -307,7 +307,7 @@ text-align: center;
 	font-weight:lighter;
 	font-size: 15px;
 	color:#fff;
-text-align: center;
+	text-align: center;
 }
 
 .active {
@@ -460,6 +460,16 @@ padding-top: 20px;
 	
 }
 
+.datapointdeliverynot{
+	width: 125px;
+	height: 130px;
+	display: inline-block;
+	float: left;
+	padding-left:15px;
+	margin-top: 10px;
+	
+}
+
 .datapointccm{
 	width: 130px;
 	height: 150px;
@@ -538,7 +548,7 @@ padding-top: 20px;
 	font-family: 'Open Sans', sans-serif;
 	width:120px;
 	font-size: 15px;
-	color: #fff;
+	color: #000;
 	text-algin: center;
 }
 

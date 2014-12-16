@@ -46,7 +46,7 @@
 	    {%  set num = display.nat[0][dl[0]] %}
 	    
 	    <div class="descr">{{  dl[1] }}</div>
-	    <div class="moreoptions startshidden" >
+	    <div class=" startshidden" >
 		 <a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], minus = ['pid', 'id'], summary = 'on')  }}">View by Location</a>
 	    </div>
 	    <div class="number">
@@ -58,22 +58,22 @@
 
 {% for data in display.details[dl[0]].list() %}
 	  
-<div class="datapoint" style="background: url(../static/images/circlehighrisk.png);">
+<div class="datapointdeliverynot" style="background: url(../static/images/circlehighriskdeliverynot.png);">
     <div class="descr">High Risk</div>
     <div class="moreoptions startshidden" > <a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'high_risk', summary = 'on')}}">View by Location</a></div>
-    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'high_risk')}}">{{ data['high_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'high_risk',view = 'log')}}">{{ data['high_risk']|neat_numbers }}</a></div>
 </div>
 
-<div class="datapoint" style="background: url(../static/images/circleatrisk.png);">
+<div class="datapointdeliverynot" style="background: url(../static/images/circleatriskdeliverynot.png);">
     <div class="descr">At Risk</div>
     <div class="moreoptions startshidden" > <a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'at_risk', summary = 'on')}}">View by Location</a></div>
-    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'at_risk')}}">{{ data['at_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'at_risk',view = 'log')}}">{{ data['at_risk']|neat_numbers }}</a></div>
 </div>
 
-<div class="datapoint" style="background: url(../static/images/circle.png);">
+<div class="datapointdeliverynot" style="width:105px; height: 120px;  background: url(../static/images/circlenormaldeliverynot.png);">
     <div class="descr">No Risk</div>
     <div class="moreoptions startshidden" > <a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'no_risk', summary = 'on')}}">View by Location</a></div>
-    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'no_risk')}}">{{ data['no_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="/tables/{{  nav.link('deliverynotdash', group = dl[0], subgroup = 'no_risk',view = 'log')}}">{{ data['no_risk']|neat_numbers }}</a></div>
 </div>
 
 
