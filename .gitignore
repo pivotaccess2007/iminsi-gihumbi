@@ -5,3 +5,4 @@ frontend/static/downloads/*
 .xls
 rapidsmsrw/settings.py
 rapidsmsrw/wsgi.py
+rapidsmsrw/logs/*
