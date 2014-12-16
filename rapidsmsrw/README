@@ -30,5 +30,12 @@ Creating table chws_hospitaldirector
 Creating table chws_healthfacility
 
 
+3. BUILD MESSAGING
+===================
+
+#python rapidsmsrw/manage.py build_messaging
+
+
+
 
 
