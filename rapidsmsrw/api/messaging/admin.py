@@ -12,14 +12,14 @@ from .models import *
 
 class SMSReportAdmin(admin.ModelAdmin):                                                        
     list_filter = ()                                                        
-    exportable_fields = ( 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
+    exportable_fields = ( 'title_en', 'title_rw', 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
     search_fields = ( 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
     list_display = ( 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                    
     actions = (export_model_as_csv, export_model_as_excel)
     
 class SMSReportFieldAdmin(admin.ModelAdmin):                                                        
     list_filter = ('sms_report',)                                                        
-    exportable_fields = ('sms_report', 'prefix', 'key', 'description', 'type_of_value', 'upper_case', 'lower_case', 'minimum_value', 'maximum_value', 
+    exportable_fields = ('title_en', 'title_rw', 'category_en', 'category_rw', 'sms_report', 'prefix', 'key', 'description', 'type_of_value', 'upper_case', 'lower_case', 'minimum_value', 'maximum_value', 
                             'minimum_length', 'maximum_length', 'position_after_sms_keyword', 'depends_on_value_of', 'dependency', 
                         'allowed_value_list', 'only_allow_one', 'required', 'created', 
                         )                                                        
@@ -32,14 +32,14 @@ class SMSReportFieldAdmin(admin.ModelAdmin):
     
 class SMSLanguageAdmin(admin.ModelAdmin):                                                        
     list_filter = ()                                                        
-    exportable_fields = ('name', 'iso_639_1_code', 'description', 'created', )                                                        
+    exportable_fields = ('id', 'name', 'iso_639_1_code', 'description', 'created', )                                                        
     search_fields = ('name', 'iso_639_1_code', 'description', 'created', )                                                           
     list_display = ('name', 'iso_639_1_code', 'description', 'created', )                                                       
     actions = (export_model_as_csv, export_model_as_excel)
     
 class SMSMessageAdmin(admin.ModelAdmin):                                                        
     list_filter = ('destination', 'message_type', 'sms_report', 'sms_report_field',)                                                        
-    exportable_fields = ('message_type', 'sms_report', 'sms_report_field', 'created', )                                                        
+    exportable_fields = ('message_type', 'sms_report', 'sms_report_field', 'message_en', 'message_rw', 'created',)                                                        
     search_fields = ('message_type', 'sms_report', 'sms_report_field', 'created', )                                                                   
     list_display = ('message_type', 'sms_report', 'sms_report_field', 'created', )                                                               
     actions = (export_model_as_csv, export_model_as_excel)

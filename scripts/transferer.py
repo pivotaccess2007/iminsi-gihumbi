@@ -179,7 +179,7 @@ def single_handle(tbn, pgc, args, options):
       acrow = store_treatment(rep[0], succ, loxn)
     except UnicodeEncodeError, e:
       # Is this sufficient?
-      store_failures(rmessages.ThouMsgError('Badly-encoded message.', [('bad_encoding', None)]), 'Badly-encoded message #%d' % (rep[0], ), rep[0])
+      store_failures(rmessages.ThouMsgError('Badly-encoded message.', [('bad_encoding', None)]), 'Badly-encoded message #%d' % (rep[0], ), rep[0], loxn)
     if deler and force:
       delcur.execute('UPDATE messagelog_message SET transferred = TRUE WHERE id = %d' % (rep[0], ))
       orm.ORM.store(tbn[0], {'indexcol': acrow, 'deleted': True})
