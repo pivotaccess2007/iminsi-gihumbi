@@ -352,7 +352,7 @@ class MUACField(FloatedField):
   @classmethod
   def is_legal(self, fld, dt):
     'Regex alert.'
-    return [] if re.match(r'MUAC\d+(\.\d+)', fld) else 'bad_muac_code'
+    return [] if re.match(r'MUAC\d+(\.\d+)', fld, re.IGNORECASE) else 'bad_muac_code'
 
 class DeathField(CodeField):
   'Field for describing death codes.'
@@ -458,16 +458,43 @@ class ThouMessage:
     if type(response) == type({}):
       return ThouMessage.parse(rem, response, activedate)
     klass = response[0]
-    msg   = klass.process(klass, code, rem, activedate or datetime.today())
+    msg = []
+    #print msg, hasattr(klass, 'alternative_fields'), getattr(klass, 'alternative_fields') 
+    try:  msg   = klass.process(klass, code, rem, activedate or datetime.today())
+    except:
+      if hasattr(klass, 'alternative_fields'):  msg   = klass.alternative_process(klass, code, rem, activedate or datetime.today())
+      else: msg   = klass.process(klass, code, rem, activedate or datetime.today())  
     return (msg, response[1])
 
   # “Private”
   @staticmethod
   def process(klass, cod, msg, dt):
+    #print klass, "\n", cod,  "\n", msg,  "\n", dt
     errors  = []
     fobs    = []
     etc     = msg
     for fld in klass.fields:
+      try:
+        if type(fld) == type((1, 2)):
+          cur, err, etc  = fld[0].pull(fld[0], cod, etc, dt, fld[1])
+          errors.extend([(e, fld) for e in err])
+        else:
+          cur, err, etc  = fld.pull(fld, cod, etc, dt)
+          errors.extend([(e, fld) for e in err])
+        fobs.append(cur)
+      except Exception, err:
+        errors.append((str(err), fld))
+    if etc.strip():
+      errors.append(('bad_text', 'Superfluous text: "%s"' % (etc.strip(),)))
+    return klass(cod, msg, fobs, errors, dt)
+
+  @staticmethod
+  def alternative_process(klass, cod, msg, dt):
+    #print klass, "\n", cod,  "\n", msg,  "\n", dt
+    errors  = []
+    fobs    = []
+    etc     = msg
+    for fld in klass.alternative_fields:
       try:
         if type(fld) == type((1, 2)):
           cur, err, etc  = fld[0].pull(fld[0], cod, etc, dt, fld[1])
@@ -548,6 +575,7 @@ class ANCMessage(ThouMessage):
 class DepMessage(ThouMessage):
   'Departure message.'
   fields  = [IDField, NumberField, DOBDateField]
+  alternative_fields  = [IDField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -587,6 +615,10 @@ class ChildMessage(ThouMessage):
              (SymptomCodeField, True),
              LocationField, WeightField, MUACField]
 
+  alternative_fields  = [IDField, NumberField, DOBDateField, VaccinationCompletionField,
+             (SymptomCodeField, True),
+             LocationField, WeightField, MUACField]
+
   def semantics_check(self, adate):
     'TODO.'
     return []
@@ -594,6 +626,7 @@ class ChildMessage(ThouMessage):
 class DeathMessage(ThouMessage):
   'Death message.'
   fields  = [IDField, NumberField, DOBDateField, LocationField, DeathField]
+  alternative_fields  = [IDField, LocationField, DeathField]
 
   def semantics_check(self, adate):
     'TODO.'
