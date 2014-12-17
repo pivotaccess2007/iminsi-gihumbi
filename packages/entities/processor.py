@@ -122,7 +122,9 @@ class UniqueEntity(Entity):
       for x in self.id_fields(msg):
         ans.append((x, lks[x]))
     except KeyError, e:
-      return self.get_identifiers(msg, lks)
+      rsp = self.get_identifiers(msg, lks)
+      self.fs.update(rsp)
+      return rsp
     return ans
 
   def load(self, msg):
