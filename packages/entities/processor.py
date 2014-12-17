@@ -112,8 +112,8 @@ class UniqueEntity(Entity):
   def get_identifiers(self, msg, ents):
     '''type: [(string, value)]
 
-[('indangamuntu', ents['indangamuntu']), ('lmp', ents['daymonthyear'] - timedelta(days = 270))]'''
-    raise Exception, str(u'Return workable identifiers.\r\n' % (str(__doc__)))
+[('indangamuntu', ents['indangamuntu']), ('lmp', ents['birth_date'] - timedelta(days = 270))]'''
+    raise Exception, str(u'Return workable identifiers. [(string, value)]: %s from %s with %s' % (str(msg), str(self), str(ents)))
 
   def identifier(self, msg):
     ans         = []

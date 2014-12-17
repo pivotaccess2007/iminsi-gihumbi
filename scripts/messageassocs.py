@@ -12,6 +12,9 @@ ASSOCIATIONS = {
     {'initialises': [rentities.Mother, rentities.ANCVisit]}
   ),
   'DEP':  (rmessages.DepMessage,
+    {'initialises': [rentities.Mother, rentities.Child]}
+  ),
+  'ALTDEP':  (rmessages.DepMessage,
     {'initialises': [rentities.Mother]}
   ),
   'RISK': (rmessages.RiskMessage,
@@ -28,6 +31,9 @@ ASSOCIATIONS = {
   ),
   'DTH':  (rmessages.DeathMessage,
     {'initialises': [rentities.Mother, rentities.Child, rentities.Death]}
+  ),
+  'ALTDTH':  (rmessages.DeathMessage,
+    {'initialises': [rentities.Mother, rentities.MotherDeath]}
   ),
   'RES':  (rmessages.ResultMessage,
     {'initialises': []}

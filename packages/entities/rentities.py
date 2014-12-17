@@ -38,3 +38,6 @@ class Child(IndangamuntuRelativeEntity):
 class Death(IndangamuntuRelativeEntity):
   table       = 'rw_deaths'
   # belongs_to  = lambda _: [Mother, Child]
+
+class MotherDeath(IndangamuntuEntity):
+  table       = 'rw_deaths'

@@ -450,19 +450,23 @@ class ThouMessage:
   def parse(msg, assoc = {}, activedate = None):
     code, rem = ThouMessage.pull_code(msg.strip())
     response  = None
+    alt_response = None
     assocs    = ThouMessage.caseless_hash(assoc)
     try:
       response = assocs[code.lower()]
+      alt_response = assocs.get('alt%s' % code.lower())
     except KeyError:
       raise ThouMsgError("Unknown code '%s'" % (code, ), [('unknown_code', None)])
     if type(response) == type({}):
       return ThouMessage.parse(rem, response, activedate)
     klass = response[0]
     msg = []
-    #print msg, hasattr(klass, 'alternative_fields'), getattr(klass, 'alternative_fields') 
+    #print code, rem, response[1], alt_response[1], msg, hasattr(klass, 'alternative_fields'), getattr(klass, 'alternative_fields') 
     try:  msg   = klass.process(klass, code, rem, activedate or datetime.today())
     except:
-      if hasattr(klass, 'alternative_fields'):  msg   = klass.alternative_process(klass, code, rem, activedate or datetime.today())
+      if hasattr(klass, 'alternative_fields'):
+        msg   = klass.alternative_process(klass, code, rem, activedate or datetime.today())
+        response = alt_response
       else: msg   = klass.process(klass, code, rem, activedate or datetime.today())  
     return (msg, response[1])
 
@@ -494,6 +498,7 @@ class ThouMessage:
     errors  = []
     fobs    = []
     etc     = msg
+    #klass.fields = klass.alternative_fields
     for fld in klass.alternative_fields:
       try:
         if type(fld) == type((1, 2)):
