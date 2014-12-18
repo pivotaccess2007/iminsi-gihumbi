@@ -102,9 +102,19 @@ class NumberField(ThouField):
 
   column_name = 'number'
   @classmethod
+  def check_gap(self, fld):
+    return True
+
+  @classmethod
   def is_legal(self, fld, dt):
     'Basically a regex.'
-    return [] if re.match(r'\d+', fld) else 'bad_number'
+    try:  ans = int(fld)
+    except: return 'bad_number'
+    return [] if self.check_gap(ans) else 'bad_number'
+  #@classmethod
+  #def is_legal(self, fld, dt):
+  #  'Basically a regex.'
+  #  return [] if re.match(r'\d+', fld) else 'bad_number'
 
   @classmethod
   def convert(self, fld):
@@ -123,13 +133,17 @@ class GravidityField(NumberField):
   'Gravidity is a number.'
 
   column_name = 'gravidity'
-  pass
+  @classmethod
+  def check_gap(self, fld):
+    return 1 <= fld <= 30 
 
 class ParityField(NumberField):
   'Parity is a number.'
 
   column_name = 'parity'
-  pass
+  @classmethod
+  def check_gap(self, fld):
+    return 0 <= fld <= 30 
 
 class PregCodeField(CodeField):
   'Field for Pregnancy codes.'
@@ -182,9 +196,16 @@ class FloatedField(CodeField):
 
   column_name = 'float_value'
   @classmethod
+  def check_gap(self, fld):
+    return True
+
+  @classmethod
   def is_legal(self, fld, dt):
     'Basically a regex.'
-    return [] if re.match(r'\w+\d+(\.\d+)?', fld) else 'bad_floated_field'
+    ans = re.sub(r'[A-Z]', '', fld, 0, re.IGNORECASE)
+    try:  ans = float(ans)
+    except: return 'bad_floated_field'
+    return [] if self.check_gap(ans) else 'bad_floated_field'
 
   @classmethod
   def convert(self, fld):
@@ -196,9 +217,16 @@ class NumberedField(CodeField):
 
   column_name = 'numbered_value'
   @classmethod
+  def check_gap(self, fld):
+    return True
+
+  @classmethod
   def is_legal(self, fld, dt):
     'Basically a regex.'
-    return [] if re.match(r'\w+\d+', fld) else 'bad_numbered_field'
+    ans = re.sub(r'[A-Z]', '', fld, 0, re.IGNORECASE)
+    try:  ans = int(ans)
+    except: return 'bad_numbered_field'
+    return [] if self.check_gap(ans) else 'bad_numbered_field'
 
   @classmethod
   def convert(self, fld):
@@ -216,6 +244,47 @@ class WeightField(FloatedField):
 
   column_name = 'weight'
   pass
+
+class MotherWeightField(WeightField):
+  ''' Weight of the mother '''
+
+  column_name = 'mother_weight'
+
+  @classmethod
+  def check_gap(self, fld):
+    'For now, only checking that the weight is at least between 35 and 150 '
+    return 35 <= fld <= 150
+
+class MotherHeightField(HeightField):
+  ''' Height of the mother '''
+
+  column_name = 'mother_height'
+
+  @classmethod
+  def check_gap(self, fld):
+    'For now, only checking that the height is at least between 50 and 250 '
+    return 50 <= fld <= 250
+
+class ChildWeightField(WeightField):
+  ''' Weight of the child '''
+
+  column_name = 'child_weight'
+
+  @classmethod
+  def check_gap(self, fld):
+    'Checking that the weight is at least between 1 and 25 '
+    return 1 <= fld <= 25
+
+class ChildHeightField(HeightField):
+  ''' Height of the child '''
+
+  column_name = 'child_height'
+
+  @classmethod
+  def check_gap(self, fld):
+    'For now, only checking that the height is at least between 1 and 150 '
+    return 1 <= fld <= 150
+  
 
 class ToiletField(CodeField):
   'Field for codes concerning toilets.'
@@ -283,7 +352,7 @@ class GenderField(CodeField):
     'Boy or girl?'
     return ['BO', 'GI']
 
-class BreastFeedField(NBCField):
+class BreastFeedField(CodeField):
   'Breast-feeding code has new-born care fields.'
 
   column_name = 'breastfeeding'
@@ -553,7 +622,7 @@ class PregMessage(ThouMessage):
   fields  = [IDField, LMPDateField, ANCTWODateField, GravidityField, ParityField,
               (PrevPregField, True),
               (SymptomCodeField, True),
-             LocationField, WeightField, HeightField, ToiletField, HandwashField]
+             LocationField, MotherWeightField, MotherHeightField, ToiletField, HandwashField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -571,7 +640,7 @@ class ANCMessage(ThouMessage):
   'Ante-natal care visit message.'
   fields  = [IDField, ANCDateField, ANCField,
              (SymptomCodeField, True),
-             LocationField, WeightField]
+             LocationField, MotherWeightField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -590,7 +659,7 @@ class RiskMessage(ThouMessage):
   'Risk report message.'
   fields  = [IDField,
              (SymptomCodeField, True),
-             LocationField, WeightField]
+             LocationField, MotherWeightField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -598,7 +667,7 @@ class RiskMessage(ThouMessage):
 
 class RedMessage(ThouMessage):
   'Red alert message.'
-  fields  = [IDField, (RedSymptomCodeField, True), LocationField, WeightField]
+  fields  = [IDField, (RedSymptomCodeField, True), LocationField, MotherWeightField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -608,7 +677,7 @@ class BirMessage(ThouMessage):
   'Birth message.'
   fields  = [IDField, NumberField, DOBDateField, GenderField,
              (SymptomCodeField, True),
-             LocationField, BreastFeedField, WeightField]
+             LocationField, BreastFeedField, ChildWeightField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -618,11 +687,11 @@ class ChildMessage(ThouMessage):
   'Child message.'
   fields  = [IDField, NumberField, DOBDateField, VaccinationField, VaccinationCompletionField,
              (SymptomCodeField, True),
-             LocationField, WeightField, MUACField]
+             LocationField, ChildWeightField, MUACField]
 
   alternative_fields  = [IDField, NumberField, DOBDateField, VaccinationCompletionField,
              (SymptomCodeField, True),
-             LocationField, WeightField, MUACField]
+             LocationField, ChildWeightField, MUACField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -699,7 +768,7 @@ class CMRMessage(ThouMessage):
 
 class CBNMessage(ThouMessage):
   'Commmunity-Based Nutrition message.'
-  fields  = [IDField, NumberField, DOBDateField, BreastFeedField, HeightField, WeightField, MUACField]
+  fields  = [IDField, NumberField, DOBDateField, BreastFeedField, ChildHeightField, ChildWeightField, MUACField]
 
   def semantics_check(self, adate):
     'TODO.'
