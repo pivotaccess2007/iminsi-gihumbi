@@ -29,6 +29,9 @@ ASSOCIATIONS = {
   'CHI':  (rmessages.ChildMessage,
     {'initialises': [rentities.Mother, rentities.Child]}
   ),
+  'ALTCHI':  (rmessages.ChildMessage,
+    {'initialises': [rentities.Mother, rentities.Child]}
+  ),
   'DTH':  (rmessages.DeathMessage,
     {'initialises': [rentities.Mother, rentities.Child, rentities.Death]}
   ),
