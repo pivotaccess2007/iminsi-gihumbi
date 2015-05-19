@@ -1,0 +1,113 @@
+{%  extends "novabase.html" %}
+{%  block title %}Pregnancies{%  endblock  %}
+{%  block subtitle %} Pregnancy Risks {%  endblock  %}
+
+{% block menu %}
+ 		  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chw", view= "graphic") }}'><span>Statistics</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwreg") }}'><span>Register</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
+          </li>
+          <li class="homelink">
+            <a href=''><span>Staff</span></a>
+          </li>
+
+         
+
+          
+{% endblock %}
+
+{% block position %}
+<li>&#187; <a href='/dashboards/{{ nav.link("predash", view= "graphic", minus = ["group"]) }}'>CHW Registration</a></li>
+{% if group %}
+<li> &#187; {{ group }}</li>
+{% endif %}
+{% endblock %}
+
+
+{%  block mainpart  %}
+<div class="smallcontainer" style="padding-top:50px;">
+
+	 <img class="icon" src="{{  static_path }}/images/chwphone.png" />
+    <div class="infoname" style="font-size: 20px;">Total Number of CHWs</div>
+    <div class="moretotal" ><a href="">View by Location</a></div>
+    <div class="infodata goodnum">
+      <a href="">3242</a>
+    </div>
+
+
+
+  </div>
+  </div>
+  
+  <div class="humblecontainer">
+  <div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">Register a new CHW</div>
+
+   <form class="regform" method="POST">
+    
+    
+<label>Surname: </label>
+<input type="text" name="surname" value="">
+<br><br>
+
+<label id="gn">Given Name: </label>
+<input type="text" name="given_name" value="">
+<br><br>
+
+<label id="sex">Sex: </label>
+<select name="sex" id="sexchoose"><option></option>
+<option value="M">Male</option>
+<option value="F">Female</option>   
+</select>
+<br><br>
+
+<label id="role">Role: </label>
+<select name="role" id="rolechoose"><option></option>
+<option value="asm">ASM</option>
+<option value="binome">Binome</option>   
+</select>
+<br><br>
+
+<label id="edu">Educational Level: </label>
+<select name="edu_level" id="educhoose"> <option value="N">None</option>
+<option value="P">Primaire</option>
+<option value="S">Secondaire</option>
+<option value="U">University</option>  
+</select>
+<br><br>
+
+<label id="dob">Date of Birth: </label>
+<input value="" placeholder="Date of birth" class="activedate" type="text" name="dob" />
+<br><br>
+
+
+<label id="jod">Joining Date: </label>
+<input value="" placeholder="Joining Date" class="activedate" type="text" name="join" />
+<br><br>
+
+
+<label id="hp">Referral Hospital: </label>
+<select name="hospital" id="hpchoose"><option></option>
+
+</select>
+<br><br>
+
+
+<label id="nid">National ID: </label>
+<input type="text" name="nid" id="national_id" value="" class="ac_input">
+<br><br>
+
+
+<label id="tel">Telephone: </label>
+<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
+<br><br>
+  <input type="submit" value="Register" />
+  </form>
+
+  </div>
+
+{%  endblock  %}

@@ -1,0 +1,15 @@
+cherrypy==3.5.0
+psycopg2==2.5.3
+Jinja2==2.7.2
+twisted==14.0.2
+Django==1.4.2
+RapidSMS==0.10.0
+MySQL-python==1.2.3
+pygrowup==0.7.6b0
+unicodecsv==0.9.4
+xlrd==0.9.0
+xlwt==0.7.4
+hl7
+pycurl
+python-dateutil
+django-piston

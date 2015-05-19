@@ -1,0 +1,5 @@
+USE django form to select a file then u uploading ... 
+
+1. fork this process into a socket 
+2. UI to upload the file
+3. Output to folder on the running socket server

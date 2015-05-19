@@ -1,0 +1,63 @@
+{%  extends "novabase.html" %}
+{%  block title %}Pregnancies{%  endblock  %}
+{%  block subtitle %} Pregnancy Risks {%  endblock  %}
+
+{% block menu %}
+ 		  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chw", view= "graphic") }}'><span>Statistics</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwreg") }}'><span>Register</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
+          </li>
+          <li class="homelink">
+            <a href=''><span>Staff</span></a>
+          </li>          
+{% endblock %}
+
+{% block position %}
+<li>&#187; <a href='/dashboards/{{ nav.link("predash", view= "graphic", minus = ["group"]) }}'>CHW Trail</a></li>
+{% if group %}
+<li> &#187; {{ group }}</li>
+{% endif %}
+{% endblock %}
+
+
+{%  block mainpart  %}
+<div class="smallcontainer" style="padding-top:50px;">
+
+	 <img class="icon" src="{{  static_path }}/images/chwphone.png" />
+    <div class="infoname" style="font-size: 20px;">Total Number of CHWs</div>
+    <div class="moretotal" ><a href="">View by Location</a></div>
+    <div class="infodata goodnum">
+      <a href="">3242</a>
+    </div>
+
+
+
+  </div>
+  </div>
+  
+  <div class="humblecontainer">
+  
+<div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">View CHW Trail</div>
+  <form method="POST" class="regform">
+	<label id="nid">National ID: </label>
+	<input type="text" name="nid" id="national_id" value="" class="ac_input">
+	<br><br>
+	<label id="tel">Telephone: </label>
+	<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
+	<br><br>
+  	<label id="dob">Start Date: </label><input value="" placeholder="" class="activedate" type="text" name="dob" />
+  	<br><br>
+	<label id="jod">End Date: </label><input value="" placeholder="" class="activedate" type="text" name="join" />
+	<br><br>
+	<input type="submit" value="Show Me" />
+  </form>
+
+
+  </div>
+
+{%  endblock  %}

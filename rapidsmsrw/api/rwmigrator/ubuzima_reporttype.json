@@ -1,0 +1,9 @@
+/**
+ Export to JSON plugin for PHPMyAdmin
+ @version 0.1
+ */
+
+/* Database 'rapidsmsrw' */ 
+/* rapidsmsrw.ubuzima_reporttype */
+
+[{"id": 1,"name": "ANC"}, {"id": 2,"name": "Birth"}, {"id": 6,"name": "Case Management Response"}, {"id": 5,"name": "Child Health"}, {"id": 3,"name": "Community Based Nutrition"}, {"id": 4,"name": "Community Case Management"}, {"id": 7,"name": "Death"}, {"id": 16,"name": "Departure"}, {"id": 8,"name": "Newborn Care"}, {"id": 9,"name": "PNC"}, {"id": 10,"name": "Pregnancy"}, {"id": 12,"name": "Red Alert"}, {"id": 11,"name": "Red Alert Result"}, {"id": 15,"name": "Refusal"}, {"id": 14,"name": "Risk"}, {"id": 13,"name": "Risk Result"}]
