@@ -4,6 +4,7 @@
 
 import psycopg2
 import settings
+import re 
 
 conn = psycopg2.connect( host = settings.DBHOST, port = settings.DBPORT, dbname = settings.DBNAME, user = settings.DBUSER, password = settings.DBPASSWORD)
 
@@ -23,8 +24,22 @@ def fetch_data(cursor):
 
 def fetch_data_cursor(conn, query_string):
  curseur = conn.cursor()
+ print query_string
  curseur.execute(query_string)
  return curseur
+
+def makecol(s):
+  # Remove invalid characters
+  s = re.sub('[^0-9a-zA-Z_]', '', s)
+  # Remove leading characters until we find a letter or underscore
+  s = re.sub('^[^a-zA-Z_]+', '', s)
+  return s.lower()
+
+def makedict(x):
+ ans = {}
+ for y in x: ans[makecol(y[0])] = (y[0], y[1])
+ return ans
+
 
 def build_fields(fields):
  fs = []
@@ -103,29 +118,29 @@ def summarize_by_location(primary_table = 'pre_table', tables = [], where_clause
  wcl = '' 
  #print province, district, location
  if nationwide:
-  fields.append( {'value': 'indexcol', 'alias': 'province_id', 'table': 'chws__province'})
-  fields.append( {'value': 'name', 'alias': 'province_name', 'table': 'chws__province'} )
-  inner_joins.append({'table': 'chws__province', 'field': 'indexcol' , 'outer_field': 'province_pk'})
-  group_by.append('province_name')
-  group_by.append('province_id')
+  fields.append( {'value': 'id', 'alias': 'province_id', 'table': 'chws_province'})
+  fields.append( {'value': 'name', 'alias': 'province_name', 'table': 'chws_province'} )
+  inner_joins.append({'table': 'chws_province', 'field': 'id' , 'outer_field': 'province_pk'})
+  group_by.append('chws_province.name')
+  group_by.append('chws_province.id')
   if province:
     where_clause.append({'field_name': '%s.province_pk' % primary_table, 'compare': '=', 'value': int(province)})
 
  if province:
-  fields.append( {'value': 'indexcol', 'alias': 'district_id', 'table': 'chws__district'})
-  fields.append( {'value': 'name', 'alias': 'district_name', 'table': 'chws__district'} )
-  inner_joins.append({'table': 'chws__district', 'field': 'indexcol' ,  'outer_field': 'district_pk'})
-  group_by.append('district_name')
-  group_by.append('district_id')
+  fields.append( {'value': 'id', 'alias': 'district_id', 'table': 'chws_district'})
+  fields.append( {'value': 'name', 'alias': 'district_name', 'table': 'chws_district'} )
+  inner_joins.append({'table': 'chws_district', 'field': 'id' ,  'outer_field': 'district_pk'})
+  group_by.append('chws_district.name')
+  group_by.append('chws_district.id')
   if district:
     where_clause.append({'field_name': '%s.district_pk' % primary_table, 'compare':'=', 'value': int(district)})
 
  if district:
-  fields.append( {'value': 'indexcol', 'alias': 'location_id', 'table': 'chws__healthcentre'})
-  fields.append( {'value': 'name', 'alias': 'location_name', 'table': 'chws__healthcentre'} )
-  inner_joins.append({'table': 'chws__healthcentre', 'field': 'indexcol' , 'outer_field': 'health_center_pk'})
-  group_by.append('location_name')
-  group_by.append('location_id')
+  fields.append( {'value': 'id', 'alias': 'location_id', 'table': 'chws_healthcentre'})
+  fields.append( {'value': 'name', 'alias': 'location_name', 'table': 'chws_healthcentre'} )
+  inner_joins.append({'table': 'chws_healthcentre', 'field': 'id' , 'outer_field': 'health_center_pk'})
+  group_by.append('chws_healthcentre.name')
+  group_by.append('chws_healthcentre.id')
   if location:
     where_clause.append({'field_name': '%s.health_center_pk' % primary_table, 'compare': '=', 'value': int(location)})
 
@@ -153,7 +168,8 @@ def summarize_by_location(primary_table = 'pre_table', tables = [], where_clause
   if MANY_INDICS != []:
     for col in MANY_INDICS:
       #print col, len(col)
-      qry = build_query( fields = fields + [{'value': 'COUNT(*)', 'alias': '%s' % col[0].split()[0] }], extracts = [], primary_table = primary_table, tables = [],
+      qry = build_query( fields = fields + [{'value': 'COUNT(*)', 'alias': '"%s"' % makecol(col[0]) }],
+                        extracts = [], primary_table = primary_table, tables = [],
                         inner_joins = inner_joins, where_clause = ' %s %s (%s)' % (wcl, 'AND' if wcl != '' else 'WHERE', col[2] if len(col) == 3 else col[0] ) , 
                         group_by = group_by, order_by = [])#;print qry
       curz = fetch_data_cursor(conn, qry)
@@ -198,7 +214,7 @@ def give_me_cols(rows):
 
 def give_me_table(qry_result, MANY_INDICS = [], LOCS = {}):
 
-  indics = [ x.split()[0] for x in [y[0] for y in MANY_INDICS] ]
+  indics = [ makecol(x) for x in [y[0] for y in MANY_INDICS] ]
   locs = get_initial_locations(LOCS = LOCS)
   heads = get_heading_cols(HEADERS = indics, LOCS = LOCS)  
   data = get_initial_data(indics_cols = indics, locs = locs)
@@ -255,31 +271,31 @@ def get_heading_cols( HEADERS = [], LOCS = {}):
 def get_initial_locations(LOCS = {}):
 
   ### ONLY RWANDA
-  LOCS.update({'nation': 1})
-  qry = "SELECT indexcol AS province_id, name AS province_name FROM chws__province"
+  #LOCS.update({'nation': 1})
+  qry = "SELECT id AS province_id, name AS province_name FROM chws_province"
   
   if LOCS.get('nation'):
-    qry = "SELECT indexcol AS province_id, name AS province_name FROM chws__province WHERE nation = %d" % int(LOCS.get('nation'))
+    qry = "SELECT id AS province_id, name AS province_name FROM chws_province WHERE nation_id = %d" % int(LOCS.get('nation'))
 
   if LOCS.get('province'):
-    qry = "SELECT chws__province.indexcol AS province_id, chws__province.name AS province_name, chws__district.indexcol AS district_id \
-                    , chws__district.name AS district_name FROM chws__district INNER JOIN chws__province ON (chws__district.province = chws__province.indexcol) \
-                    WHERE chws__district.province = %d" % int(LOCS.get('province'))
+    qry = "SELECT chws_province.id AS province_id, chws_province.name AS province_name, chws_district.id AS district_id \
+                    , chws_district.name AS district_name FROM chws_district INNER JOIN chws_province ON (chws_district.province_id = chws_province.id) \
+                    WHERE chws_district.province_id = %d" % int(LOCS.get('province'))
   if LOCS.get('district'):
-    qry = "SELECT chws__province.indexcol AS province_id, chws__province.name AS province_name, \
-                  chws__district.indexcol AS district_id, chws__district.name AS district_name, \
-                      chws__healthcentre.indexcol AS location_id, chws__healthcentre.name AS location_name \
-                     FROM chws__district INNER JOIN chws__province ON (chws__district.province = chws__province.indexcol) \
-                      INNER JOIN chws__healthcentre ON (chws__district.indexcol = chws__healthcentre.district) \
-                    WHERE chws__healthcentre.district = %d" % int(LOCS.get('district'))
+    qry = "SELECT chws_province.id AS province_id, chws_province.name AS province_name, \
+                  chws_district.id AS district_id, chws_district.name AS district_name, \
+                      chws_healthcentre.id AS location_id, chws_healthcentre.name AS location_name \
+                     FROM chws_district INNER JOIN chws_province ON (chws_district.province_id = chws_province.id) \
+                      INNER JOIN chws_healthcentre ON (chws_district.id = chws_healthcentre.district_id) \
+                    WHERE chws_healthcentre.district_id = %d" % int(LOCS.get('district'))
 
   if LOCS.get('location'):
-    qry = "SELECT chws__province.indexcol AS province_id, chws__province.name AS province_name, \
-                  chws__district.indexcol AS district_id, chws__district.name AS district_name, \
-                      chws__healthcentre.indexcol AS location_id, chws__healthcentre.name AS location_name \
-                     FROM chws__district INNER JOIN chws__province ON (chws__district.province = chws__province.indexcol) \
-                      INNER JOIN chws__healthcentre ON (chws__district.indexcol = chws__healthcentre.district) \
-                    WHERE chws__healthcentre.indexcol = %d" % int(LOCS.get('location'))
+    qry = "SELECT chws_province.id AS province_id, chws_province.name AS province_name, \
+                  chws_district.id AS district_id, chws_district.name AS district_name, \
+                      chws_healthcentre.id AS location_id, chws_healthcentre.name AS location_name \
+                     FROM chws_district INNER JOIN chws_province ON (chws_district.province_id = chws_province.id) \
+                      INNER JOIN chws_healthcentre ON (chws_district.id = chws_healthcentre.district_id) \
+                    WHERE chws_healthcentre.id = %d" % int(LOCS.get('location'))
   if qry != '':
     locs = fetch_data(  fetch_data_cursor( conn, qry ) )
     return locs

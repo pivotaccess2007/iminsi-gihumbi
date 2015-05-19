@@ -4,7 +4,8 @@
 from tracknotify import TrackNotify
 from twisted.internet import reactor
 import settings
-from reminders import track_reminders, track_notifications
+import time
+from reminders import get_record_by_cursor, get_record_by_sql, track_reminders, track_notifications
 
 dsn = 'dbname=%s host=%s port =%d user=%s password=%s' % (settings.DBNAME, settings.DBHOST, settings.DBPORT, settings.DBUSER, settings.DBPASSWORD)
 
@@ -34,7 +35,7 @@ class MyTrackNotify(TrackNotify):
             self.stop()
         elif channel.split('_')[0]  in settings.TRIGGER_TABLES:
             tableUpdated(pid, channel, payload)
-            print channel, payload
+            #print channel, payload
             tablename = channel.split('_')[0]
             self.trackThis(tablename, payload)
         elif channel == 'test':
@@ -47,15 +48,17 @@ class MyTrackNotify(TrackNotify):
     def trackThis(self, tablename, data_ref):
         ## get the record
         try:
-            sql = 'SELECT indexcol, reporter_pk, reporter_phone, health_center_pk, village_pk FROM %s WHERE %s = %s' % ( tablename, 'indexcol', data_ref.strip())        
-            self.curs.execute(sql)
-            drecord = self.curs.fetchall()[0]
-            track_reminders(tablename, drecord)
+            sql = 'SELECT * FROM %s WHERE %s = %s' % ( tablename, 'indexcol', data_ref.strip())        
+            print sql#;self.curs.execute(sql)
+            time.sleep(5)
+            drecord = get_record_by_sql(sql) #get_record_by_cursor(self.curs); print drecord
+            #track_reminders(tablename, drecord)
             track_notifications(tablename, drecord)  
-            print "INDEXCOL: %s, " % drecord[0], "REPORTER_PK: %s, " % drecord[1], "PHONE: %s" % drecord[2], 'HC: %s' % drecord[3], 'VILLAGE: %s' % drecord[4]
-            print "symptoms: %s" % get_alert( tablename , drecord)
+            #print "INDEXCOL: %s, " % drecord.indexcol, "REPORTER_PK: %s, " % drecord.reporter_pk,\
+            #      "PHONE: %s" % drecord.reporter_phone, 'HC: %s' % drecord.health_center_pk, 'VILLAGE: %s' % drecord.village_pk
+            #print "symptoms: %s" % get_alert( tablename , drecord)
         except Exception, e:
-            print e 
+            print "Error: %s" % e 
 
 notifier = MyTrackNotify(dsn)
 
@@ -73,7 +76,7 @@ notifier.addTrackNotify('test')
 for tbl in settings.TRIGGER_TABLES:
     #print "\\d %s;" % tbl#, settings.TRIGGER_TABLES.index(tbl)
     notifier.addTrackNotify('%s_insert' % tbl)
-    #notifier.addTrackNotify('%s_update' % tbl)
+    notifier.addTrackNotify('%s_update' % tbl)
     #notifier.addTrackNotify('%s_delete' % tbl) 
 
 #### HOW DO WE STOP SAFELY THE PROCESS

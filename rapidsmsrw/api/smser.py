@@ -32,6 +32,28 @@ class Smser(object):
             return False
 
 
+    def send_message_to_kannel(self, identity, message):
+	
+        try:
+            
+            url = "%s/?id=%s&text=%s&charset=UTF-8&coding=0" % (
+                        settings.POST_URL,
+                        urllib2.quote(identity.strip()), 
+                        urllib2.quote(message)
+                )
+
+            f = urllib2.urlopen(url, timeout=10)
+            if f.getcode() / 100 != 2:
+                print "Error delivering message to URL: %s" % url
+                raise RuntimeError("Got bad response from router: %d" % f.getcode())
+
+            # do things at a reasonable pace
+            time.sleep(.2)
+            return True
+        except Exception, e:
+            return False
+
+
 
 
 	

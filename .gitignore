@@ -6,3 +6,4 @@ frontend/static/downloads/*
 rapidsmsrw/settings.py
 rapidsmsrw/wsgi.py
 rapidsmsrw/logs/*
+*.log

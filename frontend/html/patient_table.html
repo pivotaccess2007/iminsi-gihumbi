@@ -32,7 +32,7 @@
   <tbody>
   <tr>
   
-    <td>{{display.patient.patient_id}}</td>
+    <td>{{display.patient.indangamuntu}}</td>
     <td>{{display.patient.reporter_phone}}</td>
     <td>{{display.patient.province}}</td>
     <td>{{display.patient.district}}</td>
@@ -44,7 +44,11 @@
   </tr>
  </tbody>
 </table>
-<h2>Symptoms</h2>
+
+<h2>Pregnancy Report</h2>
+{% include 'report_table.html' %} 
+
+<h2>High Risk Symptoms</h2>
 <table width="100%">
   <thead>
     <tr>
@@ -52,21 +56,101 @@
       <th>Description</th>
     </tr>
   </thead>
-
- {%  if  display.attrs %}
+ {% set hrisk = [] %}
+ {%  if  display.hattrs %}
 
         
-          {%  for bc in display.attrs %}
-        <tr>  {%  if  display.nat[0][bc[0].split()[0]] == True %}<td> {{bc[0].split('_')[0]}}</td><td>{{  bc[1] }}</td>{% endif %}</tr>
+          {%  for bc in display.hattrs %}
+        <tr>  {%  if  display.nat[0][bc[0].split()[0]] == True %} 
+		{% set _ = hrisk.append(bc[0].split('_')[4]) %} <!-- The only way to hack so that we can add on hrisk is by using a variable _ -->
+		<td style="background-color:red"> {{bc[0].split('_')[4]}}</td><td>{{  bc[1] }}</td>{% endif %}</tr>
           {%  endfor  %}
         
         
-{% else %}
+{% endif %}
+{% if not hrisk %}
   <tr>
-    <td colspan=2><center>No Symptoms</center></td>
+    <td colspan=2><center>No High Risk Symptoms</center></td>
   </tr>
 {% endif %}
 </table>
+
+<h2>Risk Symptoms</h2>
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+ {% set risk = [] %} 
+ {%  if  display.rattrs %}
+
+        
+          {%  for bc in display.rattrs %}
+        <tr>  {%  if  display.nat[0][bc[0].split()[0]] == True %} 
+		{% set _ = risk.append(bc[0].split('_')[2]) %}
+		<td style="background-color:yellow" > {{bc[0].split('_')[2]}}</td><td>{{  bc[1] }}</td>{% endif %}</tr>
+          {%  endfor  %}
+        
+        
+{% endif %}
+{% if not risk %} 
+  <tr>
+    <td colspan=2><center>No Risk Symptoms</center></td>
+  </tr>
+{% endif %}
+</table>
+
+
+<h2>Red Notifications</h2>
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Date</th>
+      <th>Reporter Phone</th>
+    </tr>
+  </thead>
+{% if display.red_notifications %}
+  {% for red in display.red_notifications %}
+  <tr>
+    <td></td>
+    <td></td>
+    <td><a href=""></a></td>
+  </tr>
+  {% endfor %}
+{% else %}
+  <tr>
+    <td colspan=3><center>No Red Notifications sent yet.</center></td>
+  </tr>
+{% endif %}
+</table>
+
+<h2>Nutrition Notifications</h2>
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Date</th>
+      <th>Reporter Phone</th>
+    </tr>
+  </thead>
+{% if display.nutr_notifications %}
+  {% for nutr in display.nutr_notifications %}
+  <tr>
+    <td></td>
+    <td></td>
+    <td><a href=""></a></td>
+  </tr>
+  {% endfor %}
+{% else %}
+  <tr>
+    <td colspan=3><center>No Nutrition Notifications sent yet.</center></td>
+  </tr>
+{% endif %}
+</table>
+
 
 <h2>Reminders</h2>
 <table width="100%">
@@ -104,23 +188,34 @@
       <th>Weight</th>
     </tr>
   </thead>
+ 
   {%  for anc in display.anc_reports.list() %}
   <tr>
   <td>
-  {{  anc['indexcol'] }}
+  ANC{{  anc['anc_visit'] }}
   </td>
   <td>
   {{  anc['report_date'] }}
   </td>
   <td>
-  {{  anc['mother_weight_float'] }}kg
+  {{  anc['mother_weight'] }}kg
   </td>
   </tr>
   {% endfor %}
+
+ <tr>
+  <td>
+  PRE(ANC1)
+  </td>
+  <td>
+  {{  display.patient['report_date'] }}
+  </td>
+  <td>
+  {{  display.patient['mother_weight'] }}kg
+  </td>
+  </tr>
   </table>
   
-  <h2>Reports</h2>
-{% include 'report_table.html' %} 
 
   
   
@@ -132,47 +227,20 @@
 </div>
 
 
-
-<!-- PNC information -->
-<h1>PNC Reports</h1>
- <table width="100%">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Date</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  {%  for pnc in display.pnc_reports.list() %}
-  <tr>
-  <td>
-  {{  pnc['indexcol'] }}
-  </td>
-  <td>
-  {{  pnc['report_date'] }}
-  </td>
-  <td>
-  {{  pnc['mw_bool'] }}
-  </td>
-  </tr>
-  {% endfor %}
-  </table>
-
-
 		<script type="text/javascript">
 $(function () {
         $('#anc').highcharts({
             title: {
-                text: 'ANC weights',
+                text: 'ANC Weights',
                 x: -20 //center
             },
             
             xAxis: {
-                categories: ['Pre', 'ANC2', 'ANC3', 'ANC4']
+                categories: ['PRE(ANC1)', 'ANC2', 'ANC3', 'ANC4']
             },
             yAxis: {
                 title: {
-                    text: 'Patient Wieghts'
+                    text: 'Patient Weights'
                 },
                 plotLines: [{
                     value: 0,
@@ -192,10 +260,10 @@ $(function () {
             series: [{
                 name: 'Weight',
                 data: [{% for report in display.pre_reports %}
-                {{report.mother_weight_float}}
+                {{report.mother_weight}}
                 {% endfor %},
                        {%  for anc in display.anc_reports.list()|reverse %}
-                       {{  anc['mother_weight_float'] }},
+                       {{  anc['mother_weight'] }},
                        
                        {% endfor %}
 				]

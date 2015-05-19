@@ -13,8 +13,8 @@ urlpatterns = patterns('',
 
     url(r"^backend/kannel-smpp/$",
         KannelBackendView.as_view(backend_name="kannel-smpp")),
-    #url(r"^backend/kannel-fake-smsc/$",
-        #KannelBackendView.as_view(backend_name="kannel-fake-smsc")),
+    url(r"^backend/kannel-fake-smsc/$",
+        KannelBackendView.as_view(backend_name="kannel-fake-smsc")),
     
     url(r'^flexselect/', include('flexselect.urls')),
     url(r'^chws/', include('api.chws.urls')),

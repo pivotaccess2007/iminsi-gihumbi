@@ -17,13 +17,14 @@ MIN_WEIGHT      = 45
 MAX_WEIGHT      = 65
 SALT_STRENGTH   = 2
 AUTH_HOME       = '/dashboards/home'
+PREGNANCY_TRIMESTER = [ (0, 90), (91, 180), (181, 270) ]
 
 # ref : (table, sort column)
 # Default sort column (None) is: report_date
 EXPORT_KEYS     = {
-  '_'       : ('thousanddays_reports', None),
-  'predash' : ('pre_table', None),
-  'mothers' : ('ig_mothers', 'indexcol')
+  '_'       : ('rw_pregnancies', None),
+  'patient' : ('rw_mothers', 'indangamuntu'),
+  'child' : ('rw_children', 'indexcol')
 }
 
 APP_DATA  = {

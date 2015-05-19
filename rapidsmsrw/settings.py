@@ -18,7 +18,8 @@ TRAINING_ENV = True
 SHORTCODE = "3104"
 PRIMARY_BACKEND = 'kannel-smpp'
 SERVER_IP = '127.0.0.1'
-SERVER_PORT = '5000'
+SERVER_PORT = '5050'
+POST_URL="http://%s:%s/backend/%s" % (SERVER_IP, SERVER_PORT, PRIMARY_BACKEND) 
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -232,6 +233,8 @@ INSTALLED_APPS = (
 	"api.messagelog",
 	"api.chws",
 	"api.messaging",
+        "api.providers",
+	"api.rwmigrator",
 	
 	
 	
@@ -259,17 +262,17 @@ INSTALLED_BACKENDS = {
         "encode_errors": "ignore", # strip out unknown (unicode) characters
     },
 
-    #"kannel-fake-smsc" : {
-    #    "ENGINE":  "rapidsms.backends.kannel.outgoing",
-    #    "sendsms_url": "http://127.0.0.1:13013/cgi-bin/sendsms",
-    #    "sendsms_params": {"smsc": "FAKE",
-    #                       "from": "123", # not set automatically by SMSC
-    #                       "username": "rapidsms",
-    #                       "password": "CHANGE-ME"}, # or set in localsettings.py
-    #    "coding": 0,
-    #    "charset": "ascii",
-    #    "encode_errors": "ignore", # strip out unknown (unicode) characters
-    #},
+    "kannel-fake-smsc" : {
+        "ENGINE":  "rapidsms.backends.kannel.outgoing",
+        "sendsms_url": "http://127.0.0.1:13013/cgi-bin/sendsms",
+        "sendsms_params": {"smsc": "FAKE",
+                           "from": "123", # not set automatically by SMSC
+                           "username": "kannel",
+                           "password": "kannel"}, # or set in localsettings.py
+        "coding": 0,
+        "charset": "ascii",
+        "encode_errors": "ignore", # strip out unknown (unicode) characters
+    },
 }
 
 RHEA = {'api': { 	#'host' : '41.74.172.115', 
@@ -306,4 +309,41 @@ FLEXSELECT = {
 
 
 LOGIN_REDIRECT_URL = '/'
+
+GESTATION       	     = 270
+MOTHER_TRACK_GESTATION       = 350
+
+TABLE_MAP = {
+		  'PRE':  'pregmessage',
+		  'REF':  'refmessage',
+		  'ANC':  'ancmessage',
+		  'DEP':  'depmessage',
+		  'RISK': 'riskmessage',
+		  'RED':  'redmessage',
+		  'BIR':  'birmessage',
+		  'CHI':  'childmessage',
+		  'DTH':  'deathmessage',
+		  'RES':  'resultmessage',
+		  'RAR':  'redresultmessage',
+		  'NBC':  'nbcmessage',
+		  'PNC':  'pncmessage',
+		  'CCM':  'ccmmessage',
+		  'CMR':  'cmrmessage',
+		  'CBN':  'cbnmessage',
+		}
+KEYS_MAP = {
+		'nid' :	'indangamuntu',
+		'md':	'death',
+		'nd':	'death',
+		'cd':	'death',
+		'anc2': 'anc_visit',	
+		'anc3': 'anc_visit',	
+		'anc4': 'anc_visit',		
+		}
+NUMBER_KEYS_MAP = {
+			'anc2': 2,	
+			'anc3': 3,	
+			'anc4': 4,
+			
+			}
 

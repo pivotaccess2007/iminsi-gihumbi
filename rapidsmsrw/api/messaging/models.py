@@ -202,7 +202,16 @@ class SMSMessage(models.Model):
     
     CODE_CHOICES = (
                             ('reminder', 'Reminder'),
-                            ('notification', 'Notification'),
+                            ('red_notification', 'Red Alert Notification'),
+                            ('poor_weight', 'Underweight/Poor weight'),
+                            ('lost_weight', 'Lost Weight'),
+                            ('faltering_weight', 'Faltering Weight'),
+                            ('poor_height', 'Underweight/Poor height'),
+                            ('poor_bmi', 'Poor Body Mass Index (BMI)'),
+                            ('poor_weight_for_height', 'Poor Weight for Height'),
+                            ('underweight', 'Underweight'),
+                            ('stunted', 'Stunted'),
+                            ('wasted', 'Wasted'),
                             ('success', 'The SMS Report Has Been Submitted Successfully'),
                             ('unknown_keyword', 'Unknown Keyword'),
                             ('empty_sms_report', 'Empty SMS Report'),
@@ -228,7 +237,22 @@ class SMSMessage(models.Model):
                             ('help', 'Help Text'),
                             ('duplication', 'Duplication'),
                             ('missing_based_data', 'Missing Base Data'),
-                            ('expired_based_data', 'Expired Base Data'),                            
+                            ('expired_based_data', 'Expired Base Data'),
+                            ('bad_indangamuntu', 'Bad National ID'),
+                            ('bad_date', 'Bad Date'),
+                            ('impossible_date', 'Impossible Date'),
+                            ('bad_number', 'Bad Number'),
+                            ('bad_floated_field', 'Bad Floated Field'),
+                            ('bad_numbered_field', 'Bad Numbered Field'),
+                            ('unknown_code', 'Unknown Code'),
+                            ('bad_text', 'Bad Text'),
+                            ('bad_muac_code', 'Bad MUAC Code'),
+                            ('bad_muac_date', 'MUAC only after 6 months'),
+                            ('bad_height_code', 'Bad Height Code'),
+                            ('bad_weight_code', 'Bad Weight Code'),
+                            ('bad_phone_id', 'Bad Phone ID'),
+                            ('bad_encoding', 'Bad Encoding'),
+                            ('incoherent_date_periods', 'Incoherent Date Period'),                           
                             
                           )
     
@@ -257,6 +281,25 @@ class SMSMessage(models.Model):
     
 ##End of SMSMessage
 ##all report_keys ; all_distinct_report_fields; all_locations_type; all_message_types; reporter; created
+
+
+class SMSErrorCode(models.Model):
+    """
+        Abstract every single message in this table instead of sending nonsense
+
+    """
+    message_type    = models.CharField(max_length=100, unique = True,
+                                      help_text="Feedback Message Code")
+    description = models.TextField(null = True, blank = True, help_text = 'Why This SMS, Have you check none is similar?')
+
+    message_en = models.TextField(null = True, blank = True, help_text = 'Message in English ')        
+
+    message_rw = models.TextField(null = True, blank = True, help_text = 'Message in Kinyarwanda ')
+    
+    message_fr = models.TextField(null = True, blank = True, help_text = 'Message in French ')
+
+    def __unicode__(self):
+        return "%s-%s" % (self.message_type, self.description)
 
 ##Start of SMSDBConstraint
 class SMSDBConstraint(models.Model):

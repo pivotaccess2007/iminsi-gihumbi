@@ -4,6 +4,7 @@
             <th>Type</th>
             <th>Submission Date</th>
             <th>Date Of Birth</th>
+	    <th>Visit Number</th>
 	    <th>Reporter</th>
 	    <th>Patient</th>
         </tr>
@@ -13,9 +14,10 @@
             <tr>
             	<td>Newborn Care</td>
                 <td>{{report.report_date}}</td>
-		<td>{{report.dob}}</td>
+		<td>{{report.birth_date}}</td>
+		<td>{{report.nbc_visit}}</td>
 		<td>{{report.reporter_phone}}</td>
-		<td>{{report.patient_id}}</td>
+		<td>{{report.indangamuntu}}</td>
                 
             </tr>
         {% endfor %}

@@ -116,10 +116,15 @@ def single_handle(tbn, pgc, args, options):
     FROM
       messagelog_message Message
     WHERE
+      lower(text) LIKE %s AND (NOT Message.transferred)
+    ORDER BY
+      Message.date
+    DESC LIMIT %d''' % ("'%pnc%'", cpt)
+  '''WHERE
       (%s) AND (Message.id NOT IN (%s)) AND (NOT Message.transferred)
     ORDER BY
       Message.date
-    ASC LIMIT %d''' % (nar, ', '.join(seen), cpt)
+    ASC LIMIT %d''' #% (nar, ', '.join(seen), cpt)
   curz.execute(query)
   tot   = curz.rowcount
   if not tot: return False

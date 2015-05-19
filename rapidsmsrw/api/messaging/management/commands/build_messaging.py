@@ -25,12 +25,12 @@ class Command(BaseCommand):
     def handle(self, **options):
         print "Running build SMS tables..."
 
-        tab = add_four_space()
-        filters = ['keyword']
-        responses = [ {'name': y, 'data' : "".join("\n%s%s = models.CharField(max_length=50)" % (tab, y )) } for y in [ x[0] for x in SMSMessage.CODE_CHOICES]]
-        custom = [ {'name': 'keyword', 'data' : "".join("\n%skeyword = models.CharField(max_length=30)" % (tab)) }, 
-                     {'name': 'raw_sms', 'data' : "".join("\n%sraw_sms = models.TextField()" % (tab)) } ] 
-        for r in responses:    custom.append(r)       
+        #tab = add_four_space()
+        #filters = ['keyword']
+        #responses = [ {'name': y, 'data' : "".join("\n%s%s = models.CharField(max_length=50)" % (tab, y )) } for y in [ x[0] for x in SMSMessage.CODE_CHOICES]]
+        #custom = [ {'name': 'keyword', 'data' : "".join("\n%skeyword = models.CharField(max_length=30)" % (tab)) }, 
+        #             {'name': 'raw_sms', 'data' : "".join("\n%sraw_sms = models.TextField()" % (tab)) } ] 
+        #for r in responses:    custom.append(r)       
         #create_or_update_model(app_label = 'messaging', model_name = 'SMSReportTrack', model_fields = distinct_sms_report_fields(), filters = filters,
         #                                 custom = custom, links = [], locations = [
         #                                                                            #l.name for l in LocationType.objects.all() 

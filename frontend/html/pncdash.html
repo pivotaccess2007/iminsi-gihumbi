@@ -51,24 +51,41 @@
   </div>
   
     <div class="humblecontainer">
- <div class="space">   
-<div class="datapointrisks" style="background: url(../static/images/circle.png);">
+
+
+    <div class="datapoint newborncircle">
+    <div class="descr">PNC1</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc1', view= 'graphic')}}">{{  display.visits[0]['pnc1']|neat_numbers }}</a></div>
+    </div>
     
+    <div class="datapoint newborncircle">
+    <div class="descr">PNC2</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc2', view= 'graphic')}}">{{  display.visits[0]['pnc2']|neat_numbers }}</a></div>
+    </div>
+
+    <div class="datapoint newborncircle">
+    <div class="descr">PNC3</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc3', view= 'graphic')}}">{{  display.visits[0]['pnc3']|neat_numbers }}</a></div>
+    </div>
+    <div class="datapoint ">
+    <div class="descr"></div>
+    <div class="number"></div>
+    </div>
+
+  <div class="datapointrisks" style="background: url(../static/images/circle.png);">
+    <div class="descr">No Risk</div>
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/pncdash', view = 'graphic', group = 'no_risk')}}">{{  display.nat[0]['no_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', view = 'graphic', group = 'no_risk')}}">{{  display.nat[0]['no_risk']|neat_numbers }}</a></div>
   </div>
-  <div class="descrrisk">   No Risks</div>
- </div>
- 
- <div class="space">  
+
   <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
-    
+    <div class="descr">At Risk</div>
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/pncdash', view = 'graphic' , group = 'at_risk')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', view = 'graphic' , group = 'at_risk')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
   </div>
-  <div class="descrrisk">At Risk</div>
-  </div>
-  
+
+
+ 
  
   
   </div>

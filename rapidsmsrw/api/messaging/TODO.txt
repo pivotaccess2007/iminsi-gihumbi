@@ -64,16 +64,29 @@ pnc3_sick
 pnc3_well
 pnc3_intervention
 
+pregnancytrack:::
+
+pregnancy,
+lmp
+anc2_date
+anc2,
+anc3,
+anc4,
+delivery,
+delivery_date,
+pnc1,
+pnc2,
+pnc3,
+miscarriage,
+mdeath
+
 childtrack:::
 
 birth,
-date_of_birth,
-delivery_home,
-delivery_hospital,
-delivery_clinic,
-delivery_on_route,
+birth_date,
+child_number,
+pregancy_track,
 premature,
-pregancytrack,
 nbc1,
 nbc2,
 nbc3,
@@ -84,7 +97,9 @@ v2,
 v3,
 v4,
 v5,
-v6,   
+v6,
+ndeath,
+cdeath   
 
 Current pregnancy: those based on the end filter the edd has not come ======= Meantime solution
 current pregnant mothers: distinct pregnancy by patient_id	      =======
@@ -100,3 +115,47 @@ What abour some not expected like RED alert, Risk, Departure, Refusal, CCM and s
 Migrate Nutrition.
 Messaging.
 plug sms into messaging
+
+ResponseTrack :
+
+pregnancy
+child
+ccm
+cmr
+red
+rar
+risk
+res
+status
+intervention
+
+NutritionTrack::
+
+child
+gender
+birth_date
+age_in_months
+child_weight
+child_height
+muac
+underweight
+wasted
+stunted
+
+
+Algorithm OF Track:
+
+1. Check unique, and tolerate if has miscarriage
+2. Check no death
+3. Store
+
+
+Nutrition Track:
+
+underweight by gender grownth chart, by deviation and age current status
+wasted by ""
+stunted by ""
+
+
+
+

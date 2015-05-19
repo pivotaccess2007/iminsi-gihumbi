@@ -72,7 +72,8 @@
 	<th>{{  col[1] }}</th>
 	{% endif %}
       {%  endfor  %}
-      {%  if  display.attrs %}<th>Attributes</th>{% endif %}
+      <!-- {%  if  display.attrs %}<th>Attributes</th>{% endif %} -->
+      <th>Message</th>
     </tr>
   </thead>
   <tbody>
@@ -94,12 +95,13 @@
         {% endif %}
         {%  endfor  %}
         {%  if  display.attrs %}
-        <td>
+        <!-- <td>
           {%  for bc in display.attrs %}
           {%  if  row[bc[0]] == True %}<div class="boolval">{{  bc[1] }}</div>{% endif %}
           {%  endfor  %}
-        </td>
+        </td> -->
         {%  endif %}
+	<td>{{row|report_summary}}</td>
       </tr>
     {%  endfor  %}
   </tbody>

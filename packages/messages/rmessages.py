@@ -129,6 +129,14 @@ class CodeField(ThouField):
     'Basically a simple regex.'
     return [] if re.match(r'\w+', fld) else 'what_code'
 
+class ChildNumberField(NumberField):
+  'Child Number.'
+
+  column_name = 'child_number'
+  @classmethod
+  def check_gap(self, fld):
+    return 1 <= fld <= 8
+
 class GravidityField(NumberField):
   'Gravidity is a number.'
 
@@ -171,7 +179,7 @@ class SymptomCodeField(CodeField):
   def expectations(self):
     'These are the codes associated with symptoms.'
     return ['AF', 'CH', 'CI', 'CM', 'IB', 'DB', 'DI', 'DS', 'FE', 'FP', 'HY', 'JA', 'MA', 'NP', 'NS',
-            'OE', 'PC', 'RB', 'SA', 'SB', 'VO', 'PM']
+            'OE', 'PC', 'RB', 'SA', 'SB', 'VO', 'PM', 'OI']
 
 class RedSymptomCodeField(SymptomCodeField):
   'Field for codes associated with symptoms.'
@@ -237,13 +245,21 @@ class HeightField(NumberedField):
   'Field for height codes.'
 
   column_name = 'height'
-  pass
+
+  @classmethod
+  def is_legal(self, fld, dt):
+    'Regex alert.'
+    return [] if re.match(r'HT\d?(\.?\d+)', fld, re.IGNORECASE) else 'bad_height_code'
 
 class WeightField(FloatedField):
   'Field for weight codes.'
 
   column_name = 'weight'
-  pass
+
+  @classmethod
+  def is_legal(self, fld, dt):
+    'Regex alert.'
+    return [] if re.match(r'WT\d?(\.?\d+)', fld, re.IGNORECASE) else 'bad_weight_code'
 
 class MotherWeightField(WeightField):
   ''' Weight of the mother '''
@@ -359,7 +375,7 @@ class BreastFeedField(CodeField):
   @classmethod
   def expectations(self):
     'The accepted codes. May be booleanisable.'
-    return ['BF1', 'CBF', 'EBF', 'NB']
+    return ['BF1', 'CBF', 'EBF', 'BF', 'CF', 'NB']
 
 class InterventionField(CodeField):
   'Field for general interventions.'
@@ -399,7 +415,7 @@ class MotherHealthStatusField(HealthStatusField):
 class VaccinationField(NumberedField):
   'Vaccination Completion is apparently a number.'
 
-  column_name = 'vacc_completion'
+  column_name = 'vaccine'
   @classmethod
   def expectations(self):
     'The vaccination completion codes.'
@@ -409,6 +425,8 @@ class VaccinationField(NumberedField):
 # class VaccinationCompletionField(VaccinationField):
 class VaccinationCompletionField(CodeField):
   'Vaccination Completion fields.'
+
+  column_name = 'vacc_completion'
   @classmethod
   def expectations(self):
     'Levels of vaccination checkpoints.'
@@ -421,7 +439,12 @@ class MUACField(FloatedField):
   @classmethod
   def is_legal(self, fld, dt):
     'Regex alert.'
-    return [] if re.match(r'MUAC\d+(\.\d+)', fld, re.IGNORECASE) else 'bad_muac_code'
+    return [] if re.match(r'MUAC\d?(\.?\d+)', fld, re.IGNORECASE) else 'bad_muac_code'
+
+  @classmethod
+  def check_gap(self, fld):
+    'For now, only checking that the height is at least between 1 and 15 '
+    return 1 <= fld <= 15
 
 class DeathField(CodeField):
   'Field for describing death codes.'
@@ -648,7 +671,7 @@ class ANCMessage(ThouMessage):
 
 class DepMessage(ThouMessage):
   'Departure message.'
-  fields  = [IDField, NumberField, DOBDateField]
+  fields  = [IDField, ChildNumberField, DOBDateField]
   alternative_fields  = [IDField]
 
   def semantics_check(self, adate):
@@ -675,7 +698,7 @@ class RedMessage(ThouMessage):
 
 class BirMessage(ThouMessage):
   'Birth message.'
-  fields  = [IDField, NumberField, DOBDateField, GenderField,
+  fields  = [IDField, ChildNumberField, DOBDateField, GenderField,
              (SymptomCodeField, True),
              LocationField, BreastFeedField, ChildWeightField]
 
@@ -685,11 +708,11 @@ class BirMessage(ThouMessage):
 
 class ChildMessage(ThouMessage):
   'Child message.'
-  fields  = [IDField, NumberField, DOBDateField, VaccinationField, VaccinationCompletionField,
+  fields  = [IDField, ChildNumberField, DOBDateField, VaccinationField, VaccinationCompletionField,
              (SymptomCodeField, True),
              LocationField, ChildWeightField, MUACField]
 
-  alternative_fields  = [IDField, NumberField, DOBDateField, VaccinationCompletionField,
+  alternative_fields  = [IDField, ChildNumberField, DOBDateField, VaccinationCompletionField,
              (SymptomCodeField, True),
              LocationField, ChildWeightField, MUACField]
 
@@ -699,7 +722,7 @@ class ChildMessage(ThouMessage):
 
 class DeathMessage(ThouMessage):
   'Death message.'
-  fields  = [IDField, NumberField, DOBDateField, LocationField, DeathField]
+  fields  = [IDField, ChildNumberField, DOBDateField, LocationField, DeathField]
   alternative_fields  = [IDField, LocationField, DeathField]
 
   def semantics_check(self, adate):
@@ -719,7 +742,7 @@ class ResultMessage(ThouMessage):
 class RedResultMessage(ThouMessage):
   'Red alert result message.'
   fields  = [IDField, EmergencyDateField,
-             (SymptomCodeField, True),
+             (RedSymptomCodeField, True),
              LocationField, InterventionField, MotherHealthStatusField]
 
   def semantics_check(self, adate):
@@ -728,7 +751,7 @@ class RedResultMessage(ThouMessage):
 
 class NBCMessage(ThouMessage):
   'New-born care message.'
-  fields  = [IDField, NumberField, NBCField, DOBDateField,
+  fields  = [IDField, ChildNumberField, NBCField, DOBDateField,
              (SymptomCodeField, True),
              BreastFeedField, NBCInterventionField, NewbornHealthStatusField]
 
@@ -748,7 +771,7 @@ class PNCMessage(ThouMessage):
 
 class CCMMessage(ThouMessage):
   'Commmunity Case Management message.'
-  fields  = [IDField, NumberField, DOBDateField,
+  fields  = [IDField, ChildNumberField, DOBDateField,
              (SymptomCodeField, True),
              InterventionField, MUACField]
 
@@ -758,7 +781,7 @@ class CCMMessage(ThouMessage):
 
 class CMRMessage(ThouMessage):
   'Commmunity Management Response message.'
-  fields  = [IDField, NumberField, DOBDateField,
+  fields  = [IDField, ChildNumberField, DOBDateField,
              (SymptomCodeField, True),
              InterventionField, NewbornHealthStatusField]
 
@@ -768,7 +791,7 @@ class CMRMessage(ThouMessage):
 
 class CBNMessage(ThouMessage):
   'Commmunity-Based Nutrition message.'
-  fields  = [IDField, NumberField, DOBDateField, BreastFeedField, ChildHeightField, ChildWeightField, MUACField]
+  fields  = [IDField, ChildNumberField, DOBDateField, BreastFeedField, ChildHeightField, ChildWeightField, MUACField]
 
   def semantics_check(self, adate):
     'TODO.'
@@ -777,7 +800,7 @@ class CBNMessage(ThouMessage):
 class ChildHealthMessage(ThouMessage):
   # Slightly different from other CHI. Systemic inconsistency.
   'Child Health message.'
-  fields  = [IDField, NumberField, DateField, VaccinationField,
+  fields  = [IDField, ChildNumberField, DateField, VaccinationField,
              (SymptomCodeField, True),
              LocationField, WeightField, MUACField]
 

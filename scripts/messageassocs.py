@@ -6,31 +6,31 @@ ASSOCIATIONS = {
     {'initialises': [rentities.Mother, rentities.Pregnancy]}
   ),
   'REF':  (rmessages.RefMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Refusal]}
   ),
   'ANC':  (rmessages.ANCMessage,
-    {'initialises': [rentities.Mother, rentities.ANCVisit]}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.ANCVisit]}
   ),
   'DEP':  (rmessages.DepMessage,
-    {'initialises': [rentities.Mother, rentities.Child]}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.Departure]}
   ),
   'ALTDEP':  (rmessages.DepMessage,
-    {'initialises': [rentities.Mother]}
+    {'initialises': [rentities.Mother, rentities.Departure]}
   ),
   'RISK': (rmessages.RiskMessage,
-    {'initialises': [rentities.Mother]}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.Risk]}
   ),
   'RED':  (rmessages.RedMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.RedAlert]}
   ),
   'BIR':  (rmessages.BirMessage,
     {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.Child]}
   ),
   'CHI':  (rmessages.ChildMessage,
-    {'initialises': [rentities.Mother, rentities.Child]}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.ChildHealth]}
   ),
   'ALTCHI':  (rmessages.ChildMessage,
-    {'initialises': [rentities.Mother, rentities.Child]}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.ChildHealth]}
   ),
   'DTH':  (rmessages.DeathMessage,
     {'initialises': [rentities.Mother, rentities.Child, rentities.Death]}
@@ -39,24 +39,24 @@ ASSOCIATIONS = {
     {'initialises': [rentities.Mother, rentities.MotherDeath]}
   ),
   'RES':  (rmessages.ResultMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.Risk]}
   ),
   'RAR':  (rmessages.RedResultMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.RedAlert]}
   ),
   'NBC':  (rmessages.NBCMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.NBCVisit]}
   ),
   'PNC':  (rmessages.PNCMessage,
-    {'initialises': [rentities.PNCVisit]}
+    {'initialises': [rentities.Mother, rentities.Pregnancy, rentities.PNCVisit]}
   ),
   'CCM':  (rmessages.CCMMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.ChildCCM]}
   ),
   'CMR':  (rmessages.CMRMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.ChildCCM]}
   ),
   'CBN':  (rmessages.CBNMessage,
-    {'initialises': []}
+    {'initialises': [rentities.Mother, rentities.Child, rentities.ChildNutrition]}
   )
 }

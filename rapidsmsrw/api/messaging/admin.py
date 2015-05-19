@@ -52,11 +52,20 @@ class SMSDBConstraintAdmin(admin.ModelAdmin):
                              'refer_sms_report_field', 'created', )                                   
     list_display = ( 'sms_report', 'sms_report_field', 'constraint', 'minimum_period_value', 'maximum_period_value' , 'refer_sms_report',
                              'refer_sms_report_field', 'created', )                               
-    actions = (export_model_as_csv, export_model_as_excel)     
+    actions = (export_model_as_csv, export_model_as_excel)   
+
+class SMSErrorCodeAdmin(admin.ModelAdmin):                                                        
+    list_filter = ('description', 'message_type',)                                                        
+    exportable_fields = ('message_type', 'description', 'message_en', 'message_rw', 'message_fr',)                                                        
+    search_fields = ('message_type', 'description', )                                                                   
+    list_display = ('message_type', 'description', 'message_en', 'message_rw', 'message_fr',)
+    actions = (export_model_as_csv, export_model_as_excel)
+  
 
 admin.site.register(SMSReport, SMSReportAdmin)
 admin.site.register(SMSReportField, SMSReportFieldAdmin)
 admin.site.register(SMSLanguage, SMSLanguageAdmin)
 admin.site.register(SMSMessage, SMSMessageAdmin)
+admin.site.register(SMSErrorCode, SMSErrorCodeAdmin)
 admin.site.register(SMSDBConstraint, SMSDBConstraintAdmin)
 

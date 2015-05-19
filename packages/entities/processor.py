@@ -1,4 +1,6 @@
 from ectomorph import orm
+from datetime import timedelta
+import settings
 
 class EntityNonExistent(Exception):
   pass
@@ -120,12 +122,48 @@ class UniqueEntity(Entity):
     lks, _, _ = self.links()
     try:
       for x in self.id_fields(msg):
+	#print x, lks[x]
         ans.append((x, lks[x]))
     except KeyError, e:
-      rsp = self.get_identifiers(msg, lks)
-      self.fs.update(rsp)
-      return rsp
+      #print e, self.links(), self.__class__.table, lks.get('indangamuntu')
+      #rsp = self.get_identifiers(msg, lks)
+      #self.fs.update(rsp)
+      #return rsp
+      rsp = self.latest_pregnancy(self.__class__.table, lks['indangamuntu'], lks.get('birth_date') or lks.get('report_date'), self.get_loxer(lks))
+      #print rsp
+      ans.append(rsp)
     return ans
+
+  def get_loxer(self, link):
+    loxn  = {
+		    'province_pk': link.get('province_pk'),
+		    'district_pk': link.get('district_pk'),
+		    'health_center_pk': link.get('health_centre_pk'),
+		    'sector_pk': link.get('sector_pk'),
+		    'cell_pk': link.get('cell_pk'),
+		    'village_pk': link.get('village_pk'),
+		    'nation_pk': link.get('nation_pk'),
+		    'reporter_pk': link.get('reporter_pk'),
+		    'reporter_phone': link.get('reporter_phone')
+	    }
+	
+    return loxn
+
+  def latest_pregnancy(self, table, nid, rptdate, loxer):
+    try:
+      got = orm.ORM.query(table, {'indangamuntu = %s': nid, 'lmp >= %s' : rptdate - timedelta(days = settings.MOTHER_TRACK_GESTATION)}, sort = ('lmp', False))[0]
+      if got:
+	return ('lmp', got['lmp'])
+      else:
+	data = {'indangamuntu': nid, 'lmp' : rptdate - timedelta(days = settings.MOTHER_TRACK_GESTATION)}
+	data.update(loxer)
+	orm.ORM.store(table, data)
+      	return ('lmp', rptdate - timedelta(days = settings.MOTHER_TRACK_GESTATION))
+    except Exception, e:
+      data = {'indangamuntu': nid, 'lmp' : rptdate - timedelta(days = settings.MOTHER_TRACK_GESTATION)}
+      data.update(loxer)
+      orm.ORM.store(table, data)
+      return ('lmp', rptdate - timedelta(days = settings.MOTHER_TRACK_GESTATION)) 
 
   def load(self, msg):
     hsh   = {}

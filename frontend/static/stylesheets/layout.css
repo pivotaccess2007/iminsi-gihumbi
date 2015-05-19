@@ -9,6 +9,10 @@ a{
 	color: inherit;
 }
 
+.regform{
+	padding-left: 200px;
+}
+
 
 #top{
 	width: 100%;
@@ -82,10 +86,10 @@ background: #5bb8f9;
 
 
 .pregnanciestext{
-	color: #90c5b0;
+	color: #d3da81;
 }
 .pregnanciesbackground{
-	background-color: #90c5b0;
+	background-color: #d3da81;
 }
 .pregnanciescircle{
 	background: url(../images/pregnanciescircle.png);
@@ -136,6 +140,17 @@ background: #5bb8f9;
 }
 .reddeathcircle{
 	background: url(../images/reddeath.png);
+}
+
+
+.chwtext{
+	color: #dc4266;
+}
+.chwbackground{
+	background-color: #e7512e;
+}
+.chwcircle{
+	background: url(../images/chwcircle.png);
 }
 
 
@@ -560,6 +575,12 @@ padding-top: 20px;
 	font-size: 25px;
 	color: #000;
 }
+.descrrisk a{
+	font-size: 11px;
+	color: #c44329;
+}
+
+
 
 
 .descrrisk1{

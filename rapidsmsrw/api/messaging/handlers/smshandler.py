@@ -50,7 +50,7 @@ class SMSReportHandler (SMSReportKeywordHandler):
             self.msg.id = self.msg.logger_msg.id ## You need to add the messagelog in other to get this
             self.yemeze(self.msg)
         except Exception, e:
-            print e
+            #print e
             self.respond(get_appropriate_response( DEFAULT_LANGUAGE_ISO = self.reporter.language, message_type = 'unknown_error', destination = None,
                                                      sms_report = None, sms_report_field = None )[1])
         return True
@@ -63,18 +63,22 @@ class SMSReportHandler (SMSReportKeywordHandler):
             pp = putme_in_sms_reports(sms_report, p, DEFAULT_LANGUAGE_ISO = self.reporter.language)
             cs = check_sms_report_semantics( sms_report, pp , message.date.date(), DEFAULT_LANGUAGE_ISO = self.reporter.language)
 
-            ddobj = parseObj(self.reporter, message)
+            ddobj = parseObj(self.reporter, message, errors = cs['error'])
             #print "DONE DATA OBJECT: %s" % ddobj
 
             if cs['error']:
-                response_msg = "".join(" %s" % c[1] for c in cs['error'])
+                response_msg = ", ".join("%s" % c[1] for c in cs['error'])
                 self.respond(response_msg)
             
             else:
                 
-                response = get_appropriate_response( DEFAULT_LANGUAGE_ISO = self.reporter.language, message_type = 'success', destination = None,
-                                                     sms_report = sms_report, sms_report_field = None )
-                self.respond(response[1])
+                if ddobj:
+                    response = get_appropriate_response( DEFAULT_LANGUAGE_ISO = self.reporter.language, message_type = 'success', destination = None,
+                                                         sms_report = sms_report, sms_report_field = None )
+                    self.respond(response[1])
+                else:
+                    self.respond(get_appropriate_response( DEFAULT_LANGUAGE_ISO = self.reporter.language, message_type = 'unknown_error', destination = None,
+                                                     sms_report = None, sms_report_field = None )[1])
             
             #track_this_sms_report(report = cs, reporter = self.reporter)
                 
@@ -83,16 +87,3 @@ class SMSReportHandler (SMSReportKeywordHandler):
                                                      sms_report = None, sms_report_field = None )[1])    
         return True
 
-"""
-from api.messaging.handlers.smshandler import *
-identity = '+250788660270'
-text = 'RED  he'
-SMSReportHandler.test(text, identity)
-sms_report = SMSReport.objects.get( keyword = text.split()[0])
-chw = Reporter.objects.get(telephone_moh = identity)
-p = get_sms_report_parts(sms_report, text, DEFAULT_LANGUAGE_ISO = chw.language)
-pp = putme_in_sms_reports(sms_report, p, DEFAULT_LANGUAGE_ISO = chw.language)
-report = check_sms_report_semantics( sms_report, pp , datetime.datetime.now().date(),DEFAULT_LANGUAGE_ISO = chw.language)
-track_this_sms_report(report = report, reporter = chw)
-DELETE FROM messagelog_message WHERE id > 14585901;
-"""

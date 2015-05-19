@@ -19,11 +19,18 @@
 
 <div class="smallcontainer" style="margin-top:30px;">
    
-     <img class="icon" src="{{  static_path }}/images/redalert.jpg" />
+    <img class="icon" src="{{  static_path }}/images/redalert.jpg" />
     <div class="infoname reddeathtext" style="font-size: 20px;">Total Red Alerts</div>
     <div class="moretotal" ><a href="{{ nav.link('/tables/reddash', summary = 'on')}}">View by Location</a></div>
     <div class="infodata goodnum">
       <a href="{{ nav.link('/tables/reddash' )}}">{{  display.red[0]['total']|neat_numbers }}</a>
+    </div>
+
+   
+   <div class="infoname" style="font-size: 20px;">Total Responses</div>
+    <div class="moretotal" ><a href="{{ nav.link('/tables/reddash', summary = 'on')}}">View by Location</a></div>
+    <div class="infodata goodnum">
+      <a href="{{ nav.link('/tables/reddash' )}}">{{  display.rar[0]['total']|neat_numbers }}</a>
     </div>
     
     
@@ -33,7 +40,7 @@
 
 	{%  for red in display.red_attrs %}
 	  <div class="datapoint reddeathcircle">
-	  
+	    
 	    {%  set num = display.red[0][red[0]] %}
 	    
 	    <div class="descr">{{  red[1] }}</div>

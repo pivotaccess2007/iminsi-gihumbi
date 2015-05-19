@@ -20,6 +20,7 @@ from messages import rmessages
 import messageassocs
 import migrations
 import psycopg2
+from notifications.reminders import get_record_by_cursor, get_record_by_sql, track_reminders, track_notifications
 
 TREATED = ('treated_messages', migrations.TREATED)
 FAILED  = 'failed_transfers'
@@ -30,6 +31,66 @@ orm.ORM.connect(    host    =   settings.DATABASES['default']['HOST'],
                     password  =   settings.DATABASES['default']['PASSWORD']
                 )
 
+conn = psycopg2.connect(            host    =   settings.DATABASES['default']['HOST'],
+                                    port    =   settings.DATABASES['default']['PORT'],
+                                    dbname  =   settings.DATABASES['default']['NAME'],
+                                    user    =   settings.DATABASES['default']['USER'],
+                                    password  =   settings.DATABASES['default']['PASSWORD']
+                        )
+
+
+class Record(object):
+ def __init__(self, cursor, registro):
+  for (attr, val) in zip((d[0] for d in cursor.description), registro) :
+   setattr(self, attr, val)
+
+
+def fetch_data(cursor):
+ ans = []
+ try:
+  for row in cursor.fetchall() :
+   r = Record(cursor, row)
+   ans.append(r)
+   cursor.close()
+ except psycopg2.ProgrammingError, e:
+    conn.reset()
+ return ans
+
+def fetch_data_cursor(conn, query_string):
+ curseur = conn.cursor()
+ try:   curseur.execute(query_string)
+ except psycopg2.ProgrammingError, e: conn.reset()
+ return curseur
+
+
+def get_sms_report(keyword, conn = conn):
+    qry = " SELECT * FROM messaging_smsreport WHERE lower(keyword) = '%s' ;" % keyword.lower()
+    curz = fetch_data_cursor(conn, qry)
+    d = fetch_data(curz)
+    return d[0] if len(d) > 0 else None
+
+def get_sms_report_by_id(sid, conn = conn):
+    qry = " SELECT * FROM messaging_smsreport WHERE id = %d ;" % sid
+    curz = fetch_data_cursor(conn, qry)
+    d = fetch_data(curz)
+    return d[0] if len(d) > 0 else None
+
+def get_sms_reportfield(smsreport, key, conn = conn):
+    qry = " SELECT * FROM messaging_smsreportfield WHERE lower(key) = '%s' AND sms_report_id = %d ;" % (key.lower(), smsreport)
+    curz = fetch_data_cursor(conn, qry)
+    d = fetch_data(curz)
+    return d[0] if len(d) > 0 else None
+
+def get_sms_reportfield_by_id(sid, conn = conn):
+    qry = " SELECT * FROM messaging_smsreportfield WHERE id = %d ;" % sid
+    curz = fetch_data_cursor(conn, qry)
+    d = fetch_data(curz)
+    return d[0] if len(d) > 0 else None
+
+def get_smsdbconstraints(sms_report, conn = conn):
+    qry = " SELECT * FROM messaging_smsdbconstraint WHERE sms_report_id = %d ;" % sms_report.id
+    curz = fetch_data_cursor(conn, qry)
+    return fetch_data(curz)
 
 def get_appropriate_response( DEFAULT_LANGUAGE_ISO = 'rw', message_type = 'unknown_error', sms_report = None, sms_report_field = None, destination = None ):
     try:
@@ -159,7 +220,7 @@ def check_sms_report_semantics( sms_report, positioned_sms , today, DEFAULT_LANG
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                                 ', %s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
+                                                 '%s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value)])
             else:
                 if len(value.split(sms_report.field_separator)) > 1:
@@ -167,7 +228,7 @@ def check_sms_report_semantics( sms_report, positioned_sms , today, DEFAULT_LANG
                         if value.lower()  != key.lower():
                             report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                                     ', %s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
+                                                     '%s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value)])
                         else:
                             field = SMSReportField.objects.filter(sms_report = sms_report, position_after_sms_keyword = pos, key = key)
@@ -175,7 +236,7 @@ def check_sms_report_semantics( sms_report, positioned_sms , today, DEFAULT_LANG
                             else:
                                 report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                        message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                        ', %s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
+                                                        '%s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                        message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value)])
                 else:
                     if key:                        
@@ -188,20 +249,30 @@ def check_sms_report_semantics( sms_report, positioned_sms , today, DEFAULT_LANG
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
+                                                '%s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None,
                                                                message_type = 'unknown_field_code', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value)])
         except Exception, e:
             #print e, DEFAULT_LANGUAGE_ISO
-            report['error'] += '%s, ' % e.message
+            report['error'].append([ 'unknown_error', '%s(%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                           message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1] , ps['value'] ) ])
+    try:
+        ## Check for dependencies
+        parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)
+        ## Check for one allowed 
+        parse_only_one(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
+        ## Check for required and not there
+        parse_missing(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
+        ## CHECK FOR DB CONSTRAINT
+        #### ADD OR OTHER CONSTRAINTS HERE ####
+        #if report.get('muac'):            
+        #    if (datetime.date.today() - report.get('birth_date')).days < 180:
+        #                        report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+        #                                   message_type = 'bad_muac_date', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
 
-    ## Check for dependencies
-    parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)
-    ## Check for one allowed 
-    parse_only_one(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
-    ## Check for required and not there
-    parse_missing(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
-    ## CHECK FOR DB CONSTRAINT
-    #if report['error'] == []:   parse_db_constraint(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
+        if report['error'] == []:   parse_db_constraints(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
+    except Exception, e:
+        report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                           message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
         
     return report
 
@@ -231,7 +302,7 @@ def validate_field(sms_report, report, field, value, today, DEFAULT_LANGUAGE_ISO
         except Exception, e:
              report['error'].append([get_appropriate_response( sms_report = sms_report, sms_report_field = field,
                                              message_type = 'only_integer', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                              ' %s (%s)' % (get_appropriate_response( sms_report = sms_report, sms_report_field = field,
+                                              '%s (%s)' % (get_appropriate_response( sms_report = sms_report, sms_report_field = field,
                                              message_type = 'only_integer', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO), value )[1] ])
 
     elif field.type_of_value == 'float':
@@ -240,7 +311,7 @@ def validate_field(sms_report, report, field, value, today, DEFAULT_LANGUAGE_ISO
         except Exception, e:
             report['error'].append([get_appropriate_response( sms_report = sms_report, sms_report_field = field,
                                              message_type = 'only_float', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                    ' %s (%s)' % (get_appropriate_response( sms_report = sms_report, sms_report_field = field,
+                                    '%s (%s)' % (get_appropriate_response( sms_report = sms_report, sms_report_field = field,
                                              message_type = 'only_float', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
 
     return value
@@ -254,7 +325,7 @@ def parse_length(sms_report, report, field, value, DEFAULT_LANGUAGE_ISO ):
             report['error'].append(['not_in_range',  getattr(response[0], 'message_%s' % DEFAULT_LANGUAGE_ISO) ] )
         else:
             report['error'].append([get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                    ' %s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
+                                    '%s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
 
 def parse_value(sms_report, report, field, value, DEFAULT_LANGUAGE_ISO ):
     if field.minimum_value <= value <= field.maximum_value:
@@ -265,7 +336,7 @@ def parse_value(sms_report, report, field, value, DEFAULT_LANGUAGE_ISO ):
             report['error'].append(['not_in_range',  getattr(response[0], 'message_%s' % DEFAULT_LANGUAGE_ISO) ] )
         else:
             report['error'].append([get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                     ' %s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
+                                     '%s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
 
 def parse_date(sms_report, report, field, value, today, DEFAULT_LANGUAGE_ISO):
 
@@ -285,7 +356,7 @@ def parse_date(sms_report, report, field, value, today, DEFAULT_LANGUAGE_ISO):
                 report['error'].append(['not_in_range',  getattr(response[0], 'message_%s' % DEFAULT_LANGUAGE_ISO) ] )
             else:
                 report['error'].append([get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                        ' %s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
+                                        '%s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], value ) ] )
         
     else:
         response = SMSMessage.objects.filter(sms_report = sms_report, sms_report_field = field, message_type = 'only_date')
@@ -310,7 +381,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                                 ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                 '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'greater_or_equal':
                     if report[r] >= dep:
@@ -318,7 +389,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                                 ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                 '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'equal':
                     if report[r] == dep:
@@ -326,7 +397,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
 
                 elif field.dependency == 'different':
@@ -335,7 +406,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'less':
                     if report[r] < dep:
@@ -343,7 +414,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'less_or_equal':
                     if report[r] <= dep:
@@ -351,14 +422,14 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     else:
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
+                                                '%s' % get_error_msg(sms_report = sms_report, sms_report_field = field, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'jam':                    
                     if dep:
                         jam = SMSReportField.objects.filter(sms_report = sms_report, key = dep)[0]
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = jam, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                ', %s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = jam, 
+                                                '%s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = jam, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], field.key)])
                     else:
                         continue
@@ -379,7 +450,7 @@ def parse_only_one(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                     seens[f.position_after_sms_keyword] += ' %s' % r
                     report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                                    message_type = 'one_value_of_list', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                            ' %s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                            '%s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                                    message_type = 'one_value_of_list', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], seens[f.position_after_sms_keyword])])
                     
                 else:
@@ -405,43 +476,155 @@ def parse_missing(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                 category = 'category_%s' %  DEFAULT_LANGUAGE_ISO 
                 report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                            message_type = 'missing_sms_report_field', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0],
-                                         '%s (%s), -' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                         '%s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                            message_type = 'missing_sms_report_field', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1], 
                                                 getattr(f, category) or  getattr(f, title))])
                 onces.append(f.position_after_sms_keyword)#;print f.position_after_sms_keyword, onces
     
     return True
 
-def check_uniqueness(sms_report, report, unique_constraints, tolerances, DEFAULT_LANGUAGE_ISO):
+def check_tolerances(sms_report, report, DEFAULT_LANGUAGE_ISO):
+    tolerances = [ cst for cst in get_smsdbconstraints(sms_report) if cst.constraint == 'tolerance']
+    ans = []
+    for const in tolerances:
+        start   = (datetime.datetime.now() - datetime.timedelta(days = 1)) + datetime.timedelta(days = const.minimum_period_value)
+        end     = datetime.datetime.now() + datetime.timedelta(days = const.maximum_period_value)
+        refer_sms_report = get_sms_report_by_id(const.refer_sms_report_id)
+        fields_keys = get_constraint_fields(const, report)
+        got = get_violation(  conn = conn,
+                    start = start,
+                    end = end,
+                    refer_sms_report = refer_sms_report,
+                    fields_keys = fields_keys
+                 )
+
+        if got: ans.append(got)
+
+    return ans
+
+def check_uniqueness(sms_report, report, DEFAULT_LANGUAGE_ISO):
+    uniques = [ cst for cst in get_smsdbconstraints(sms_report) if cst.constraint == 'unique']
+    tolerances = check_tolerances(sms_report, report, DEFAULT_LANGUAGE_ISO)
+    ans = []
     try:
-        got = SMSReportTrack.objects.filter( nid = report['nid'] )
-        ## check from nid tracks by queuing those tracks
-        
-        ## for every single constraint check for uniqueness keep these only on the queue
-        
-        ## check for tolerances by popping them off the queue 
-        
-        ## if the queue is empty then we are right otherwise wrong
-        if got.exists():
+        for const in uniques:
+            start   = (datetime.datetime.now() - datetime.timedelta(days = 1)) + datetime.timedelta(days = const.minimum_period_value)
+            end     = datetime.datetime.now() + datetime.timedelta(days = const.maximum_period_value)
+            refer_sms_report = get_sms_report_by_id(const.refer_sms_report_id)
+            fields_keys = get_constraint_fields(const, report)
+            got = get_violation(  conn = conn,
+                        start = start,
+                        end = end,
+                        refer_sms_report = refer_sms_report,
+                        fields_keys = fields_keys
+                     )
+
+            if got: 
+                if sms_report.keyword == "DTH":
+                    try:
+                        ## check if maternal death
+                        if got.death and report.get('md'):
+                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND child_id IS NULL" % report.get('nid')
+                            got = get_record_by_sql(query)
+                            if got:   ans.append(got)
+                        else: pass
+                    except Exception, e: pass;print e
+                        
+                    try:
+                        ## check if the same baby
+                        if report.get('child_number') and got.child_number and report.get('birth_date') and got.birth_date:
+                            if int(report.get('child_number')) == got.child_number and report.get('birth_date') == got.birth_date.date():
+                                ans.append(got)
+                        else: pass
+                    except Exception, e: pass;print e
+                else:
+                    ans.append(got) 
+ 
+        if ans and not tolerances:
             report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                            message_type = 'duplication', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
+
     except Exception, e:
         report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                            message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
     
-    return True
+    return ans
 
-def check_stoppers(sms_report, report, stoppers, DEFAULT_LANGUAGE_ISO):
-    ## check from nid tracks by queuing those tracks 
-    ## if any stopper raise it
-    
-    return True
+def check_stoppers(sms_report, report, DEFAULT_LANGUAGE_ISO):
+    stoppers =  [ cst for cst in get_smsdbconstraints(sms_report) if cst.constraint == 'stopper']
+    ans = [] 
+    try:
+        for const in stoppers:
+            start   = (datetime.datetime.now() - datetime.timedelta(days = 1)) + datetime.timedelta(days = const.minimum_period_value)
+            end     = datetime.datetime.now() + datetime.timedelta(days = const.maximum_period_value)
+            refer_sms_report = get_sms_report_by_id(const.refer_sms_report_id)
+            fields_keys = get_constraint_fields(const, report)
+            got = get_violation(  conn = conn,
+                        start = start,
+                        end = end,
+                        refer_sms_report = refer_sms_report,
+                        fields_keys = fields_keys
+                     )
 
-def check_bases(sms_report, report, bases, DEFAULT_LANGUAGE_ISO):
-    ## check for base
-    ## if missing raise it
+            if got:
+                #print got.child_number, got.birth_date, int(report.get('child_number')), report.get('birth_date'), report.get('md'), got.death 
+                if sms_report.keyword == "DTH":
+                    try:
+                        ## check if maternal death
+                        if got.death and report.get('md'):
+                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND child_id IS NULL" % report.get('nid')
+                            got = get_record_by_sql(query)
+                            if got:   ans.append(got)
+                        else: pass
+                    except Exception, e: pass;print e
+                        
+                    try:
+                        ## check if the same baby
+                        if report.get('child_number') and got.child_number and report.get('birth_date') and got.birth_date:
+                            if int(report.get('child_number')) == got.child_number and report.get('birth_date') == got.birth_date.date():
+                                ans.append(got)
+                        else: pass
+                    except Exception, e: pass;print e
+                    
+                else:
+                    ans.append(got) 
+        if ans:
+            report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                           message_type = 'expired_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
+
+    except Exception, e:
+        report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                       message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
     
-    return True
+    
+    return ans
+
+def check_bases(sms_report, report, DEFAULT_LANGUAGE_ISO):
+    bases = [ cst for cst in get_smsdbconstraints(sms_report) if cst.constraint == 'base']
+    ans = []
+    try:
+        for const in bases:
+            start   = (datetime.datetime.now() - datetime.timedelta(days = 1)) + datetime.timedelta(days = const.minimum_period_value)
+            end     = datetime.datetime.now() + datetime.timedelta(days = const.maximum_period_value)
+            refer_sms_report = get_sms_report_by_id(const.refer_sms_report_id)
+            fields_keys = get_constraint_fields(const, report)
+            got = get_violation(  conn = conn,
+                        start = start,
+                        end = end,
+                        refer_sms_report = refer_sms_report,
+                        fields_keys = fields_keys
+                     )
+
+            if got: ans.append(got)
+ 
+        if bases and not ans:
+            report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                           message_type = 'missing_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
+    except Exception, e:
+        report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
+                                       message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
+    
+    return ans
 
 #motherdeath   = "SELECT indexcol FROM deathmessage WHERE indangamuntu = %s AND lower(death) = 'md' " % ( self.fields[0].data() )
 #
@@ -457,74 +640,56 @@ def check_bases(sms_report, report, bases, DEFAULT_LANGUAGE_ISO):
 #birth  = "SELECT indexcol FROM birmessage WHERE indangamuntu = %s AND number =  %s AND birth_date = %s;" % (
 #											self.fields[0].data(), self.fields[1].data(), , self.fields[2].data())
 
+#get a violation per constraint
+## if unique
+# get if we have a record that violate this then throw it
+# refer to between maximum_period_value, minimum_period_value
+#other_fields_keys
+#refer_sms_report_field_id
+#refer_sms_report_id
+#sms_report_field_id
+#sms_report_id
 
-def parse_db_constraint(sms_report, report, DEFAULT_LANGUAGE_ISO):
-    got = None
-    constraints = SMSDBConstraint.objects.filter( sms_report = sms_report )    
-    if constraints.filter(constraint = 'unique').exists():
-        got = SMSReportTrack.objects.filter( nid = report['nid'] )
-        if got.exists():
-            period_start = constraints.get(constraint = 'unique')['minimum_period_value'] 
-            period_end =  constraints.get(constraint = 'unique')['maximum_period_value']
-            if period_start and period_end: got = got.filter( created__gte = period_start, created__lte = period_end )
-            tolerance = constraints.filter( constraint = 'tolerance' )            
-            if got.exists():
-                if tolerance.exists():
-                    tolerances = got.filter( keyword__in = tolerance.values_list('refer_sms_report__keyword'))
-                    if tolerances.exists():
-                        got1 = None
-                        for t in tolerance:
-                            got1 = tolerances.extra(where = ["%s = '%s'" % ( t.refer_sms_report_field.key , t.refer_sms_report_field.key )] )
-                            if got1.exists():
-                                return True
-                else:
-                    report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                           message_type = 'duplication', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                            '%s , ' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                           message_type = 'duplication', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1] )])
+def get_violation(  conn = conn,
+                    start = datetime.datetime.now() - datetime.timedelta(days = 1),
+                    end = datetime.datetime.now(),
+                    refer_sms_report = None,
+                    fields_keys = None
+                 ):
+    table = settings.TABLE_MAP.get(refer_sms_report.keyword)
+    if not table: return []    
+    qry = " SELECT * FROM %s WHERE report_date BETWEEN '%s' AND '%s' " % (table, start, end)
+    if fields_keys:
+        wcllist = []
+        for x in fields_keys:
+            if x[1]: dt = " %s = '%s' " % (settings.KEYS_MAP.get(x[0]) if settings.KEYS_MAP.get(x[0]) else x[0], x[1])
+            else:    dt = " %s IS NOT NULL" % (settings.KEYS_MAP.get(x[0]) if settings.KEYS_MAP.get(x[0]) else x[0])    
+            wcllist.append(dt)
+        wcl = "AND".join( m for m in wcllist )
+        if wcl.strip() != '':   qry = " %s AND %s ;" % (qry, wcl)
+    ### TODO in case column does not exists ... now is returning []
+    #print qry, fields_keys
+    curz = fetch_data_cursor(conn, qry)
+    d = fetch_data(curz)
+    return d[0] if len(d) > 0  else None
 
-    if constraints.filter(constraint = 'stopper').exists():
-        got = SMSReportTrack.objects.filter( nid = report['nid'] )
-        if got.exists():
-            stopper = constraints.filter( constraint = 'stopper' )
-            if stopper.exists():
-                stoppers = got.filter( keyword__in = stopper.values_list('refer_sms_report__keyword'))
-                if stoppers.exists():
-                    got1 = None
-                    for s in stopper:
-                        got1 = stoppers.extra(where = ["%s = '%s'" % ( s.refer_sms_report_field.key , s.refer_sms_report_field.key )] )
-                        if got1.exists():
-                            report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'expired_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                    '%s , ' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'expired_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1] )])
+def get_constraint_fields(const, report):
+    allfs = const.other_fields_keys.split(";") if const.other_fields_keys else []
+    fs = [af for af in allfs if report.get(af)]
+    fs.append(get_sms_reportfield_by_id( const.refer_sms_report_field_id).key)
+    fields_keys = []
+    for f in fs:
+        if f != 'created':  fields_keys.append((f, report.get(f) if f not in settings.NUMBER_KEYS_MAP else settings.NUMBER_KEYS_MAP.get(f)))#;print const.constraint, report
+    return fields_keys or None
 
-    if constraints.filter(constraint = 'base').exists():
-        got = SMSReportTrack.objects.filter( nid_key = report['nid'] )
-        if got.exists():
-            base = constraints.filter( constraint = 'base' )
-            if base.exists():
-                bases = got.filter( keyword__in = base.values_list('refer_sms_report__keyword'))
-                if bases.exists():
-                    got1 = None
-                    for b in base:
-                        got1 = bases.extra(where = ["%s = '%s'" % ( s.refer_sms_report_field.key , s.refer_sms_report_field.key )] )
-                        if got1.exists():
-                            return True
-                        else:
-                            report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'missing_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                                    '%s , ' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'missing_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1] )])
-        else:
-            report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'missing_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
-                                    '%s , ' % (get_error_msg(sms_report = sms_report, sms_report_field = None, 
-                                       message_type = 'missing_based_data', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1] )])
-                            
-        
-                                
-    return True    
+def parse_db_constraints(sms_report, report, DEFAULT_LANGUAGE_ISO):
+    """ Make you will save it in the DB correctly"""
+    check_uniqueness(sms_report, report, DEFAULT_LANGUAGE_ISO)
+    check_bases(sms_report, report, DEFAULT_LANGUAGE_ISO)
+    check_stoppers(sms_report, report, DEFAULT_LANGUAGE_ISO)
+
+    return True
+
 
 def get_error_msg(sms_report , sms_report_field , DEFAULT_LANGUAGE_ISO , message_type = 'unknown_error'): 
     response = SMSMessage.objects.filter(sms_report = sms_report, sms_report_field = sms_report_field, message_type = message_type)
@@ -534,7 +699,7 @@ def get_error_msg(sms_report , sms_report_field , DEFAULT_LANGUAGE_ISO , message
         if sms_report_field:
             title = 'title_%s' %  DEFAULT_LANGUAGE_ISO
             category = 'category_%s' %  DEFAULT_LANGUAGE_ISO   
-            return [get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], ' %s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1],
+            return [get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], '%s (%s)' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1],
                                      getattr(sms_report_field, category) or  getattr(sms_report_field, title))]
         return [get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
                 ' %s' % get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]]
@@ -552,6 +717,7 @@ def locate_chw(chw):
 		    'province_pk': chw.province.pk or 0,
 		    'district_pk': chw.district.pk or 0,
 		    'health_center_pk': chw.health_centre.pk or 0,
+            'referral_hospital_pk': chw.referral_hospital.pk or 0,
 		    'sector_pk': chw.sector.pk or 0,
 		    'cell_pk': chw.cell.pk or 0,
 		    'village_pk': chw.village.pk or 0,
@@ -584,13 +750,14 @@ def store_components(mname, msg, msgtxt, fid, loxer):
       princ[k]  = chose.data()
   princ.update(loxer)
   ix  = orm.ORM.store(mname, princ)
+
   for k in auxil:
     val = auxil[k]
     for v in val:
       tst = {'principal': ix, 'value': v}
       tst.update(loxer)
       orm.ORM.store(k, tst)
-  return seen
+  return seen, ix
 
 def store_failures(err, msg, fid, loxer):
   pos   = 0
@@ -609,16 +776,19 @@ def store_treatment(fid, stt, loxer):
   tst.update(loxer)
   return orm.ORM.store(TREATED[0], tst, migrations = TREATED[1])
 
-def parseObj(chw, message):
+def get_sms_error_code( error, DEFAULT_LANGUAGE_ISO = 'rw'):
     try:
+        msg_type = error[0]
+        err = error[1][0].column_name if type(error[1]) == tuple else error[1].column_name
+        msg, created = SMSErrorCode.objects.get_or_create(message_type = msg_type)
+        #print "There :%s " % msg
+        return [msg.message_type, getattr(msg, "message_%s" % DEFAULT_LANGUAGE_ISO) if hasattr(msg, "message_%s" % DEFAULT_LANGUAGE_ISO) else '']
+    except Exception, e: 
+        #print e
+        return get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO, message_type = 'unknown_error')
 
-        pgc =   psycopg2.connect(   host    =   settings.DATABASES['default']['HOST'],
-                                    port    =   settings.DATABASES['default']['PORT'],
-                                    dbname  =   settings.DATABASES['default']['NAME'],
-                                    user    =   settings.DATABASES['default']['USER'],
-                                    password  =   settings.DATABASES['default']['PASSWORD']
-                                )       
-        
+def parseObj(chw, message, pgc = conn, errors = []):
+    try:
         org = message.text
         tbn = TREATED    	
         loxn    =   message_details(chw, message)
@@ -627,32 +797,55 @@ def parseObj(chw, message):
         succ    =   False
         stbs  = set()
         try:
+
             try:
                 ans, ents = rmessages.ThouMessage.parse(message.text, messageassocs.ASSOCIATIONS, message.date)
                 ans.add_extra(loxn)
-                mname = str(ans.__class__).split('.')[-1].lower()
-                succ  = True
-                nstbs = store_components(mname, ans, message.text, message.id, loxn)
-                stbs.add(mname)
-                stbs  = stbs.union(nstbs)
-                etbs  = processor.process_entities(ans, ents)
-                stbs  = stbs.union(etbs)
+                mname = str(ans.__class__).split('.')[-1].lower()#;print ans.data()
+                if errors:
+                    for err in errors:
+                        store_failures(rmessages.ThouMsgError('%s' % err[1], [('%s' % err[0], None)]), '%s #%d' % (err[1], message.id ), message.id, loxn)
+                    raise rmessages.ThouMsgError('%s' % err[1], [('%s' % err[0], None)])
+                else:
+                    
+                    nstbs, ix = store_components(mname, ans, message.text, message.id, loxn)
+                    stbs.add(mname)
+                    stbs  = stbs.union(nstbs)
+                    etbs  = processor.process_entities(ans, ents)
+                    #print ans, ents
+                    stbs  = stbs.union(etbs)
+                    succ  = True
+                    #print mname, nstbs, etbs
+                    # TRACK IT ##
+                    sql = 'SELECT * FROM %s WHERE %s = %s' % ( mname, 'indexcol', ix)
+                    drecord = get_record_by_sql(sql)
+                    #print drecord, sql
+                    track_notifications(mname, drecord)
+                    ## END OF TRACK IT ##
             except rmessages.ThouMsgError, e:
+                for err in e.errors: errors.append(get_sms_error_code( err, DEFAULT_LANGUAGE_ISO = chw.language))##;print err
                 store_failures(e, message.text, message.id, loxn)
+
             acrow = store_treatment(message.id, succ, loxn)
+                
         except UnicodeEncodeError, e:
+            errors.append(get_appropriate_response( DEFAULT_LANGUAGE_ISO = chw.language, message_type = 'bad_encoding'))
             # Is this sufficient?
-            store_failures(rmessages.ThouMsgError('Badly-encoded message.', [('bad_encoding', None)]), 'Badly-encoded message #%d' % (message.id, ), message.id)
+            store_failures(rmessages.ThouMsgError('Badly-encoded message.', [('bad_encoding', None)]), 'Badly-encoded message #%d' % (message.id, ), message.id, loxn)
 
         curz.execute('UPDATE messagelog_message SET transferred = TRUE WHERE id = %d' % (message.id, ))
         orm.ORM.store(tbn[0], {'indexcol': acrow, 'deleted': True})
         curz.close()
         pgc.commit()
-        for tb in stbs: print tb
+        #for tb in stbs: print tb
+        if succ == False:
+        #    errors.append([ 'unknown_error', 'Error(Ikosa)'])
+            return False
         return True 
 
     except Exception, e:
-        print e
+        #errors.append([ 'unknown_error', 'Error(Ikosa)'])
+        pass#print e
         
     return False
 
@@ -1026,13 +1219,17 @@ def import_sms_message(filepath = "api/messaging/smsmessage.xls", sheetname = "s
             message_type                = sheet.cell(row_index, 0).value
             sms_report_keyword          = sheet.cell(row_index, 1).value 
             sms_report_field_key        = sheet.cell(row_index, 2).value
-            message_en                  = sheet.cell(row_index, 3).value 
-            message_rw                  = sheet.cell(row_index, 4).value 
+            dest                        = sheet.cell(row_index, 3).value
+            description                 = sheet.cell(row_index, 4).value
+            message_en                  = sheet.cell(row_index, 5).value 
+            message_rw                  = sheet.cell(row_index, 6).value 
             
             #print message_type, sms_report_keyword, sms_report_field_key, message_en, message_rw
             
             try:    sms_report                           = SMSReport.objects.get(keyword = sms_report_keyword)
             except Exception, e:    sms_report           = None
+            try:    destination                          = Group.objects.get(name__iexact = dest)
+            except Exception, e:    destination          = None
             try:    sms_report_field                     = SMSReportField.objects.get( key = sms_report_field_key, sms_report = sms_report)
             except Exception, e:    sms_report_field     = None
             
@@ -1041,6 +1238,8 @@ def import_sms_message(filepath = "api/messaging/smsmessage.xls", sheetname = "s
 
             sms_message.sms_report                       = sms_report
             sms_message.sms_report_field                 = sms_report_field
+            sms_message.destination                      = destination
+            sms_message.description                      = description
             sms_message.message_en                       = message_en
             sms_message.message_rw                       = message_rw
 
@@ -1050,6 +1249,7 @@ def import_sms_message(filepath = "api/messaging/smsmessage.xls", sheetname = "s
             print   sms_message.message_type                        ,\
                     sms_message.sms_report                          ,\
                     sms_message.sms_report_field                    ,\
+                    sms_message.destination                          ,\
                     sms_message.message_en                          ,\
                     sms_message.message_rw                          
             

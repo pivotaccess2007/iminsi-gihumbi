@@ -24,3 +24,70 @@ def parse(conn = conn, text = '', date = datetime.datetime.now() ):
 
 ##SELECT failcode, COUNT(*) FROM failed_transfers WHERE failcode NOT LIKE '% %' GROUP BY failcode ORDER BY failcode; ### exclude failcode with escape
 ## I Think the response object has to combine both failcode and Field ??? Like nbc_code failcode, but because of BreastFeedingField Not equal NBCFieldCode
+
+
+from notifications.reminders import *
+#query = "SELECT * FROM birmessage WHERE indexcol = 1"
+#an = get_record_by_query(conn, query)
+#anm = Map('birmessage', an)
+#anm.pack()
+
+query = "SELECT * FROM pregmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('pregmessage', an)
+print data
+send_nutrition_notifications(data.table, data)
+
+
+query = "SELECT * FROM birmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('birmessage', an)
+print data
+
+query = "SELECT * FROM nbcmessage WHERE indexcol = 3"
+an = get_record_by_query(conn, query)
+data = Track.process('nbcmessage', an)
+print data
+
+
+query = "SELECT * FROM ancmessage WHERE indexcol = 3"
+an = get_record_by_query(conn, query)
+data = Track.process('ancmessage', an)
+print data
+
+query = "SELECT * FROM riskmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('riskmessage', an)
+print data
+
+query = "SELECT * FROM resultmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('resultmessage', an)
+print data
+
+query = "SELECT * FROM ccmmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('ccmmessage', an)
+print data
+
+query = "SELECT * FROM cmrmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('cmrmessage', an)
+print data
+
+query = "SELECT * FROM cbnmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('cbnmessage', an)
+print data
+
+
+query = "SELECT * FROM childmessage WHERE indexcol = 1"
+an = get_record_by_query(conn, query)
+data = Track.process('childmessage', an)
+print data
+
+
+
+
+
+

@@ -18,7 +18,7 @@
 
 
 <div class="smallcontainer">
-    <div class="infoname newborntext">Total Of {{display.title}} Newborns</div>
+    <div class="infoname newborntext">{{display.title}}</div>
     <div class="moretotal" ><a href="{{ nav.link('/tables/nbcdash', summary = 'on')}}">View by Location</a></div>
     <div class="infodata goodnum playable">
       <a href="{{ nav.link('/tables/nbcdash', view= 'log', group = display['group'])}}">{{  display.nat[0]['total']|neat_numbers}}</a>
@@ -51,32 +51,51 @@
   </div>
   
     <div class="humblecontainer">
- <div class="space">   
-<div class="datapointrisks" style="background: url(../static/images/circle.png);">
-    
-    <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/nbcdash', group = 'no_risk', view= 'graphic')}}">{{  display.nat[0]['no_risk']|neat_numbers }}</a></div>
-  </div>
-  <div class="descrrisk">   No Risks</div>
- </div>
  
- <div class="space">  
-  <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
+    <div class="datapoint newborncircle">
+    <div class="descr">NBC1</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc10', view= 'graphic')}}">{{  display.visits[0]['nbc10']|neat_numbers }}</a></div>
+    </div>
     
+    <div class="datapoint newborncircle">
+    <div class="descr">NBC2</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc20', view= 'graphic')}}">{{  display.visits[0]['nbc20']|neat_numbers }}</a></div>
+    </div>
+
+    <div class="datapoint newborncircle">
+    <div class="descr">NBC3</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc30', view= 'graphic')}}">{{  display.visits[0]['nbc30']|neat_numbers }}</a></div>
+    </div>
+
+    <div class="datapoint newborncircle">
+    <div class="descr">NBC4</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc40', view= 'graphic')}}">{{  display.visits[0]['nbc40']|neat_numbers }}</a></div>
+    </div>
+
+    <div class="datapoint newborncircle">
+    <div class="descr">NBC5</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc50', view= 'graphic')}}">{{  display.visits[0]['nbc50']|neat_numbers }}</a></div>
+    </div>
+
+<!----------------------------risks--------------------------->
+<div class="datapointrisks" style="background: url(../static/images/circle.png);">
+    <div class="descr">No Risk</div>
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/nbcdash', group = 'at_risk', view= 'graphic')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'no_risk', view= 'graphic')}}">{{  display.nat[0]['no_risk']|neat_numbers }}</a></div>
   </div>
-  <div class="descrrisk">At Risk</div>
+
+  <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
+    <div class="descr">At Risk</div>
+    <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'at_risk', view= 'graphic')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
   </div>
   
-  <div class="space">  
   <div class="datapointrisks" style="background: url(../static/images/circlehighrisk.png);">
-    
+    <div class="descr">High Risk</div>
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/nbcdash', group = 'high_risk', view= 'graphic')}}">{{  display.nat[0]['high_risk']|neat_numbers }}</a></div>
+    <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'high_risk', view= 'graphic')}}">{{  display.nat[0]['high_risk']|neat_numbers }}</a></div>
   </div>
-  <div class="descrrisk" >High Risk</div>
-  </div>
+
   
   </div>
 {% endif %}

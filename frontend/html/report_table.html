@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Type</th>
-            <th>Date</th>
+            <th>Submission</th>
             <th>LMP</th>
             <th>Gravidity</th>
             <th>Parity</th>
@@ -13,17 +13,17 @@
         </tr>
     </thead>
     <tbody>
-    	{% for report in display.pre_reports %}
+    	{% for report in display.pregnancy %}
             <tr>
             	<td>Pregnancy</td>
                 <td>{{report.report_date}}</td>
 		<td>{{report.lmp}}</td>
-                <td>{{report.gravity_float|int}}</td>
- 		<td>{{report.parity_float|int}}</td>
-		<td>{{report.mother_weight_float}}</td>
-		<td>{{report.mother_height_float}}</td>
+                <td>{{report.gravidity|int}}</td>
+ 		<td>{{report.parity|int}}</td>
+		<td>{{report.mother_weight}}</td>
+		<td>{{report.mother_height}}</td>
 		<td>{{report.reporter_phone}}</td>
-		<td>{{report.patient_id}}</td>
+		<td>{{report.indangamuntu}}</td>
                 
             </tr>
         {% endfor %}

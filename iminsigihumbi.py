@@ -51,7 +51,11 @@ def get_display(value):
 
 def neat_numbers(num):
   pcs = divided_num(str(num), 3)
-  return ','.join(pcs)
+  return ', '.join(pcs)
+
+def report_summary(row):
+  ans = read_record_row(row, orm)
+  return ','.join(an for an in ans)
 
 def first_cap(s):
   if not s: return s
@@ -146,7 +150,8 @@ class ThousandNavigation:
 
   def __unicode__(self):
     them  = self.listing
-    them.reverse()
+    them.reverse() 
+    #print [unicode(x) for x in them]
     return ', '.join([unicode(x) for x in them])
 
   @property
@@ -178,6 +183,7 @@ class ThousandNavigation:
       if pc[0]:
         it  = pcs[pc[1]]
         dem.append(ThousandLocation(it['area'](None), pc[1], self, it['miss'], it['title'], it['trx'] if 'trx' in it else None))
+    
     return dem
 
   @property
@@ -192,7 +198,7 @@ class ThousandNavigation:
     return []
 
   def nation(self):
-    gat = orm.ORM.query('chws__nation', {'indexcol = 1':''})[0]
+    gat = orm.ORM.query('chws_nation', {'id = 1':''})[0]
     return gat
 
   def __has_details(self, prv = None):
@@ -206,7 +212,7 @@ class ThousandNavigation:
 
   def province(self, prv = None):
     num = self.has_province(prv)
-    gat = orm.ORM.query('chws__province', {'indexcol = %s': num})[0]
+    gat = orm.ORM.query('chws_province', {'id = %s': num})[0]
     return gat
 
   def has_district(self, prv = None):
@@ -217,7 +223,7 @@ class ThousandNavigation:
 
   def district(self, dst = None):
     num = self.has_district(dst)
-    gat = orm.ORM.query('chws__district', {'indexcol = %s': num})[0]
+    gat = orm.ORM.query('chws_district', {'id = %s': num})[0]
     return gat
 
   def has_hc(self, prv = None):
@@ -228,7 +234,7 @@ class ThousandNavigation:
 
   def hc(self, h = None):
     num = self.has_hc(h)
-    gat = orm.ORM.query('chws__healthcentre', {'indexcol = %s': num})[0]
+    gat = orm.ORM.query('chws_healthcentre', {'id = %s': num})[0]
     return gat
 
   @property
@@ -254,12 +260,12 @@ class ThousandNavigation:
 
   def areas(self, level = None):
     tbl, sel, etc = {
-      'province'  : lambda _: ('chws__province', [self.province()] if self.has_province() else [], {}),
-      'district'  : lambda _: ('chws__district', [self.district()] if self.has_district() else [], {'province = %s': self.province()['indexcol']}),
-      'hc'        : lambda _: ('chws__healthcentre', [], {'province = %s':self.province()['indexcol'], 'district = %s':self.district()['indexcol']})
+      'province'  : lambda _: ('chws_province', [self.province()] if self.has_province() else [], {}),
+      'district'  : lambda _: ('chws_district', [self.district()] if self.has_district() else [], {'province_id = %s': self.province()['id']}),
+      'hc'        : lambda _: ('chws_healthcentre', [], {'province_id = %s':self.province()['id'], 'district_id = %s':self.district()['id']})
     }[level or self.subarea](None)
     prvq      = orm.ORM.query(tbl, etc,
-      cols  = ['*'] + ['indexcol = %d AS selected' % (s['indexcol'], ) for s in sel],
+      cols  = ['*'] + ['id = %d AS selected' % (s['id'], ) for s in sel],
       sort  = ('name', 'DESC')
     )
     return prvq.list()
@@ -272,11 +278,11 @@ class ThousandNavigation:
         (tn + ' <= %s')  : self.finish
       })
     if 'province' in self.kw:
-      ans['province_pk = (SELECT old_pk FROM chws__province WHERE indexcol = %s LIMIT 1)']  = self.kw.get('province')
+      ans['province_pk = (SELECT id FROM chws_province WHERE id = %s LIMIT 1)']  = self.kw.get('province')
     if 'district' in self.kw:
-      ans['district_pk = (SELECT old_pk FROM chws__district WHERE indexcol = %s LIMIT 1)']  = self.kw.get('district')
+      ans['district_pk = (SELECT id FROM chws_district WHERE id = %s LIMIT 1)']  = self.kw.get('district')
     if 'hc' in self.kw:
-      ans['health_center_pk = (SELECT old_pk FROM chws__healthcentre WHERE indexcol = %s LIMIT 1)']  = self.kw.get('hc')
+      ans['health_center_pk = (SELECT id FROM chws_healthcentre WHERE id = %s LIMIT 1)']  = self.kw.get('hc')
     return ans
 
   @property
@@ -333,28 +339,29 @@ class Application:
     self.jinja        = Environment(loader = FileSystemLoader(templates))
     self.jinja.filters.update({
       'neat_numbers'  : neat_numbers,
-      'get_display'  : get_display
+      'get_display'  : get_display,
+      'report_summary': report_summary
     })
     self.__set_locations()
 
   def village(self, pk):
     try:
      num = int(pk) if pk else 'IS NULL'
-     gat = orm.ORM.query('chws__village', {'indexcol = %s': num})[0]
+     gat = orm.ORM.query('chws_village', {'id = %s': num})[0]
      return gat
     except: return None
 
   def cell(self, pk):
     try:
      num = int(pk) if pk else 'IS NULL'
-     gat = orm.ORM.query('chws__cell', {'indexcol = %s': num})[0]
+     gat = orm.ORM.query('chws_cell', {'id = %s': num})[0]
      return gat
     except: return None
 
   def sector(self, pk):
     try:
      num = int(pk) if pk else 'IS NULL'
-     gat = orm.ORM.query('chws__sector', {'indexcol = %s': num})[0]
+     gat = orm.ORM.query('chws_sector', {'id = %s': num})[0]
      return gat
     except: return None
 
@@ -362,12 +369,12 @@ class Application:
     self.provinces  = {}
     self.districts  = {}
     self.hcs        = {}
-    for prv in orm.ORM.query('chws__province', {}).list():
-      self.provinces[str(prv['indexcol'])]  = prv['name']
-    for dst in orm.ORM.query('chws__district', {}).list():
-      self.districts[str(dst['indexcol'])]  = dst['name']
-    for hc in orm.ORM.query('chws__healthcentre', {}).list():
-      self.hcs[str(hc['indexcol'])]  = hc['name']
+    for prv in orm.ORM.query('chws_province', {}).list():
+      self.provinces[str(prv['id'])]  = prv['name']
+    for dst in orm.ORM.query('chws_district', {}).list():
+      self.districts[str(dst['id'])]  = dst['name']
+    for hc in orm.ORM.query('chws_healthcentre', {}).list():
+      self.hcs[str(hc['id'])]  = hc['name']
 
   def match(self, url):
     got = url[1:].replace('/', '_') or 'index'
@@ -401,16 +408,16 @@ class Application:
   def locs(self):
     import json
     my_locs = []
-    data = orm.ORM.query('chws__healthcentre', {} ).list()
+    data = orm.ORM.query('chws_healthcentre', {} ).list()
     for d in data:
        #print d['name'], d['district'], d['province']
-       dst = orm.ORM.query('chws__district', {'indexcol = %s' : d['district']})[0]
-       prv = orm.ORM.query('chws__province', {'indexcol = %s' : d['province']})[0]
+       dst = orm.ORM.query('chws_district', {'id = %s' : d['district_id']})[0]
+       prv = orm.ORM.query('chws_province', {'id = %s' : d['province_id']})[0]
        if prv and dst:	my_locs.append( 
 			{
-				'id': d['indexcol'], 'name': d['name'], 'code': d['code'],
-			 	'district_name': dst['name'], 'district_id': dst['indexcol'], 'district_code': dst['code'],
-			 	'province_name': prv['name'], 'province_id': prv['indexcol'], 'province_code': prv['code']
+				'id': d['id'], 'name': d['name'], 'code': d['code'],
+			 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
 			}
 		      )
     return json.dumps(my_locs)
@@ -490,36 +497,95 @@ class Application:
     adata   = []
     return self.dynamised('nut', mapping = locals(), *args, **kw)
 
+
+  @cherrypy.expose
+  def dashboards_nutr(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    nut = orm.ORM.query('child_track', cnds,
+			      cols      = ['COUNT(*) AS allnuts'],
+			      extended  = {
+				'bf1':('COUNT(*)', " lower(bf1) ='bf1' "),
+				'nb':('COUNT(*)', "lower(breastfeeding) = 'nb'"),
+				'ebf':('COUNT(*)', "lower(breastfeeding) = 'ebf'"),
+				'cbf':('COUNT(*)', "lower(breastfeeding) = 'cbf'"),
+				'stunting':('COUNT(*)', 'height_for_age < -2'),
+				'underweight':('COUNT(*)', 'weight_for_age < -2'),
+				'wasting':('COUNT(*)', 'weight_for_height < -2'),
+				'lostweight':('COUNT(*)', 'lostweight IS NOT NULL'),
+				'falteringweight':('COUNT(*)', 'falteringweight IS NOT NULL'),
+				'gainedweight':('COUNT(*)', 'gainedweight IS NOT NULL'),
+			      }
+			    )
+    # raise Exception, nut.query
+    preg_cnds = navb.conditions(None, auth)
+    preg_cnds.update({"(lmp + INTERVAL '%s days') >= '%s' " % (settings.GESTATION , datetime.today().date()): ''})
+    allpregs = orm.ORM.query(  'rw_pregnancies', 
+			  preg_cnds,
+                          cols = ['COUNT(*) AS total'],
+			)
+    nut_pre = orm.ORM.query('mother_track', preg_cnds,
+			      cols      = ['COUNT(*) AS allpregs'],
+			      extended  = {
+				'mother_height_less_145':('COUNT(*)', " mother_height < 145 "),
+				'mother_weight_less_50':('COUNT(*)', " mother_weight < 50 "),
+				'bmi_less_18_dot_5':('COUNT(*)', " bmi < 18.5 "),
+				'lostweight':('COUNT(*)', 'lostweight IS NOT NULL'),
+				'falteringweight':('COUNT(*)', 'falteringweight IS NOT NULL'),
+				'gainedweight':('COUNT(*)', 'gainedweight IS NOT NULL'),
+			      }
+    			)
+    
+    total   = nut[0]['allnuts']
+    #print nut_pre.query
+    return self.dynamised('nutr', mapping = locals(), *args, **kw)
+
   @cherrypy.expose
   def tables_nutr(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
-      ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('child',          'Entry ID'),
+      ('indangamuntu',            'Mother ID'),
+      ('child_number',            'Child Number'),
+      ('gender',            'Gender'),
+      ('birth_date', 'Date of Birth'),
+      ('age_in_months', 'Age'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('bf1',            'Breastfeeding Within 1 hour'),
+       ('breastfeeding',            'Breastfeeding'),
+	('child_height',            'Height'),
+	('child_weight',            'Weight'),
+	('muac',            'MUAC')
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
-    cnds.update({queries.CBN_DATA['query_str']: ''})
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
-    else:
-     INDICS = queries.CBN_DATA['attrs']
+    wcl    = []
+    INDICS = [(key, queries.CBN_DATA[key][1], queries.CBN_DATA[key][0] ) for key in queries.CBN_DATA.keys() ]
+    PREG_INDICS = [(key, queries.MOTHER_NUTR[key][1], queries.MOTHER_NUTR[key][0] ) for key in queries.MOTHER_NUTR.keys() ]
+    cnds    	= navb.conditions(None, auth)
+    preg_cnds 	= navb.conditions(None, auth)
+    locateds = tabular = None
+    if kw.get('subcat') and (kw.get('subcat') not in [ z[0] for z in PREG_INDICS + [('allpregs', 'Allpregs')] ]):
+	cnds.update({'(%s)' % queries.CBN_DATA.get(kw.get('subcat'))[0]: ''})
+	wcl += [{'field_name': '%s' % queries.CBN_DATA[kw.get('subcat')][0] if queries.CBN_DATA.get(kw.get('subcat')) else '', 
+		'compare': '', 'value': '', 'extra': True }]
+    elif kw.get('subcat') and (kw.get('subcat') in [ z[0] for z in PREG_INDICS + [('allpregs', 'Allpregs')]]):
+	if kw.get('subcat') != 'allpregs':
+	 preg_cnds.update({'(%s)' % queries.MOTHER_NUTR.get(kw.get('subcat'))[0]: ''})
+         wcl += [{'field_name': '%s' % queries.MOTHER_NUTR[kw.get('subcat')][0] if queries.MOTHER_NUTR.get(kw.get('subcat')) else '', 
+			'compare': '', 'value': '', 'extra': True }]
+
+         wcl.append({'field_name': '(%s)' % "(lmp + INTERVAL '%s days') >= '%s' " % (settings.GESTATION , datetime.today().date()),
+                  'compare': '', 'value': '', 'extra': True})
+    else: pass
+
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
-
-     wcl.append({'field_name': '(%s)' % queries.CBN_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'cbn_view', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'child_track', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -527,14 +593,27 @@ class Application:
 						end = navb.finish,
 											
 						)
-      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      if kw.get('subcat') and (kw.get('subcat') in [ z[0] for z in PREG_INDICS + [('allpregs', 'Allpregs')]]):
+       locateds += summarize_by_location(primary_table = 'mother_track', MANY_INDICS = PREG_INDICS, where_clause = wcl, 
+						province = province,
+						district = district,
+						location = location,
+						start =  navb.start,
+						end = navb.finish,
+											
+						)
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS+PREG_INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
+      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS + PREG_INDICS])
 
-    sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/childgrowth?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
+      'child': lambda x, _, __: '<a href="/tables/childgrowth?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'child_weight': lambda x, _, __: '%s' % ( x if x else ''),
+      'child_height': lambda x, _, __: '%s' % ( x if x > 0 else ''),
+      'muac': lambda x, _, __: '%s' % ( x if x > 0 else ''),
+      'breastfeeding': lambda x, _, __: '%s' % (x.upper() if x else 'NB'),
+      'bf1': lambda x, _, __: '%s' % (x.upper() if x else 'NB'),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
@@ -543,54 +622,28 @@ class Application:
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
-    if sc:
-      cnds[sc]  = ''
-    attrs = []
     
-    cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('cbn_view', cnds,
-      cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
- 
-					] + attrs) if x[0][0] != '_'],
-      
-    )
-    desc  = 'Nutrition %s' % (' (%s)' % (self.find_descr(DESCRI + queries.CBN_DATA['attrs'], 
-						sc ) or 'ALL', 
-					) )
-    return self.dynamised('cbn_table', mapping = locals(), *args, **kw)
+        
+    
+    if kw.get('subcat') and (kw.get('subcat') in [ z[0] for z in PREG_INDICS + [('allpregs', 'Allpregs')] ] ):
+    	cols    = queries.MOTHER_DATA
+    	cols 	+= queries.LOCATION_INFO
+    	nat     = orm.ORM.query('mother_track', preg_cnds,
+		      cols  = [x[0] for x in cols + [('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate')] ],
+		      
+		    );
 
-  @cherrypy.expose
-  def old_tables_nutr(self, *args, **kw):
-    navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = []
-    nat   = orm.ORM.query('cbn_table', cnds,
-      cols  = [x[0] for x in (cols + queries.CBN_DATA['cols']) if x[0][0] != '_'],
-      sort  = ('report_date', False),
-    )
-    patient = nat[0]  
-    return self.dynamised('cbn_table', mapping = locals(), *args, **kw)
-
-  @cherrypy.expose
-  def dashboards_nutr(self, *args, **kw):
-    auth    = ThousandAuth(cherrypy.session.get('email'))
-    navb    = ThousandNavigation(auth, *args, **kw)
-    cnds    = navb.conditions('report_date', auth)
-    nut = orm.ORM.query('cbn_view', cnds,
-      cols      = ['COUNT(*) AS allnuts'],
-      extended  = {
-        'nb_bool':('COUNT(*)', 'nb_bool IS NOT NULL'),
-        'ebf_bool':('COUNT(*)', 'ebf_bool IS NOT NULL'),
-        'cbf_bool':('COUNT(*)', 'cbf_bool IS NOT NULL'),
-        # 'unknown':('COUNT(*)', 'cbf_bool IS NULL AND ebf_bool IS NULL AND nb_bool IS NULL'),
-        'stunting_bool':('COUNT(*)', 'stunting_bool'),
-        'underweight_bool':('COUNT(*)', 'underweight_bool'),
-        'wasting_bool':('COUNT(*)', 'wasting_bool')
-      }
-    )
-    # raise Exception, nut.query
-    total   = nut[0]['allnuts']
-    return self.dynamised('nutr', mapping = locals(), *args, **kw)
+    else:
+    	cols    += queries.LOCATION_INFO  
+    	nat     = orm.ORM.query('child_track', cnds,
+	      cols  = [x[0] for x in cols + [('(((EXTRACT(DAYS FROM (NOW() - birth_date)) / 30)) :: INTEGER) AS age_in_months', 'Age')] ],
+	      
+	    ); 
+    print nat.query
+    desc  = 'Nutrition%s' % (' (%s)' % (
+					self.find_descr([ (x[0], x[1]) for x in INDICS+PREG_INDICS], kw.get('subcat')),
+												 ) if kw.get('subcat') else '', )
+    return self.dynamised('nutr_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def dashboards_redalert(self, *args, **kw):
@@ -636,11 +689,11 @@ class Application:
         'bfeed'     : ('COUNT(*)', 'bf1_bool IS NOT NULL'),
         'nbfeed'    : ('COUNT(*)', 'nb_bool IS NOT NULL')
       },
-      cols  = ['patient_id']  # , 'COUNT(*) AS allbirs']
+      cols  = ['indangamuntu']  # , 'COUNT(*) AS allbirs']
     )
     congs     = []
     for mum in delivs.list():
-      congs.append(mum['patient_id'])
+      congs.append(mum['indangamuntu'])
     exped   = orm.ORM.query('pre_table', pcnds,
       extended  = {
         # 'alldelivs' : 'COUNT(*)',
@@ -648,7 +701,7 @@ class Application:
           'COUNT(*)', 
             'RANDOM() <= 0.5'
             # 'delivered'
-            #'patient_id NOT IN %s'
+            #'indangamuntu NOT IN %s'
           )
       },
       cols  = ['COUNT(*) AS alldelivs']
@@ -916,7 +969,7 @@ class Application:
     sc      = kw.get('subcat')
     markup  = {
       'reporter': lambda x, _, __: '<a href="/tables/reporters?id=%s">%s</a>' % (x, x),
-      'patient_id': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
       'mother': lambda x, _, __: '<a href="/tables/mothers?id=%s">%s</a>' % (x, x),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
@@ -986,7 +1039,7 @@ class Application:
     sc      = kw.get('subcat')
     markup  = {
       'reporter': lambda x, _, __: '<a href="/tables/reporters?id=%s">%s</a>' % (x, x),
-      'patient_id': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
       'pregnancy': lambda x, _, __: '<a href="/tables/pregnancies?id=%s">%s</a>' % (x, x),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
@@ -1018,7 +1071,7 @@ class Application:
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
       ('report_date',       'Date'),
-      ('patient_id',        'Patient ID'),
+      ('indangamuntu',        'Patient ID'),
       ('reporter',          'Reporter ID'),
       ('height',            'Height'),
       ('weight',            'Weight'),
@@ -1028,7 +1081,7 @@ class Application:
     sc      = kw.get('subcat')
     markup  = {
       'reporter': lambda x, _, __: '<a href="/tables/reporters?id=%s">%s</a>' % (x, x),
-      'patient_id': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/mothers?pid=%s">%s</a>' % (x, x),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), )
@@ -1102,7 +1155,7 @@ class Application:
       ('reporter_phone',    'Reporter'),
       ('reporter_pk',       'Reporter ID')
     ], extras = [
-      ('patient_id',        'Mother ID'),
+      ('indangamuntu',        'Mother ID'),
       ('lmp',               'LMP')
     ], *args, **kw):
     auth    = ThousandAuth(cherrypy.session.get('email'))
@@ -1111,7 +1164,7 @@ class Application:
     pid     = kw.get('pid')
     tid     = kw.get( 'id')
     if pid:
-      cnds  = {'patient_id = %s': pid}
+      cnds  = {'indangamuntu = %s': pid}
     elif tid:
       cnds  = {'indexcol  = %s':  tid}
     else:
@@ -1162,9 +1215,9 @@ class Application:
     pos   = int(kw.get('pos', '0'))
     eid   = kw.get('eid')
     tot   = 0
-    beg   = False
+    beg   = False;print tbl
     if not eid:
-      toq = orm.ORM.query(tbl, cnds, cols = ['COUNT(*) AS total'])
+      toq = orm.ORM.query(tbl, cnds, cols = ['COUNT(*) AS total'])#;print toq.query
       tot = toq[0]['total']
       eid = orm.ORM.store('exports_table', {'total': tot, 'sofar': 0})
       beg = True
@@ -1181,7 +1234,7 @@ class Application:
         fch.write('E\n')
       # cherrypy.response.headers['Content-Type']         = 'application/vnd.ms-excel; charset=UTF-8'
       # cherrypy.response.headers['Content-Disposition']  = 'attachment; filename=download-%d.xls' % (eid, )
-      raise cherrypy.HTTPRedirect(dst)
+      raise cherrypy.HTTPRedirect('/static/downloads/%d.xls' % (eid, ))
     with open(dst, 'a') as fch:
       nat = orm.ORM.query(tbl, cnds, sort = ('indexcol', True))
       nat[0]
@@ -1283,7 +1336,7 @@ class Application:
     #cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.finish) : ''})
 
     exts = {}
-    total = orm.ORM.query(  'pre_table', 
+    total = orm.ORM.query(  'rw_pregnancies', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
 			)[0]['total']
@@ -1291,7 +1344,7 @@ class Application:
       title = 'No Risk'
       group = 'no_risk'
       cnds.update({queries.NO_RISK['query_str']: ''})
-      nat = orm.ORM.query(  'pre_table', 
+      nat = orm.ORM.query(  'rw_pregnancies', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
 			)
@@ -1299,9 +1352,9 @@ class Application:
       title = 'At Risk'
       group = 'at_risk'
       cnds.update({queries.RISK['query_str']: ''})
-      attrs = [(x.split()[0], dict(queries.RISK['attrs'])[x]) for x in dict (queries.RISK['attrs'])]
-      exts.update(dict([(x.split()[0], ('COUNT(*)',x)) for x in dict (queries.RISK['attrs'])]))
-      nat = orm.ORM.query(  'pre_table', 
+      attrs = [(makecol(x[0]), x[1]) for x in queries.RISK['attrs']]
+      exts.update(dict([( makecol(x[0]), ('COUNT(*)',x[0]) ) for x in queries.RISK['attrs'] ]))
+      nat = orm.ORM.query(  'rw_pregnancies', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
@@ -1310,15 +1363,15 @@ class Application:
       title = 'High Risk'
       group = 'high_risk'
       cnds.update({queries.HIGH_RISK['query_str']: ''})
-      attrs = [(x.split()[0], dict(queries.HIGH_RISK['attrs'])[x]) for x in dict (queries.HIGH_RISK['attrs'])]
-      exts.update(dict([(x.split()[0], ('COUNT(*)',x)) for x in dict (queries.HIGH_RISK['attrs'])]))
-      nat = orm.ORM.query(  'pre_table', 
+      attrs = [( makecol(x[0]), x[1]) for x in queries.HIGH_RISK['attrs'] ]
+      exts.update(dict([( makecol(x[0]), ('COUNT(*)',x[0]) ) for x in queries.HIGH_RISK['attrs'] ]))
+      nat = orm.ORM.query(  'rw_pregnancies', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
 			)
     else:
-      nat = orm.ORM.query(  'pre_table', 
+      nat = orm.ORM.query(  'rw_pregnancies', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = {'no_risk': ('COUNT(*)', queries.NO_RISK['query_str']), 
@@ -1332,12 +1385,16 @@ class Application:
   def tables_predash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
       
     ] + queries.PREGNANCY_DATA , *args, **kw)
     DESCRI = []
+
+    HIGHRISKDICT = makedict(queries.HIGH_RISK['attrs'])
+    RISKDICT = makedict(queries.RISK['attrs'])
     INDICS = []
+    wcl = []
 
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     cnds    = navb.conditions(None, auth)
@@ -1345,31 +1402,41 @@ class Application:
     cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
     #cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.finish) : ''})
     
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
+    if kw.get('subcat'):
      if kw.get('group'):
       if kw.get('group') == 'no_risk':
        cnds.update({'(%s)' % queries.NO_RISK['query_str']: ''})
       else:
-       kw.update({'compare': ' IS NOT'})
-       kw.update({'value': ' NULL'})
+       if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.HIGH_RISK['attrs']]:
+        cnds.update({queries.HIGH_RISK['query_str']: ''})
+        cnds.update({ HIGHRISKDICT[kw.get('subcat')][0] : ''})
+        INDICS = [HIGHRISKDICT[kw.get('subcat')]] 
+       if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.RISK['attrs']]:
+        cnds.update({queries.RISK['query_str']: ''})
+        cnds.update({ RISKDICT[kw.get('subcat')][0] : ''})
+        INDICS = [RISKDICT[kw.get('subcat')]]
+
+  
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = RISKDICT if kw.get('subcat') in [x[0] for x in queries.RISK['attrs']] else  HIGHRISKDICT
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
      if kw.get('subcat') is None:
       if kw.get('group') == 'no_risk':
        wcl.append({'field_name': '(%s)' % queries.NO_RISK['query_str'], 'compare': '', 'value': '', 'extra': True})
        INDICS = []
       if kw.get('group') == 'at_risk':
        wcl.append({'field_name': '(%s)' % queries.RISK['query_str'], 'compare': '', 'value': '', 'extra': True})
-       INDICS = queries.RISK['attrs']
+       INDICS = [RISKDICT[key] for key in RISKDICT.keys()]
       if kw.get('group') == 'high_risk':
        wcl.append({'field_name': '(%s)' % queries.HIGH_RISK['query_str'], 'compare': '', 'value': '', 'extra': True})
-       INDICS = queries.HIGH_RISK['attrs']
+       INDICS = [HIGHRISKDICT[key] for key in HIGHRISKDICT.keys()]
       if kw.get('group') is None:
        INDICS = [('no_risk', 'No Risk', '(%s)' % queries.NO_RISK['query_str'] ), 
 		('at_risk', 'At Risk', '(%s)' % queries.RISK['query_str']),
@@ -1382,7 +1449,7 @@ class Application:
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
       #print INDICS
-      locateds = summarize_by_location(primary_table = 'pre_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'rw_pregnancies', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -1391,14 +1458,14 @@ class Application:
 											
 						)
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+    
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
-      'gravity_float': lambda x, _, __: '%s' % (int(x) if x else ''),
-      'parity_float': lambda x, _, __: '%s' % (int(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'gravidity': lambda x, _, __: '%s' % (int(x) if x else ''),
+      'parity': lambda x, _, __: '%s' % (int(x) if x else ''),
       'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'edd': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
@@ -1408,9 +1475,8 @@ class Application:
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
-    if sc:
-      cnds[sc]  = ''
-    attrs = []
+    
+    
     if kw.get('group') == 'no_risk':
      cnds.update({'(%s)' % queries.NO_RISK['query_str']: ''})
      DESCRI.append(('no_risk', 'No Risk'))
@@ -1422,16 +1488,16 @@ class Application:
      DESCRI.append(('high_risk', 'High Risk'))
 
     cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('pre_table', cnds,
+    nat     = orm.ORM.query('rw_pregnancies', cnds,
       cols  = [x[0] for x in (cols + [
 					('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate'),
 					('(%s) AS at_risky' % queries.RISK['query_str'], 'AtRisky'), 
 					('(%s) AS high_risky' % queries.HIGH_RISK['query_str'], 'HighRisky'),
  
-					] + attrs) if x[0][0] != '_'],
+					] ) if x[0][0] != '_'],
       
     )
-    desc  = 'Pregnancies%s' % (' (%s)' % (self.find_descr(DESCRI + queries.RISK['attrs'] + queries.HIGH_RISK['attrs'], sc or kw.get('group')), 
+    desc  = 'Pregnancies%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], sc or kw.get('group')), 
 					) if sc or kw.get('group') else '', )
     return self.dynamised('predash_table', mapping = locals(), *args, **kw)
 
@@ -1450,9 +1516,9 @@ class Application:
     pre_cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
 
     exts = {}
-    attrs = [(x.split()[0], dict(queries.ANC_DATA['attrs'])[x]) for x in dict (queries.ANC_DATA['attrs'])]
+    attrs = [(makecol(x[0]), x[1]) for x in queries.ANC_DATA['attrs'] ]
 
-    pre = orm.ORM.query(  'pre_table', 
+    pre = orm.ORM.query(  'rw_pregnancies', 
 			  pre_cnds, 
 			  cols = ['COUNT(*) AS total']
 			)
@@ -1460,50 +1526,53 @@ class Application:
     cnds    = navb.conditions(None, auth)
     cnds.update({queries.ANC_DATA['query_str']: ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) : ''})
+    #cnds.update({"(anc_date + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) : ''})
     #print cnds
-    exts.update(dict([(x[0].split()[0], ('COUNT(*)', x[0])) for x in queries.ANC_DATA['attrs'] ])) 
-    nat = orm.ORM.query(  'anc_table', 
+    exts.update(dict([(makecol(x[0]), ('COUNT(*)', x[0])) for x in queries.ANC_DATA['attrs'] ])) 
+    nat = orm.ORM.query(  'rw_ancvisits', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts
-			);print nat.query
+			)#;print nat.query
     return self.dynamised('ancdash', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def tables_ancdash(self, *args, **kw):
     navb, auth, cnds, cols   = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    ANCDICT = makedict(queries.ANC_DATA['attrs'])
+    INDICS = [ANCDICT[key] for key in ANCDICT.keys()]
+    wcl = []
 
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     cnds    = navb.conditions(None, auth)
     cnds.update({queries.ANC_DATA['query_str']: ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) : ''})
-    primary_table = 'anc_table'
+    #cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) : ''})
+    primary_table = 'rw_ancvisits'
 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.ANC_DATA['attrs']]:
+     cnds.update({queries.ANC_DATA['query_str']: ''})
+     cnds.update({ ANCDICT[kw.get('subcat')][0] : ''})
+     INDICS = [ANCDICT[kw.get('subcat')]]
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
-     
-     if kw.get('subcat') is None: INDICS = queries.ANC_DATA['attrs']
+     if kw.get('subcat'):
+      DATADICT = ANCDICT if kw.get('subcat') in [x[0] for x in queries.ANC_DATA['attrs']] else  {}
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
 
+		] if DATADICT.get(kw.get('subcat')) else []
+     
      if kw.get('group') == 'anc1':
-      primary_table = 'pre_table'
+      primary_table = 'rw_pregnancies'
       wcl.append({'field_name': '(%s)' % ("(report_date) <= '%s'" % ( navb.finish) ), 'compare': '', 'value': '', 'extra': True})
       wcl.append({'field_name': '(%s)' % ("(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) ), 'compare': '', 'value': '', 'extra': True})
       INDICS = [('no_risk', 'No Risk', '(%s)' % queries.NO_RISK['query_str'] ), 
@@ -1512,7 +1581,8 @@ class Application:
 		]
      else: 
       wcl.append({'field_name': '(%s)' % ("(report_date) <= '%s'" % ( navb.finish) ), 'compare': '', 'value': '', 'extra': True})
-      wcl.append({'field_name': '(%s)' % ("(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) ), 'compare': '', 'value': '', 'extra': True})
+      wcl.append({'field_name': '(%s)' % ("(anc_date + INTERVAL \'%d days\') >= '%s'" % (
+							settings.GESTATION - settings.ANC_GAP, navb.start) ), 'compare': '', 'value': '', 'extra': True})
       wcl.append({'field_name': '(%s)' % queries.ANC_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
       
      
@@ -1527,12 +1597,12 @@ class Application:
 											
 						)
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ (makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -1540,31 +1610,42 @@ class Application:
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
+
+    preg_cnds = navb.conditions(None, auth)
+
     if sc:
-      cnds[sc]  = ''
+      cnds.update({"(anc_date + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION - settings.ANC_GAP, navb.start) : ''})
+      cnds[ANCDICT[sc][0]] = ''
+      ancs     = orm.ORM.query( 'rw_ancvisits' , cnds, cols = ['pregnancy_id'])
+      pregs = [an['pregnancy_id'] for an in ancs.list()]#;print pregs
+      if len(pregs) > 1: preg_cnds.update({'indexcol IN %s' % str(tuple(pregs))  : ''})
+      if len(pregs) == 1: preg_cnds.update({'indexcol = %s' % str(pregs[0])  : ''})   
     # TODO: optimise
-    attrs = queries.ANC_DATA['attrs']
+    #attrs = queries.ANC_DATA['attrs']
     #print cnds
     cols    += queries.LOCATION_INFO
      
+    
+
     if kw.get('group') == 'anc1':
      navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
-     cnds    = navb.conditions(None, auth)
-     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-     cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
-     primary_table = 'pre_table'
+     preg_cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
+     preg_cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
+     primary_table = 'rw_pregnancies'
      attrs = [('(%s) AS at_risky' % queries.RISK['query_str'], 'AtRisky'),]
-     DESCRI.append(('anc1', 'Pregnancy'))   
-    nat     = orm.ORM.query( primary_table , cnds,
+     DESCRI.append(('anc1', 'Pregnancy')) 
+
+    #print cnds  
+    nat     = orm.ORM.query( 'rw_pregnancies' , preg_cnds,
       cols  = [x[0] for x in (cols + [
 					('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate'),
 					('(%s) AS high_risky' % queries.HIGH_RISK['query_str'], 'HighRisky'),
  
-					] + attrs) if x[0][0] != '_'],
+					]) if x[0][0] != '_'],
       
     )#;print nat.query
-    desc  = 'ANC%s' % (' (%s)' % (self.find_descr(DESCRI + queries.ANC_DATA['attrs'], sc or kw.get('group')), 
-					) if sc or kw.get('group') else '', )
+    desc  = 'ANC%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], kw.get('subcat')),
+									) if kw.get('subcat') else 'ALL', )
     return self.dynamised('ancdash_table', mapping = locals(), *args, **kw)
 
   ### END OF ANC ###
@@ -1578,26 +1659,28 @@ class Application:
     cnds    = navb.conditions('report_date', auth)
     exts = {}
     
-    red_attrs = [(x[0].split()[0], x[1]) for x in queries.RED_DATA['attrs']]
+    red_attrs = [(makecol(x[0]), x[1]) for x in queries.RED_DATA['attrs']]
     red_exts = exts
     red_cnds = cnds
     red_cnds.update({queries.RED_DATA['query_str']: ''})
-    red_exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.RED_DATA['attrs']]))
-    red = orm.ORM.query(  'red_table', 
+    #red_cnds.update({ 'emergency_date IS NULL AND intervention_field IS NULL': ''})
+    red_exts.update(dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.RED_DATA['attrs']]))
+    red = orm.ORM.query(  'rw_redalerts', 
 			  red_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = red_exts,
-			)
+			)#;print red.query
 
-    rar_attrs = [(x[0].split()[0], x[1]) for x in queries.RAR_DATA['attrs']]
+    rar_attrs = [(makecol(x[0]), x[1]) for x in queries.RAR_DATA['attrs']]
     rar_cnds = navb.conditions('report_date')
     rar_cnds.update({queries.RAR_DATA['query_str']: ''})
-    rar_exts = dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.RAR_DATA['attrs']])
-    rar = orm.ORM.query(  'rar_table', 
+    #rar_cnds.update({ 'emergency_date IS NOT NULL AND intervention_field IS NOT NULL': ''})
+    rar_exts = dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.RAR_DATA['attrs']])
+    rar = orm.ORM.query(  'rw_redalerts', 
 			  rar_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = rar_exts,
-			)
+			)#;print rar.query
 
     return self.dynamised('reddash', mapping = locals(), *args, **kw)
 
@@ -1605,34 +1688,41 @@ class Application:
   def tables_reddash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    REDDICT = makedict(queries.RED_DATA['attrs'])
+    RARDICT = makedict(queries.RAR_DATA['attrs'])
+    INDICS = [ REDDICT[key] for key in REDDICT.keys() ] +  [ RARDICT[key] for key in RARDICT.keys() ]
+    wcl = []
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) >= '%s'" % (navb.start) : ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    primary_table = 'red_table'
-    if kw.get('subcat') and kw.get('subcat') in [x[0].split()[0] for x in queries.RAR_DATA['attrs']]:
-     primary_table = 'rar_table'
+    primary_table = 'rw_redalerts'
+  
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.RAR_DATA['attrs']]:
      cnds.update({queries.RAR_DATA['query_str']: ''})
-    else: cnds.update({queries.RED_DATA['query_str']: ''}) 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
-    else:
-     INDICS = queries.RED_DATA['attrs']
+     cnds.update({ RARDICT[kw.get('subcat')][0] : ''})
+     INDICS = [RARDICT[kw.get('subcat')]] 
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.RED_DATA['attrs']]:
+     DATADICT = makedict(queries.RED_DATA['attrs'])
+     cnds.update({queries.RED_DATA['query_str']: ''})
+     cnds.update({ REDDICT[kw.get('subcat')][0] : ''})
+     INDICS = [REDDICT[kw.get('subcat')]] 
+    #print cnds,INDICS 
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = RARDICT if kw.get('subcat') in [x[0] for x in queries.RAR_DATA['attrs']] else  REDDICT
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
 
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
       locateds = summarize_by_location(primary_table = primary_table, MANY_INDICS = INDICS, where_clause = wcl, 
@@ -1643,13 +1733,14 @@ class Application:
 						end = navb.finish,
 											
 						)
+      
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS ])#;print INDICS_HEADERS,tabular
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+    
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
       'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
@@ -1658,8 +1749,7 @@ class Application:
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
-    if sc:
-      cnds[sc]  = ''
+    
     # TODO: optimise
     attrs = []
     
@@ -1667,8 +1757,8 @@ class Application:
     nat     = orm.ORM.query(primary_table, cnds,
       cols  = [x[0] for x in (cols + attrs) if x[0][0] != '_'],
       
-    )
-    desc  = 'Red Alerts %s' % (' (%s)' % (self.find_descr(DESCRI + queries.RED_DATA['attrs'] + queries.RAR_DATA['attrs'], 
+    )#;print nat.query
+    desc  = 'Red Alerts %s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], 
 						sc) or 'ALL', 
 					) )
     return self.dynamised('reddash_table', mapping = locals(), *args, **kw)
@@ -1688,12 +1778,12 @@ class Application:
     pre_cnds    = navb.conditions(None, auth)
     pre_cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
     pre_cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
-    pre = orm.ORM.query(  'pre_table', 
+    pre = orm.ORM.query(  'rw_pregnancies', 
 			  pre_cnds, 
 			  cols = ['COUNT(*) AS total']
 			)
     
-    today = datetime.today().date()
+    today = navb.start#datetime.today().date()
     next_monday = today + timedelta(days=-today.weekday(), weeks=1)
     next_sunday = next_monday + timedelta(days = 6)
     next_two_monday = today + timedelta(days=-today.weekday(), weeks=2)
@@ -1704,7 +1794,7 @@ class Application:
 	('next_two_week', 'Deliveries in Next two Weeks', "(lmp + INTERVAL '%s days') BETWEEN '%s' AND '%s'" % (settings.GESTATION , next_two_monday, next_two_sunday)),
 	]
     exts.update(dict([(x[0], ('COUNT(*)',x[2])) for x in attrs]))
-    nat = orm.ORM.query(  'pre_table', 
+    nat = orm.ORM.query(  'rw_pregnancies', 
     			  cnds, 
     			  cols = ['COUNT(*) AS total'],
                           extended = exts, 
@@ -1718,7 +1808,7 @@ class Application:
      #print attr_cnds
      details.update({ 
 			attr[0] :
-			orm.ORM.query(  'pre_table', 
+			orm.ORM.query(  'rw_pregnancies', 
 			  attr_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = {'no_risk': ('COUNT(*)', queries.NO_RISK['query_str']), 
@@ -1735,13 +1825,13 @@ class Application:
   def tables_deliverynotdash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
       ('lmp',            'LMP'),
       
     ] , *args, **kw)
 
-    today = datetime.today().date()
+    today = navb.start#;print cnds#datetime.today().date()
     next_monday = today + timedelta(days=-today.weekday(), weeks=1)
     next_sunday = next_monday + timedelta(days = 6)
     next_two_monday = today + timedelta(days=-today.weekday(), weeks=2)
@@ -1749,6 +1839,7 @@ class Application:
 
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     pre_cnds    = navb.conditions(None, auth)
+    cnds    = navb.conditions(None, auth)
     pre_cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
     pre_cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
 
@@ -1815,7 +1906,7 @@ class Application:
     
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'pre_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'rw_pregnancies', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -1829,8 +1920,8 @@ class Application:
     sc      = kw.get('subcat')
     if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'mother_weight': lambda x, _, __: '%s' % (int(x) if x else ''),
       'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
@@ -1848,7 +1939,7 @@ class Application:
     if kw.get('group') == 'pre':
      DESCRI.append(('pre', 'Pregnancies'))
      cnds = pre_cnds   
-    nat     = orm.ORM.query('pre_table', cnds,
+    nat     = orm.ORM.query('rw_pregnancies', cnds,
       cols  = [x[0] for x in (cols + [
 					('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate'),
 					('(%s) AS at_risky' % queries.RISK['query_str'], 'AtRisky'), 
@@ -1856,7 +1947,7 @@ class Application:
 
 					] + attrs) if x[0][0] != '_'],
       
-    )
+    )#;print nat.query
     desc  = 'Deliveries Notifications %s' % (' (%s)' % (self.find_descr(DESCRI , 
 						sc or kw.get('group') ) or 'ALL', 
 					) )
@@ -1871,21 +1962,21 @@ class Application:
     cnds    = navb.conditions('report_date', auth)
     exts = {}
     
-    attrs = [(x[0].split()[0], x[1]) for x in queries.DELIVERY_DATA['attrs']]
+    attrs = [(makecol(x[0]), x[1]) for x in queries.DELIVERY_DATA['attrs']]
     cnds.update({queries.DELIVERY_DATA['query_str']: ''})
-    exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.DELIVERY_DATA['attrs']]))
-    nat = orm.ORM.query(  'bir_table', 
+    exts.update(dict([(makecol(x[0]), ('COUNT(*)', x[0])) for x in queries.DELIVERY_DATA['attrs']]))#;print exts
+    nat = orm.ORM.query(  'rw_children', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
-			)
+			)#;print nat.query
     
     today = datetime.today().date()
     next_monday = today + timedelta(days=-today.weekday(), weeks=1)
     next_sunday = next_monday + timedelta(days = 6)
     next_week_cnds = navb.conditions('report_date')
     next_week_cnds.update({"(lmp + INTERVAL '%s days') BETWEEN '%s' AND '%s'" % (settings.GESTATION , next_monday, next_sunday): ''})
-    next_week = orm.ORM.query(  'pre_table', 
+    next_week = orm.ORM.query(  'rw_pregnancies', 
     			  next_week_cnds, 
     			  cols = ['COUNT(*) AS total']
     			)
@@ -1894,7 +1985,7 @@ class Application:
     next_two_sunday = next_two_monday + timedelta(days = 6)
     next_two_week_cnds = navb.conditions('report_date')
     next_two_week_cnds.update({"(lmp + INTERVAL '%s days') BETWEEN '%s' AND '%s'" % (settings.GESTATION , next_two_monday, next_two_sunday): ''})
-    next_two_week = orm.ORM.query(  'pre_table', 
+    next_two_week = orm.ORM.query(  'rw_pregnancies', 
     			  next_two_week_cnds, 
     			  cols = ['COUNT(*) AS total'],
     			)
@@ -1905,21 +1996,23 @@ class Application:
   def tables_deliverydash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('birth_date',            'Date Of Birth'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    DELDICT = makedict(queries.DELIVERY_DATA['attrs'])
+    INDICS = [ DELDICT[key] for key in DELDICT.keys() ] 
+    wcl = []
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) >= '%s'" % (navb.start) : ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    primary_table = 'bir_table'
+    primary_table = 'rw_children'
 
     if kw.get('group'):
-     primary_table = 'pre_table'
+     primary_table = 'rw_pregnancies'
      today = datetime.today().date()
      if kw.get('group') == 'next_week': weeks = 1
      if kw.get('group') == 'next_two_week': weeks = 2
@@ -1928,20 +2021,23 @@ class Application:
      cnds.update({"(lmp + INTERVAL '%s days') BETWEEN '%s' AND '%s'" % (settings.GESTATION , start, end): ''})
     else:
      cnds.update({queries.DELIVERY_DATA['query_str']: ''})
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.DELIVERY_DATA['attrs']]:
+     cnds.update({queries.DELIVERY_DATA['query_str']: ''})
+     cnds.update({ DELDICT[kw.get('subcat')][0] : ''})
+     INDICS = [DELDICT[kw.get('subcat')]]
     else:
      if kw.get('group'): DESCRI = [('next_week', 'Deliveries in Next Week'), ('next_two_week', 'Deliveries in Next two Weeks')]
-     else: INDICS = queries.DELIVERY_DATA['attrs']
+     else: INDICS = INDICS#;print INDICS
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = DELDICT if kw.get('subcat') in [x[0] for x in queries.DELIVERY_DATA['attrs']] else  {}
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
 
      if kw.get('group'):
       wcl.append({'field_name': '(%s)' % "(lmp + INTERVAL '%s days') BETWEEN '%s' AND '%s'" % (settings.GESTATION , start, end),
@@ -1957,15 +2053,14 @@ class Application:
 						end = navb.finish,
 											
 						)
-      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )#;print tabular
+      INDICS_HEADERS = dict([ (makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+    
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
-      'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -1974,21 +2069,19 @@ class Application:
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
     if sc:
-      cnds[sc]  = ''
+      cnds[DELDICT[sc][0]] = ''
     # TODO: optimise
     attrs = []
     
     cols    += queries.LOCATION_INFO   
     nat     = orm.ORM.query(primary_table, cnds,
       cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
- 
+					
 					] + attrs) if x[0][0] != '_'],
       
     )
-    desc  = 'Deliveries %s' % (' (%s)' % (self.find_descr(DESCRI + queries.DELIVERY_DATA['attrs'], 
-						sc or kw.get('group') ) or 'ALL', 
-					) )
+    desc  = 'Deliveries %s' % (' (%s)' % (self.find_descr([(makecol(x[0]), x[1]) for x in INDICS], kw.get('subcat')),
+												 ) if kw.get('subcat') else 'ALL', )
     return self.dynamised('deliverydash_table', mapping = locals(), *args, **kw)
 
 
@@ -2004,17 +2097,19 @@ class Application:
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) : ''})
+    cnds.update({"(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) : ''})
     exts = {}
-    total = orm.ORM.query(  'nbc_table', 
+    newborns = orm.ORM.query(  'rw_children', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
-			)[0]['total']
+			)#; print newborns.query
+    total = newborns[0]['total']
+
     if kw.get('group') == 'no_risk':
       title = 'No Risk'
       group = 'no_risk'
       cnds.update({queries.NBC_DATA['NO_RISK']['query_str']: ''})
-      nat = orm.ORM.query(  'nbc_table', 
+      nat = orm.ORM.query(  'rw_children', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
 			)
@@ -2022,9 +2117,9 @@ class Application:
       title = 'At Risk'
       group = 'at_risk'
       cnds.update({queries.NBC_DATA['RISK']['query_str']: ''})
-      attrs = [(x.split()[0], dict(queries.NBC_DATA['RISK']['attrs'])[x]) for x in dict (queries.NBC_DATA['RISK']['attrs'])]
-      exts.update(dict([(x.split()[0], ('COUNT(*)',x)) for x in dict (queries.NBC_DATA['RISK']['attrs'])]))
-      nat = orm.ORM.query(  'nbc_table', 
+      attrs = [(makecol(x[0]), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] ]
+      exts.update(dict([(makecol(x[0]), ('COUNT(*)', x[0])) for x in queries.NBC_DATA['RISK']['attrs']] ))
+      nat = orm.ORM.query(  'rw_children', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
@@ -2033,15 +2128,23 @@ class Application:
       title = 'High Risk'
       group = 'high_risk'
       cnds.update({queries.NBC_DATA['HIGH_RISK']['query_str']: ''})
-      attrs = [(x.split()[0], dict(queries.NBC_DATA['HIGH_RISK']['attrs'])[x]) for x in dict (queries.NBC_DATA['HIGH_RISK']['attrs'])]
-      exts.update(dict([(x.split()[0], ('COUNT(*)',x)) for x in dict (queries.NBC_DATA['HIGH_RISK']['attrs'])]))
-      nat = orm.ORM.query(  'nbc_table', 
+      attrs = [(makecol(x[0]), x[1]) for x in queries.NBC_DATA['HIGH_RISK']['attrs'] ]
+      exts.update(dict([(makecol(x[0]), ('COUNT(*)', x[0])) for x in queries.NBC_DATA['HIGH_RISK']['attrs']] ))
+      nat = orm.ORM.query(  'rw_children', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
 			)
+    elif kw.get('group') in  [ makecol(x[0]) for x in queries.NBC_DATA['NBC']['attrs'] ] :
+      title = makedict(queries.NBC_DATA['NBC']['attrs'])[kw.get('group')][1]
+      group = kw.get('group')
+      cnds.update({makedict(queries.NBC_DATA['NBC']['attrs'])[group][0]: ''})
+      nat = orm.ORM.query(  'child_track', 
+			  cnds, 
+			  cols = ['COUNT(*) AS total'],
+			)
     else:
-      nat = orm.ORM.query(  'nbc_table', 
+      nat = orm.ORM.query(  'rw_children', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = {'no_risk': ('COUNT(*)', queries.NBC_DATA['NO_RISK']['query_str']), 
@@ -2049,51 +2152,90 @@ class Application:
 					'high_risk': ('COUNT(*)', queries.NBC_DATA['HIGH_RISK']['query_str']),
 					}
 			)
+    
+      visits = orm.ORM.query(  'child_track', 
+			  cnds,
+                          cols = ['COUNT(*) AS total'],
+			  extended = dict([ ( makecol(x[0]), ('COUNT(*)', x[0]) ) for x in queries.NBC_DATA['NBC']['attrs'] ])
+			)#; print visits.query;
+
+
     return self.dynamised('nbcdash', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def tables_nbcdash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('birth_date',            'Date Of Birth'),
+      ('child_number', 'Child Number'),
+      ('gender', 'Sex'),
+      ('breastfeeding', 'Breastfeeding'),
+      ('child_weight', 'Weight')
       
     ] , *args, **kw)
     auth    = ThousandAuth(cherrypy.session.get('email'))
     DESCRI = []
+    NBCDICT = makedict(queries.NBC_DATA['NBC']['attrs'])
+    NBCRISKDICT = makedict(queries.NBC_DATA['RISK']['attrs'])
+    NBCHIGHRISKDICT = makedict(queries.NBC_DATA['HIGH_RISK']['attrs'])
     INDICS = []
-
+    NBC_INDICS = [ NBCDICT[key] for key in NBCDICT.keys() ]
+    RISK_INDICS = [ NBCRISKDICT[key] for key in NBCRISKDICT.keys() ] 
+    HIGH_RISK_INDICS = [ NBCHIGHRISKDICT[key] for key in NBCHIGHRISKDICT.keys() ]
+    wcl = []
+    nbc_wcl = []
+    nbc_cnds 	= navb.conditions(None, auth)
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) : ''})
+    cnds.update({"(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) : ''})
 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     if kw.get('group'):
-      if kw.get('group') == 'no_risk':
-       cnds.update({'(%s)' % queries.NBC_DATA['NO_RISK']['query_str']: ''})
-      else:
-       kw.update({'compare': ' IS NOT'})
-       kw.update({'value': ' NULL'})
+    if kw.get('group') and kw.get('group') == 'no_risk':
+    	cnds.update({queries.NBC_DATA['NO_RISK']['query_str']: ''})
+    if kw.get('group') and (kw.get('group') in [ makecol(z[0]) for z in NBC_INDICS ]):
+    	nbc_cnds.update({ NBCDICT[kw.get('group')][0] : ''})
+    	NBC_INDICS = [NBCDICT[kw.get('group')]]
+    if kw.get('subcat') and (kw.get('subcat') in [ makecol(z[0]) for z in RISK_INDICS ]):
+        cnds.update({queries.NBC_DATA['RISK']['query_str']: ''})
+	cnds.update({ NBCRISKDICT[kw.get('subcat')][0] : ''})
+    	INDICS = [NBCRISKDICT[kw.get('subcat')]]
+    if kw.get('subcat') and (kw.get('subcat') in [ makecol(z[0]) for z in HIGH_RISK_INDICS ]):
+    	cnds.update({queries.NBC_DATA['HIGH_RISK']['query_str']: ''})
+	cnds.update({ NBCHIGHRISKDICT[kw.get('subcat')][0] : ''})
+    	INDICS = [NBCHIGHRISKDICT[kw.get('subcat')]]
+       
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = {}
+      if kw.get('subcat') in [ makecol(x[0]) for x in NBC_INDICS ]:
+      	DATADICT = NBCDICT
+      	nbc_wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+      else:
+      	if kw.get('subcat') in [ makecol(x[0]) for x in RISK_INDICS ]: DATADICT = NBCRISKDICT
+      	if kw.get('subcat') in [ makecol(x[0]) for x in HIGH_RISK_INDICS ]: DATADICT = NBCHIGHRISKDICT
+      	wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+     
      if kw.get('subcat') is None:
       if kw.get('group') == 'no_risk':
        wcl.append({'field_name': '(%s)' % queries.NBC_DATA['NO_RISK']['query_str'], 'compare': '', 'value': '', 'extra': True})
        INDICS = []
       if kw.get('group') == 'at_risk':
        wcl.append({'field_name': '(%s)' % queries.NBC_DATA['RISK']['query_str'], 'compare': '', 'value': '', 'extra': True})
-       INDICS = queries.NBC_DATA['RISK']['attrs']
+       INDICS = RISK_INDICS
       if kw.get('group') == 'high_risk':
        wcl.append({'field_name': '(%s)' % queries.NBC_DATA['HIGH_RISK']['query_str'], 'compare': '', 'value': '', 'extra': True})
-       INDICS = queries.NBC_DATA['HIGH_RISK']['attrs']
+       INDICS = HIGH_RISK_INDICS
       if kw.get('group') is None:
        INDICS = [('no_risk', 'No Risk', '(%s)' % queries.NBC_DATA['NO_RISK']['query_str'] ), 
 		('at_risk', 'At Risk', '(%s)' % queries.NBC_DATA['RISK']['query_str']),
@@ -2101,10 +2243,11 @@ class Application:
 		]#; print INDICS
 
      wcl.append({'field_name': '(%s)' % ("(report_date) <= '%s'" % ( navb.finish) ), 'compare': '', 'value': '', 'extra': True})
-     wcl.append({'field_name': '(%s)' % ("(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) ), 'compare': '', 'value': '', 'extra': True})
+     wcl.append({'field_name': '(%s)' % ("(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.NBC_GESTATION, navb.start) ), 'compare': '', 'value': '', 'extra': True})
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'nbc_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      #print INDICS, wcl
+      locateds = summarize_by_location(primary_table = "rw_children", MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -2112,24 +2255,35 @@ class Application:
 						#end = navb.finish,
 											
 						)
-      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      locateds2 = summarize_by_location(primary_table = "child_track", MANY_INDICS = NBC_INDICS, where_clause = nbc_wcl, 
+						province = province,
+						district = district,
+						location = location,
+						#start =  navb.start,
+						#end = navb.finish,
+											
+						)#;print locateds,locateds2, province,district,location, wcl, nbc_wcl
+      if locateds == [] or type(locateds[0]) == Record: locateds = [locateds] + locateds2
+      else: locateds += locateds2 
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS + NBC_INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS ]  + [ ( makecol(x[0]), x[1]) for x in NBC_INDICS] )
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/nbcchild?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
-      'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/nbcchild?pid=%s">%s</a>' % (x, x),
+      'child_weight': lambda x, _, __: '%s' % (int(x) if x else ''),
+      'gender': lambda x, _, __: '%s' % ( 'M' if x else 'F'),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
       'sector_pk': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
-    }
-    if sc:
-      cnds[sc]  = ''
+    }#;print cnds,kw.get('value')
+    
+      
     attrs = []
     if kw.get('group') == 'no_risk':
      cnds.update({'(%s)' % queries.NBC_DATA['NO_RISK']['query_str']: ''})
@@ -2141,40 +2295,52 @@ class Application:
      cnds.update({'(%s)' % queries.NBC_DATA['HIGH_RISK']['query_str']: ''})
      DESCRI.append(('high_risk', 'High Risk'))
 
-    cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('nbc_table', cnds,
+    cols    += queries.LOCATION_INFO 
+    #print cnds, sc
+    if kw.get('subcat') and (kw.get('subcat') in [ makecol(z[0]) for z in NBC_INDICS ] ):
+     if sc:
+      nbc_cnds[NBCDICT[sc][0]] = ''
+     nbcnat     = orm.ORM.query('child_track', nbc_cnds,
+		      cols  = ['child'],
+		      
+		    )
+     nbcindexcol = [x['child'] for x in nbcnat.list()];print nbcindexcol
+     if len(nbcindexcol) > 1: cnds.update({'indexcol IN %s' % str(tuple(nbcindexcol))  : ''})
+     if len(nbcindexcol) == 1: cnds.update({'indexcol = %s' % str(nbcindexcol[0])  : ''})      
+    nat     = orm.ORM.query('rw_children', cnds,
       cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
 					('(%s) AS at_risky' % queries.NBC_DATA['RISK']['query_str'], 'AtRisky'), 
-					('(%s) AS high_risky' % queries.NBC_DATA['HIGH_RISK']['query_str'], 'HighRisky'),
+					('(%s) AS high_risky' % queries.NBC_DATA['HIGH_RISK']['query_str'], 'HighRisky')
  
 					] + attrs) if x[0][0] != '_'],
       
-    )
-    desc  = 'Newborn Visits%s' % (' (%s)' % (self.find_descr(DESCRI + queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'], 
+    )#;print nat.query
+    desc  = 'Newborn Visits%s' % (' (%s)' % (self.find_descr(DESCRI + [( makecol(x[0]), x[1]) for x in INDICS
+									] + [ ( makecol(x[0]), x[1]) for x in NBC_INDICS], 
 						sc or kw.get('group')), 
-					) if sc or kw.get('group') else '', )
+					) if sc or kw.get('group') else '', );print desc
     return self.dynamised('nbcdash_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def tables_nbcchild(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
+    attrs = [ (' %s AS %s' % (x[0], makecol(x[0])), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs']  
+		] + [('nbc_visit', 'Number Of Visit')]
     indexed_attrs = [ ('%s' % get_indexed_value('name', x[2], x[1], x[0], x[3]), x[3]) for x in queries.INDEXED_VALS['location']]
-    nat     = orm.ORM.query('nbc_table', cnds,
-      				cols  = [x[0] for x in (cols + indexed_attrs + queries.NBC_DATA['cols'] + attrs) if x[0][0] != '_'],
+    nat     = orm.ORM.query('rw_nbcvisits', cnds,
+      				cols  = [x[0] for x in (cols + indexed_attrs + queries.NBC_DATA['cols'] + attrs) if x[0][0] != '_'] ,
 				sort = ('report_date', False),
-    			)
+    			)#;print nat.query
     patient = nat[0]  
     reminders = []
     nbc_reports = [ x for x in nat.list() ]#; print attrs
-    cbn_reports =   orm.ORM.query('cbn_table', cnds)
+    cbn_reports =   orm.ORM.query('rw_nutritions', cnds)
     return self.dynamised('newborn_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def __tables_child(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
+    attrs = [ (' %s AS %s' % (x[0], makecol(x[0])), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
     indexed_attrs = [ ('%s' % get_indexed_value('name', x[2], x[1], x[0], x[3]), x[3]) for x in queries.INDEXED_VALS['location']]
     nat     = orm.ORM.query('nbc_table', cnds,
       				cols  = [x[0] for x in (cols + indexed_attrs + queries.NBC_DATA['cols'] + attrs) if x[0][0] != '_'],
@@ -2188,30 +2354,64 @@ class Application:
 
   @cherrypy.expose
   def tables_childgrowth(self, *args, **kw):
-    navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
+    navb, auth, cnds, cols    = self.neater_tables(basics = [
+      ('indexcol',          'Entry ID'),
+      ('indangamuntu',            'Mother ID'),
+      ('reporter_phone',            'Reporter Phone'),
+      ('birth_date',            'Date Of Birth'),
+      ('child_number', 'Child Number'),
+      ('gender', 'Sex'),
+      ('breastfeeding', 'Breastfeeding'),
+      ('child_weight', 'Weight')
+      
+    ] , *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    ncnds    = navb.conditions(None, auth)
+    cnds.update({'indexcol = %s' % kw.get('pid'): ''})
+    ncnds.update({'child_id = %s' % kw.get('pid'): ''})
     indexed_attrs = [ ('%s' % get_indexed_value('name', x[2], x[1], x[0], x[3]), x[3]) for x in queries.INDEXED_VALS['location']]
-    nat     = orm.ORM.query('nbc_table', cnds,
-      				cols  = [x[0] for x in (cols + indexed_attrs + queries.NBC_DATA['cols'] + attrs) if x[0][0] != '_'],
+    nat     = orm.ORM.query('rw_children', cnds,
+      				cols  = [x[0] for x in (cols + indexed_attrs) if x[0][0] != '_'],
 				sort = ('report_date', False),
     			)
     patient = nat[0]  
     reminders = []
-    nbc_reports = [ x for x in nat.list() ]#; print attrs
-    cbn_reports =   orm.ORM.query('cbn_table', cnds, cols = [
-							"patient_id", 
-							"child_number_float",
-							"lmp", 
+    nbc_reports = [ x for x in nat.list() ]#; print cols, cnds, ncnds
+    cbn_reports =   orm.ORM.query('rw_nutritions', ncnds, cols = [
+							"indangamuntu AS indangamuntu", 
+							"child_number",
+							"birth_date", 
 							"report_date",
-							"child_weight_float AS weight",  
-							"child_height_float AS height",
+							"child_weight AS weight",  
+							"child_height AS height",
 							],
-						 )
-    chartData = json.dumps([ {'weight': cbn['weight'] , 'height': cbn['height'], 'age': (cbn['report_date'] - cbn['lmp']).days / 30.4374 } for cbn in cbn_reports.list()])
-    print chartData
+						 )#;print cbn_reports.query
+    chartData = json.dumps([ {'weight': cbn['weight'] , 'height': cbn['height'], 'age': (cbn['report_date'] - cbn['birth_date']).days / 30.4374 
+				} for cbn in cbn_reports.list()])
+    #print chartData
     
     return self.dynamised('growthchart', mapping = locals(), *args, **kw)
 
+
+  @cherrypy.expose
+  def dashboards_grownthcharts(self, *args, **kw):
+    navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
+    #cnds    = navb.conditions(None, auth)
+    #boys_cnds = navb.conditions(None, auth)
+    
+    #boys_data =   orm.ORM.query('nutrition_childnutrition', cnds, cols = [
+	#							"DISTINCT ON (child_id, age) child_id",
+	#						"gender", 
+	#						"age_in_months AS age",
+	#						"weight",  
+	#						"height",
+	#						],
+	#						sort = ('age', 'DESC')
+	#					 )
+    #boys = json.dumps([ {'weight': cbn['weight'] , 'height': cbn['height'], 'age': cbn['age'] } for cbn in boys_data.list()])
+    #print boys	
+    chart_data = json.dumps({'boys': [{'id':1, 'weight': 3.5 , 'height': 59, 'age': 2},{'id':2, 'weight': 4.5 , 'height': 59, 'age': 3 }, {'id':3, 'weight': 5.5 , 'height': 60, 'age': 4 },{'id':4, 'weight': 7.5 , 'height': 67.6, 'age': 6 }, {'id':5, 'weight': 5.8 , 'height': 67.9, 'age': 7 }, {'id':6, 'weight': 6.0 , 'height': 68.6, 'age': 8 }, {'id':7, 'weight': 6.5 , 'height': 70.6, 'age': 9 }, {'id':8, 'weight': 8 , 'height': 73.6, 'age': 10}], 'girls': [{'id':1, 'weight': 3.5 , 'height': 59, 'age': 2},{'id':2, 'weight': 4.5 , 'height': 59, 'age': 3 }, {'id':3, 'weight': 5.5 , 'height': 60, 'age': 4 },{'id':4, 'weight': 7.5 , 'height': 67.6, 'age': 6 }, {'id':5, 'weight': 5.8 , 'height': 67.9, 'age': 7 }, {'id':6, 'weight': 6.0 , 'height': 68.6, 'age': 8 }, {'id':7, 'weight': 6.5 , 'height': 70.6, 'age': 9 }, {'id':8, 'weight': 8 , 'height': 73.6, 'age': 10}] })
+    return self.dynamised('_nutrition_charts', mapping = locals(), *args, **kw)
   ### END OF NEWBORN ####
 
   #### START OF POSTNATAL ###
@@ -2221,10 +2421,13 @@ class Application:
     navb    = ThousandNavigation(auth, *args, **kw)
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
+    vcnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) : ''})
+    vcnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
+    cnds.update({"(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) : ''})
+    vcnds.update({"(delivery_date + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) : ''})
     exts = {}
-    total = orm.ORM.query(  'pnc_table', 
+    total = orm.ORM.query(  'rw_pncvisits', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
 			)[0]['total']
@@ -2232,7 +2435,7 @@ class Application:
       title = 'No Risk'
       group = 'no_risk'
       cnds.update({queries.PNC_DATA['NO_RISK']['query_str']: ''})
-      nat = orm.ORM.query(  'pnc_table', 
+      nat = orm.ORM.query(  'rw_pncvisits', 
 			  cnds,
                           cols = ['COUNT(*) AS total'],
 			)
@@ -2242,18 +2445,32 @@ class Application:
       cnds.update({queries.PNC_DATA['RISK']['query_str']: ''})
       attrs = [(x.split()[0], dict(queries.PNC_DATA['RISK']['attrs'])[x]) for x in dict (queries.PNC_DATA['RISK']['attrs'])]
       exts.update(dict([(x.split()[0], ('COUNT(*)',x)) for x in dict (queries.PNC_DATA['RISK']['attrs'])]))
-      nat = orm.ORM.query(  'pnc_table', 
+      nat = orm.ORM.query(  'rw_pncvisits', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
 			)
+    elif kw.get('group') in queries.PNC_DATA['PNC'].keys() :
+      title = queries.PNC_DATA['PNC'][kw.get('group')][1]
+      group = kw.get('group')
+      vcnds.update({queries.PNC_DATA['PNC'][group][0]: ''})
+      nat = orm.ORM.query(  'mother_track', 
+			  vcnds, 
+			  cols = ['COUNT(*) AS total'],
+			)
     else:
-      nat = orm.ORM.query(  'pnc_table', 
+      nat = orm.ORM.query(  'rw_pncvisits', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = {'no_risk': ('COUNT(*)', queries.PNC_DATA['NO_RISK']['query_str']), 
 					'at_risk': ('COUNT(*)', queries.PNC_DATA['RISK']['query_str']),
 					}
+			)#;print nat.query
+
+      visits = orm.ORM.query(  'mother_track', 
+			  vcnds,
+                          cols = ['COUNT(*) AS total'],
+			  extended = dict([ ( x, ('COUNT(*)', queries.PNC_DATA['PNC'][x][0]) ) for x in queries.PNC_DATA['PNC'].keys() ])
 			)
     return self.dynamised('pncdash', mapping = locals(), *args, **kw)
 
@@ -2261,25 +2478,32 @@ class Application:
   def tables_pncdash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('birth_date',            'Delivery Date'),
       
     ] , *args, **kw)
     DESCRI = []
     INDICS = []
+    PNC_INDICS = [(key, queries.PNC_DATA['PNC'][key][1], queries.PNC_DATA['PNC'][key][0] ) for key in queries.PNC_DATA['PNC'].keys() ]
+    pnc_cnds 	= navb.conditions(None, auth)
+
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) : ''})
+    cnds.update({"(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) : ''})
 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
+    if kw.get('subcat') and kw.get('subcat').__contains__('symptom_'):
      if kw.get('group'):
       if kw.get('group') == 'no_risk':
        cnds.update({'(%s)' % queries.PNC_DATA['NO_RISK']['query_str']: ''})
       else:
        kw.update({'compare': ' IS NOT'})
        kw.update({'value': ' NULL'})
+
+    if kw.get('group') and (kw.get('group') in [ z[0] for z in PNC_INDICS ]):
+	pnc_cnds.update({'(%s)' % queries.PNC_DATA['PNC'].get(kw.get('group'))[0]: ''})
+
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
@@ -2301,11 +2525,11 @@ class Application:
 		]#; print INDICS
      
      wcl.append({'field_name': '(%s)' % ("(report_date) <= '%s'" % ( navb.finish) ), 'compare': '', 'value': '', 'extra': True})
-     wcl.append({'field_name': '(%s)' % ("(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) ), 'compare': '', 'value': '', 'extra': True})
+     wcl.append({'field_name': '(%s)' % ("(birth_date + INTERVAL \'%d days\') >= '%s'" % (settings.PNC_GESTATION, navb.start) ), 'compare': '', 'value': '', 'extra': True})
 
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'pnc_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'rw_pncvisits', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -2319,8 +2543,8 @@ class Application:
     sc      = kw.get('subcat')
     if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
-      'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -2338,15 +2562,25 @@ class Application:
      cnds.update({'(%s)' % queries.PNC_DATA['RISK']['query_str']: ''})
      DESCRI.append(('at_risk', 'At Risk'))
 
-    cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('pnc_table', cnds,
+    cols    += queries.LOCATION_INFO
+
+    if kw.get('group') and (kw.get('group') in [ z[0] for z in PNC_INDICS ] ):
+     pncnat     = orm.ORM.query('mother_track', pnc_cnds,
+		      cols  = [kw.get('group')],
+		      
+		    )
+     pncindexcol = [x[kw.get('group')] for x in pncnat.list()]#;print pncindexcol
+     if len(pncindexcol) > 1: cnds.update({'indexcol IN %s' % str(tuple(pncindexcol))  : ''})
+     if len(pncindexcol) == 1: cnds.update({'indexcol = %s' % str(pncindexcol[0])  : ''})
+        
+    nat     = orm.ORM.query('rw_pncvisits', cnds,
       cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
+					('(birth_date) AS dob', 'Delivery Date'),
  
 					] + attrs) if x[0][0] != '_'],
       
     )
-    desc  = 'Postnatal Visits%s' % (' (%s)' % (self.find_descr(DESCRI + queries.PNC_DATA['RISK']['attrs'], 
+    desc  = 'Postnatal Visits%s' % (' (%s)' % (self.find_descr(DESCRI + queries.PNC_DATA['RISK']['attrs'] + [(x[0], x[1]) for x in PNC_INDICS], 
 						sc or kw.get('group')), 
 					) if sc or kw.get('group') else '', )
     return self.dynamised('pncdash_table', mapping = locals(), *args, **kw)
@@ -2355,16 +2589,16 @@ class Application:
   @cherrypy.expose
   def tables_child(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
+    attrs = [ (' %s AS %s' % ( x[0], makecol(x[0]) ), x[1]) for x in queries.NBC_DATA['RISK']['attrs'] + queries.NBC_DATA['HIGH_RISK']['attrs'] ]
     indexed_attrs = [ ('%s' % get_indexed_value('name', x[2], x[1], x[0], x[3]), x[3]) for x in queries.INDEXED_VALS['location']]
-    nat     = orm.ORM.query('nbc_table', cnds,
+    nat     = orm.ORM.query('rw_children', cnds,
       				cols  = [x[0] for x in (cols + indexed_attrs + queries.NBC_DATA['cols'] + attrs) if x[0][0] != '_'],
 				sort = ('report_date', False),
     			)
     patient = nat[0]  
     reminders = []
     nbc_reports = [ x for x in nat.list() ]#; print attrs
-    cbn_reports = orm.ORM.query('cbn_table', cnds)
+    cbn_reports = orm.ORM.query('rw_nutritions', cnds)
     return self.dynamised('child_table', mapping = locals(), *args, **kw)
 
   ### END OF POSTNATAL ####
@@ -2378,19 +2612,19 @@ class Application:
     cnds    = navb.conditions('report_date', auth)
     exts = {}
     
-    vac_comps_attrs = [(x[0].split()[0], x[1]) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]
+    vac_comps_attrs = [(makecol(x[0]), x[1]) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]
     vac_comps_exts = exts
-    vac_comps_exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]))
-    vac_comps = orm.ORM.query(  'chi_table', 
+    vac_comps_exts.update(dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]))
+    vac_comps = orm.ORM.query(  'rw_childhealth', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = vac_comps_exts,
 			)
 
-    vac_series_attrs = [(x[0].split()[0], x[1]) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]
+    vac_series_attrs = [(makecol(x[0]), x[1]) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]
     vac_series_exts = exts
-    vac_series_exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]))
-    vac_series = orm.ORM.query(  'chi_table', 
+    vac_series_exts.update(dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]))
+    vac_series = orm.ORM.query(  'rw_childhealth', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = vac_series_exts,
@@ -2404,34 +2638,47 @@ class Application:
   def tables_vaccindash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('birth_date',            'Date Of Birth'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    VACDICT = makedict(queries.VAC_DATA['VAC_COMPLETION']['attrs'])
+    SERIESDICT = makedict(queries.VAC_DATA['VAC_SERIES']['attrs'])
+    INDICS = [VACDICT[key] for key in VACDICT] + [SERIESDICT[key] for key in SERIESDICT.keys()] #;print INDICS
+    wcl = []
+
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) >= '%s'" % (navb.start) : ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
-    else:
-     INDICS = queries.VAC_DATA['VAC_COMPLETION']['attrs'] + queries.VAC_DATA['VAC_SERIES']['attrs']
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]:
+     cnds.update({queries.VAC_DATA['VAC_COMPLETION']['query_str']: ''})
+     cnds.update({ VACDICT[kw.get('subcat')][0] : ''})
+     INDICS = [VACDICT[kw.get('subcat')]]
+
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]:
+     cnds.update({queries.VAC_DATA['VAC_SERIES']['query_str']: ''})
+     cnds.update({ SERIESDICT[kw.get('subcat')][0] : ''})
+     INDICS = [SERIESDICT[kw.get('subcat')]]
+
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = {}
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.VAC_DATA['VAC_COMPLETION']['attrs']]: DATADICT = VACHDICT
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.VAC_DATA['VAC_SERIES']['attrs']]: DATADICT = SERIESDICT
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
 
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'chi_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'rw_childhealth', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -2440,12 +2687,12 @@ class Application:
 											
 						)
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ (makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+    
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
       'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
       'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
@@ -2456,18 +2703,15 @@ class Application:
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
     if sc:
-      cnds[sc]  = ''
+      pass#cnds[sc]  = ''
     attrs = []
     
     cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('chi_table', cnds,
-      cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
- 
-					] + attrs) if x[0][0] != '_'],
+    nat     = orm.ORM.query('rw_childhealth', cnds,
+      cols  = [x[0] for x in (cols + attrs) if x[0][0] != '_'],
       
     )
-    desc  = 'Vaccination %s' % (' (%s)' % (self.find_descr(DESCRI + queries.VAC_DATA['VAC_COMPLETION']['attrs'] + queries.VAC_DATA['VAC_SERIES']['attrs'], 
+    desc  = 'Vaccination %s' % (' (%s)' % (self.find_descr(DESCRI + [ (makecol(x[0]), x[1]) for x in INDICS ], 
 						sc) or 'ALL', 
 					) )
     return self.dynamised('vaccindash_table', mapping = locals(), *args, **kw)
@@ -2484,22 +2728,22 @@ class Application:
     cnds    = navb.conditions('report_date')
     exts = {}
     
-    ccm_attrs = [(x[0].split()[0], x[1]) for x in queries.CCM_DATA['attrs']]
+    ccm_attrs = [( makecol(x[0]), x[1]) for x in queries.CCM_DATA['attrs']]
     ccm_exts = exts
     ccm_cnds = cnds
     ccm_cnds.update({queries.CCM_DATA['query_str']: ''})
-    ccm_exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.CCM_DATA['attrs']]))
-    ccm = orm.ORM.query(  'ccm_table', 
+    ccm_exts.update(dict([( makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.CCM_DATA['attrs']]))
+    ccm = orm.ORM.query(  'rw_ccms', 
 			  ccm_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = ccm_exts,
 			)
 
-    cmr_attrs = [(x[0].split()[0], x[1]) for x in queries.CMR_DATA['attrs']]
+    cmr_attrs = [( makecol(x[0]), x[1]) for x in queries.CMR_DATA['attrs']]
     cmr_cnds = navb.conditions('report_date')
     cmr_cnds.update({queries.CMR_DATA['query_str']: ''})
-    cmr_exts = dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.CMR_DATA['attrs']])
-    cmr = orm.ORM.query(  'cmr_table', 
+    cmr_exts = dict([( makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.CMR_DATA['attrs']])
+    cmr = orm.ORM.query(  'rw_ccms', 
 			  cmr_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = cmr_exts,
@@ -2511,35 +2755,55 @@ class Application:
   def tables_ccmdash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
-      ('lmp',            'Date Of Birth'),
+      ('birth_date',            'Date Of Birth'),
+      ('symptom_ma',            'Malaria'),
+      ('symptom_pc',            'Pneumonia'),
+      ('symptom_di',            'Diarrhea'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    CCMDICT = makedict(queries.CCM_DATA['attrs'])
+    CMRDICT = makedict(queries.CMR_DATA['attrs'])
+    INDICS = [CCMDICT[key] for key in CCMDICT] + [CMRDICT[key] for key in CMRDICT.keys()] #;print INDICS
+    wcl = []
+
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) >= '%s'" % (navb.start) : ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    primary_table = 'ccm_table'
-    if kw.get('subcat') and kw.get('subcat') in [x[0].split()[0] for x in queries.CMR_DATA['attrs']]:
-     primary_table = 'cmr_table'
+    primary_table = 'rw_ccms'
+
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.CCM_DATA['attrs']]:
+     cnds.update({queries.CCM_DATA['query_str']: ''})
+     cnds.update({ CCMDICT[kw.get('subcat')][0] : ''})
+     INDICS = [CCMDICT[kw.get('subcat')]]
+
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.CMR_DATA['attrs']]:
      cnds.update({queries.CMR_DATA['query_str']: ''})
-    else: cnds.update({queries.CCM_DATA['query_str']: ''}) 
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
-    else:
-     INDICS = queries.CCM_DATA['attrs']
+     cnds.update({ CMRDICT[kw.get('subcat')][0] : ''})
+     INDICS = [CMRDICT[kw.get('subcat')]]
+
+
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = {}
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.CCM_DATA['attrs']]: DATADICT = CCMDICT;wcl.append({'field_name': '(%s)' % queries.ANC_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.CMR_DATA['attrs']]: DATADICT = CMRDICT
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+
+      
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.CCM_DATA['attrs']]:
+      	wcl.append({'field_name': '(%s)' % queries.CCM_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.CMR_DATA['attrs']]:
+      	wcl.append({'field_name': '(%s)' % queries.CMR_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
 
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
       locateds = summarize_by_location(primary_table = primary_table, MANY_INDICS = INDICS, where_clause = wcl, 
@@ -2551,14 +2815,16 @@ class Application:
 											
 						)
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
-      'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'symptom_ma': lambda x, _, __: '%s' % ( 'Malaria' if x else ''),
+      'symptom_pc': lambda x, _, __: '%s' % ( 'Pneumonia' if x else ''),
+      'symptom_di': lambda x, _, __: '%s' % ( 'Diarrhea' if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -2567,18 +2833,15 @@ class Application:
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
     if sc:
-      cnds[sc]  = ''
+      pass ##cnds[sc]  = ''
     attrs = []
     
     cols    += queries.LOCATION_INFO   
     nat     = orm.ORM.query(primary_table, cnds,
-      cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
- 
-					] + attrs) if x[0][0] != '_'],
+      cols  = [x[0] for x in (cols + attrs) if x[0][0] != '_'],
       
     )
-    desc  = 'CCM %s' % (' (%s)' % (self.find_descr(DESCRI + queries.CCM_DATA['attrs'] + queries.CMR_DATA['attrs'], 
+    desc  = 'CCM %s' % (' (%s)' % (self.find_descr(DESCRI + [ (makecol(x[0]) , x[1]) for x in INDICS ], 
 						sc) or 'ALL', 
 					) )
     return self.dynamised('ccmdash_table', mapping = locals(), *args, **kw)
@@ -2597,20 +2860,20 @@ class Application:
     cnds    = navb.conditions('report_date', auth)
     exts = {}
     
-    attrs = [(x[0].split()[0], x[1]) for x in queries.DEATH_DATA['attrs']]
+    attrs = [(makecol(x[0]), x[1]) for x in queries.DEATH_DATA['attrs']]
     cnds.update({queries.DEATH_DATA['query_str']: ''})
-    exts.update(dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.DEATH_DATA['attrs']]))
-    nat = orm.ORM.query(  'dth_table', 
+    exts.update(dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.DEATH_DATA['attrs']]))
+    nat = orm.ORM.query(  'rw_deaths', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
-			)
+			);print nat.query
 
-    bylocs_attrs = [(x[0].split()[0], x[1]) for x in queries.DEATH_DATA['bylocs']['attrs']]
+    bylocs_attrs = [(makecol(x[0]), x[1]) for x in queries.DEATH_DATA['bylocs']['attrs']]
     bylocs_cnds = navb.conditions('report_date')
     bylocs_cnds.update({queries.DEATH_DATA['bylocs']['query_str']: ''})
-    bylocs_exts = dict([(x[0].split()[0], ('COUNT(*)',x[0])) for x in queries.DEATH_DATA['bylocs']['attrs']])
-    bylocs = orm.ORM.query(  'dth_table', 
+    bylocs_exts = dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.DEATH_DATA['bylocs']['attrs']])
+    bylocs = orm.ORM.query(  'rw_deaths', 
 			  bylocs_cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = bylocs_exts,
@@ -2622,36 +2885,49 @@ class Application:
   def tables_deathdash(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
       ('indexcol',          'Entry ID'),
-      ('patient_id',            'Mother ID'),
+      ('indangamuntu',            'Mother ID'),
       ('reporter_phone',            'Reporter Phone'),
       ('lmp',            'Date Of Birth'),
       
     ] , *args, **kw)
     DESCRI = []
-    INDICS = []
+    DEATHDICT = makedict(queries.DEATH_DATA['attrs'])
+    LOCSDICT = makedict(queries.DEATH_DATA['bylocs']['attrs'])
+    INDICS = [DEATHDICT[key] for key in DEATHDICT.keys()] + [LOCSDICT[key] for key in LOCSDICT.keys()]
+    wcl = []
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) >= '%s'" % (navb.start) : ''})
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
     cnds.update({queries.DEATH_DATA['query_str']: ''})
-    if kw.get('subcat') and kw.get('subcat').__contains__('_bool'):
-     kw.update({'compare': ' IS NOT'})
-     kw.update({'value': ' NULL'})
-    else:
-     INDICS = queries.DEATH_DATA['attrs'] #+ settings.DEATH_DATA['bylocs']['attrs']
+
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.DEATH_DATA['attrs']]:
+     cnds.update({queries.DEATH_DATA['query_str']: ''})
+     cnds.update({ DEATHDICT[kw.get('subcat')][0] : ''})
+     INDICS = [DEATHDICT[kw.get('subcat')]]
+
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.DEATH_DATA['bylocs']['attrs']]:
+     cnds.update({queries.DEATH_DATA['bylocs']['query_str']: ''})
+     cnds.update({ LOCSDICT[kw.get('subcat')][0] : ''})
+     INDICS = [LOCSDICT[kw.get('subcat')]]
+
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
      district = kw.get('district') or auth.him()['district_pk']
      location = kw.get('hc') or auth.him()['health_center_pk']
-     wcl = [{'field_name': '%s' % kw.get('subcat'), 
-		'compare': '%s' % kw.get('compare') if kw.get('compare') else '', 
-		'value': '%s' % kw.get('value') if kw.get('value') else '' 
-	   }] if kw.get('subcat') else []
+     if kw.get('subcat'):
+      DATADICT = {}
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.DEATH_DATA['attrs']]: DATADICT = DEATHDICT
+      if kw.get('subcat') in [makecol(x[0]) for x in queries.DEATH_DATA['bylocs']['attrs']]: DATADICT = LOCSDICT
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
 
      wcl.append({'field_name': '(%s)' % queries.DEATH_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      locateds = summarize_by_location(primary_table = 'dth_table', MANY_INDICS = INDICS, where_clause = wcl, 
+      locateds = summarize_by_location(primary_table = 'rw_deaths', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
 						location = location,
@@ -2660,14 +2936,13 @@ class Application:
 											
 						)
       tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
-      INDICS_HEADERS = dict([ (x[0].split()[0], x[1]) for x in INDICS])
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
 
     sc      = kw.get('subcat')
-    if kw.get('compare') and kw.get('value'): sc += kw.get('compare') + kw.get('value')
+    
     markup  = {
-      'patient_id': lambda x, _, __: '<a href="/tables/child?pid=%s">%s</a>' % (x, x),
-      'wt_float': lambda x, _, __: '%s' % (int(x) if x else ''),
-      'lmp': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'birth_date': lambda x, _, __: '%s' % (datetime.date(x) if x else ''),
       'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -2676,18 +2951,15 @@ class Application:
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
     if sc:
-      cnds[sc]  = ''
+      pass#cnds[sc]  = ''
     attrs = []
     
     cols    += queries.LOCATION_INFO   
-    nat     = orm.ORM.query('dth_table', cnds,
-      cols  = [x[0] for x in (cols + [
-					('(lmp) AS dob', 'Date Of Birth'),
- 
-					] + attrs) if x[0][0] != '_'],
+    nat     = orm.ORM.query('rw_deaths', cnds,
+      cols  = [x[0] for x in (cols + attrs) if x[0][0] != '_'],
       
     )
-    desc  = 'Death %s' % (' (%s)' % (self.find_descr(DESCRI + queries.DEATH_DATA['attrs'] + queries.DEATH_DATA['bylocs']['attrs'], 
+    desc  = 'Death %s' % (' (%s)' % (self.find_descr(DESCRI + [ (makecol(x[0]), x[1]) for x in INDICS], 
 						sc ) or 'ALL', 
 					) )
     return self.dynamised('deathdash_table', mapping = locals(), *args, **kw)
@@ -2699,17 +2971,25 @@ class Application:
   @cherrypy.expose
   def tables_patient(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
-    attrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.RISK['attrs'] + queries.HIGH_RISK['attrs'] ]
+    rattrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.RISK['attrs'] ]
+    hattrs = [ (' %s AS %s' % (x[0], x[0].split()[0]), x[1]) for x in queries.HIGH_RISK['attrs'] ]
     indexed_attrs = [ ('%s' % get_indexed_value('name', x[2], x[1], x[0], x[3]), x[3]) for x in queries.INDEXED_VALS['location']]
-    nat     = orm.ORM.query('pre_table', cnds,
-      				cols  = [x[0] for x in (cols + indexed_attrs + queries.PREGNANCY_DATA + attrs) if x[0][0] != '_'],
+    nat     = orm.ORM.query('rw_pregnancies', cnds,
+      				cols  = [x[0] for x in (cols + indexed_attrs + queries.PREGNANCY_DATA + rattrs + hattrs) if x[0][0] != '_'] + ['indexcol'],
 				sort = ('report_date', False),
-    			)
-    patient = nat[0]  
+    			)#;print nat.query, cnds
+    patient = nat[0]
+    pregnancy = [patient]  
     reminders = []
+    red_notifications = []
+    nutr_notifications = []
     pre_reports = [ x for x in nat.list() ]
-    anc_reports = orm.ORM.query('anc_table', cnds)
-    pnc_reports = orm.ORM.query('pnc_table', cnds)
+    cnds.update({'pregnancy_id = %s' % patient['indexcol']: ''})
+    anc_reports = orm.ORM.query('rw_ancvisits', cnds, sort = ('report_date', False) );print anc_reports.query, cnds
+    #risk_reports = orm.ORM.query('rw_risks', cnds, sort = ('report_date', False) )
+    #red_reports = orm.ORM.query('rw_redalerts', cnds, sort = ('report_date', False) )
+    #bir_reports = orm.ORM.query('rw_children', cnds, sort = ('report_date', False) )
+    #pnc_reports = orm.ORM.query('rw_pncvisits', cnds, sort = ('report_date', False) )
     return self.dynamised('patient_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
@@ -2717,13 +2997,12 @@ class Application:
     navb, auth, cnds, cols    = self.neater_tables(basics = queries.PATIENT_DETAILS , *args, **kw)
     data = []
     for key in REPORTS.keys():
-     data.append(  [ REPORTS.get(key), FIELDS.get(key), orm.ORM.query('%s_table' % key.lower(),
-										 cnds, 
-						cols = ['(%s IS NOT NULL) AS %s ' % (x[0], x[0]) if x[0].__contains__('bool') else x[0] for x in FIELDS.get(key) ],
-						sort = ('report_date', False), 
-								) 
-			] 
-		)
+     report = REPORTS[key]
+     table  = report[1]
+     attrs  = FIELDS.get(key).get('attrs')
+     reports = orm.ORM.query( table, cnds, cols = [x[0] for x in attrs] , sort = ('report_date', False) )
+     data.append( { 'report'  : report, 'attrs': attrs, 'reports' : reports }  
+		)#; print reports.query
     #print data
     return self.dynamised('patienthistory', mapping = locals(), *args, **kw)
 
@@ -2908,4 +3187,45 @@ class Application:
     cherrypy.response.headers['Content-Type'] = 'application/json'
     reps   = orm.ORM.query('thousanddays_reports', cnds, cols = ['COUNT(*) AS total'])[0]['total']
     return json.dumps({'total': neat_numbers(reps)})
+
+
+## START MARVIN VIEWS
+
+  @cherrypy.expose
+  def dashboards_chw(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    cnds.update({ queries.CHW_DATA['query_str'] : ''})
+    attrs = [( makecol(x[0]), x[1]) for x in queries.CHW_DATA['attrs'] ]
+    exts = {}
+    exts.update(dict([( makecol(x[0]), ('COUNT(*)',x[0]) ) for x in queries.CHW_DATA['attrs'] ]))
+    chws = orm.ORM.query(  'chws_reporter', 
+			  cnds, 
+			  cols = ['COUNT(*) AS total'], 
+			  extended = exts
+			)
+    return self.dynamised('chw', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_chwreg(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
+    cnds    = navb.conditions('report_date')
+    exts = {}
+
+    return self.dynamised('chwreg', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_chwtrail(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
+    cnds    = navb.conditions('report_date')
+    exts = {}
+
+    return self.dynamised('chwtrail', mapping = locals(), *args, **kw)
+
+#### END OF MARVIN VIEWS
 

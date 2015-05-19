@@ -33,7 +33,12 @@ Creating table chws_healthfacility
 3. BUILD MESSAGING
 ===================
 
+#psql -hlocalhost -Uthousanddays -dthousanddays -W -f notifications/dropmsg.sql
+#python rapidsmsrw/manage.py syncdb
 #python rapidsmsrw/manage.py build_messaging
+#python rapidsmsrw/manange.py test_messaging
+#psql -hlocalhost -Uthousanddays -dthousanddays -W -f notifications/trigger.sql
+#python notifications/track.py
 
 
 
