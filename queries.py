@@ -20,10 +20,14 @@ INDEXED_VALS = {'location': [('province_pk', 'id', 'chws_province', 'Province'),
 
 CHW_DATA = {
 		'attrs': [
-				('role_id = 1', 'ASM'),
-				('role_id = 2', 'Binome')				
+			('role_id = 1', 'ASM'),
+			('role_id = 2', 'Binome'),
+			("(last_seen + INTERVAL '15 days') > '%s' AND role_id = 1 /*active*/" , 'ACTIVE ASM'),###ADD COMMENT IN SQL TO MAKE ATTRIBUTES DIFF
+			("(last_seen + INTERVAL '15 days') > '%s' AND role_id = 2 /*active*/", 'ACTIVE Binome'),
+			("((last_seen + INTERVAL '15 days') <= '%s' OR (last_seen IS NULL)) AND role_id = 1 /*inactive*/" , 'INACTIVE ASM'),
+			("((last_seen + INTERVAL '15 days') <= '%s'  OR (last_seen IS NULL)) AND role_id = 2 /*inactive*/", 'INACTIVE Binome')				
 			],
-		'query_str': 'role_id IS NOT NULL AND nation_id != 2'
+		'query_str': 'role_id IS NOT NULL'# AND nation_id != 2'
 			
 		}
 

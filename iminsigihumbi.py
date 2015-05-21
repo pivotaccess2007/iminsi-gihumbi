@@ -17,6 +17,9 @@ import urllib2, urlparse
 from summarize import *
 from mapval import *
 from pygrowup import helpers, Calculator
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 def child_status(weight = None, height = None, date_of_birth = None, sex = None):
  status = {}
@@ -3196,16 +3199,111 @@ class Application:
     auth    = ThousandAuth(cherrypy.session.get('email'))
     navb    = ThousandNavigation(auth, *args, **kw)
     cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
     cnds.update({ queries.CHW_DATA['query_str'] : ''})
     attrs = [( makecol(x[0]), x[1]) for x in queries.CHW_DATA['attrs'] ]
     exts = {}
-    exts.update(dict([( makecol(x[0]), ('COUNT(*)',x[0]) ) for x in queries.CHW_DATA['attrs'] ]))
+    ###REMEMBER TO DOCUMENT THIS TRICK OF BOTH SQL COMMENTS HELPFUL IN NAMING 
+    exts.update(dict([( makecol(x[0]), ('COUNT(*)', (x[0] % navb.start) if x[0].__contains__("%s") else x[0] ) ) for x in queries.CHW_DATA['attrs'] ]))
+    #print exts,navb.start
+    cnds = change_pks_cnds(cnds)
     chws = orm.ORM.query(  'chws_reporter', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts
 			)
     return self.dynamised('chw', mapping = locals(), *args, **kw)
+
+
+  @cherrypy.expose
+  def tables_chw(self, *args, **kw):
+    navb, auth, cnds, cols    = self.neater_tables(basics = [] , *args, **kw)
+    cols = [
+		('id', 'ID'),                   
+		('surname',  'Surname'),               
+		('given_name',  'Given Name'),             
+		('role_id',  'Role'),                
+		('sex',  'Sex'),                    
+		('education_level',  'Education Level'),        
+		('date_of_birth',  'Date Of Birth'),          
+		('join_date',  'Join Date'),              
+		('national_id',  'National ID'),            
+		('telephone_moh',  'Telephone'),          
+		('village_id',  'Village'),             
+		('cell_id',  'Cell'),                
+		('sector_id',  'Sector'),              
+		('health_centre_id',  'Health Center'),       
+		#('referral_hospital_id',  'Hospital'),   
+		('district_id',  'District'),            
+		('province_id',  'Province'),            
+		('nation_id',  'Country'),              
+		('created',  'Created'),                
+		('updated',  'Updated'),                
+		('language',  'Language'),               
+		('deactivated',  'Deactivated'),            
+		('is_active',  'Is Active'),              
+		('last_seen',  'Last Seen')    
+      
+    ]
+    DESCRI = []
+
+    DICT = makedict(queries.CHW_DATA['attrs'])
+    INDICS = []
+    wcl = []
+
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
+    cnds    = navb.conditions(None, auth)
+    cnds.update({ queries.CHW_DATA['query_str'] : ''})
+  
+    if kw.get('summary'):
+     province = kw.get('province') or auth.him()['province_pk']
+     district = kw.get('district') or auth.him()['district_pk']
+     location = kw.get('hc') or auth.him()['health_center_pk']
+     if kw.get('subcat'):
+      DATADICT = DICT if kw.get('subcat') in [x[0] for x in queries.CHW_DATA['attrs']] else  {}
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+     if kw.get('subcat') is None:
+      pass
+     
+     if kw.get('view') == 'table' or kw.get('view') != 'log' :
+      #print INDICS
+      locateds = summarize_by_location(primary_table = 'chws_reporter', MANY_INDICS = INDICS, where_clause = wcl, 
+						province = province,
+						district = district,
+						location = location,
+						#start =  navb.start,
+						#end = navb.finish,
+											
+						)
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
+
+    sc      = kw.get('subcat')
+    
+    markup  = {
+      #'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'role_id': lambda x, _, __: '%s' % ("Binome" if x == 2 else 'ASM'),
+      'province_id': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
+      'district_id': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
+      'health_centre_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
+      #'referral_hospital_id': lambda x, _, __: '%s' % (self.hps.get(str(x)), ),
+      'sector_id': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
+      'cell_id': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
+      'village_id': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
+    }
+    
+    
+    cnds = change_pks_cnds(cnds)
+    nat     = orm.ORM.query('chws_reporter', cnds,
+				      cols  = [x[0] for x in cols ],
+				      
+				    )
+    desc  = 'CHWs%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], sc or kw.get('group')), 
+					) if sc or kw.get('group') else '', )
+    return self.dynamised('chw_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def dashboards_chwreg(self, *args, **kw):
