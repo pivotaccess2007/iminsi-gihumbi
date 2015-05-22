@@ -3214,6 +3214,26 @@ class Application:
 			)
     return self.dynamised('chw', mapping = locals(), *args, **kw)
 
+  @cherrypy.expose
+  def dashboards_reminder(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
+    #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
+    attrs = [( makecol(x[0]), x[1]) for x in queries.REMINDER_DATA['attrs'] ]
+    exts = {}
+    ###REMEMBER TO DOCUMENT THIS TRICK OF BOTH SQL COMMENTS HELPFUL IN NAMING 
+    exts.update(dict([( makecol(x[0]), ('COUNT(*)',  x[0] ) ) for x in queries.REMINDER_DATA['attrs'] ]))
+    print exts,navb.start
+    cnds = change_pks_cnds(cnds);print cnds
+    nat = orm.ORM.query(  'ubuzima_reminder', 
+			  cnds, 
+			  cols = ['COUNT(*) AS total'], 
+			  extended = exts
+			);print "query : %s" %nat.query
+    return self.dynamised('reminder', mapping = locals(), *args, **kw)
+
 
   @cherrypy.expose
   def tables_chw(self, *args, **kw):
