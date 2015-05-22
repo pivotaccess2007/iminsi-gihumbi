@@ -20,12 +20,42 @@ INDEXED_VALS = {'location': [('province_pk', 'id', 'chws_province', 'Province'),
 
 CHW_DATA = {
 		'attrs': [
-				('role_id = 1', 'ASM'),
-				('role_id = 2', 'Binome')				
+			('role_id = 1', 'ASM'),
+			('role_id = 2', 'Binome'),
+			("(last_seen + INTERVAL '15 days') > '%s' AND role_id = 1 /*active*/" , 'ACTIVE ASM'),###ADD COMMENT IN SQL TO MAKE ATTRIBUTES DIFF
+			("(last_seen + INTERVAL '15 days') > '%s' AND role_id = 2 /*active*/", 'ACTIVE Binome'),
+			("((last_seen + INTERVAL '15 days') <= '%s' OR (last_seen IS NULL)) AND role_id = 1 /*inactive*/" , 'INACTIVE ASM'),
+			("((last_seen + INTERVAL '15 days') <= '%s'  OR (last_seen IS NULL)) AND role_id = 2 /*inactive*/", 'INACTIVE Binome')				
 			],
-		'query_str': 'role_id IS NOT NULL AND nation_id != 2'
+		'query_str': 'role_id IS NOT NULL'# AND nation_id != 2'
 			
 		}
+
+REMINDER_DATA = {
+			'attrs': [
+					('type_id = 1', '2nd ANC Visit'),
+					('type_id = 2', '3rd ANC Visit'),
+					('type_id =  3', '4th ANC Visit'),
+					('type_id = 4', 'Two Weeks Before Expected Delivery Date'),
+					('type_id = 5', 'Week Before Expected Delivery Date'),
+					('type_id = 6', 'Inactive Reporter'),
+					('type_id = 7', 'Due Date '),
+					('type_id = 8', 'Week After Due Date'),
+					('type_id = 9', 'PNC visit after 2 days of Delivery Date'),
+					('type_id = 10', 'PNC visit after 6 days of Delivery Date'),
+					('type_id = 11', 'PNC visit after 28 days of Delivery Date'),
+					('type_id = 13', 'Child Health after 6 months of Delivery Date'),
+					('type_id = 14', 'Child Health after 9 months of Delivery Date'),
+					('type_id = 15', 'Child Health after 18 months of Delivery Date'),
+					('type_id = 16', 'Child Health after 24 months of Delivery Date'),
+					('type_id = 17', 'Active Reporter Feedback'),
+					('type_id = 18', 'Inactive Reporter Feedback'),
+					('type_id = 19', 'Red Alert Result'),
+					('type_id = 20', 'Risk Result'),
+					('type_id = 21', 'Case Management Response')
+					],
+			 'query_str': ''
+			}
 
 NO_RISK = {'attrs': 
 			[('prev_pregnancy_gs IS NULL', 'Previous Obstetric Surgery'), 
