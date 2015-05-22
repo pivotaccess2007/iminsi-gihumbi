@@ -3225,13 +3225,13 @@ class Application:
     exts = {}
     ###REMEMBER TO DOCUMENT THIS TRICK OF BOTH SQL COMMENTS HELPFUL IN NAMING 
     exts.update(dict([( makecol(x[0]), ('COUNT(*)',  x[0] ) ) for x in queries.REMINDER_DATA['attrs'] ]))
-    print exts,navb.start
-    cnds = change_pks_cnds(cnds);print cnds
+    #print exts,navb.start
+    cnds = change_pks_cnds(cnds)#;print cnds
     nat = orm.ORM.query(  'ubuzima_reminder', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts
-			);print "query : %s" %nat.query
+			)#;print "query : %s" %nat.query
     return self.dynamised('reminder', mapping = locals(), *args, **kw)
 
 
@@ -3267,13 +3267,19 @@ class Application:
     ]
     DESCRI = []
 
-    DICT = makedict(queries.CHW_DATA['attrs'])
-    INDICS = []
-    wcl = []
-
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     cnds    = navb.conditions(None, auth)
     cnds.update({ queries.CHW_DATA['query_str'] : ''})
+
+    DICT = replaceindictcol(makedict(queries.CHW_DATA['attrs']), navb.start)
+    INDICS = [DICT[key] for key in DICT.keys()]
+    #print INDICS, DICT
+    wcl = []
+    wcl.append({'field_name': '(%s)' % queries.CHW_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
+    
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.CHW_DATA['attrs']]:
+     cnds.update({ DICT[kw.get('subcat')][0] : ''})
+     INDICS = [DICT[kw.get('subcat')]]
   
     if kw.get('summary'):
      province = kw.get('province') or auth.him()['province_pk']
@@ -3285,6 +3291,7 @@ class Application:
 		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
 
 		] if DATADICT.get(kw.get('subcat')) else []
+      
      if kw.get('subcat') is None:
       pass
      
@@ -3324,6 +3331,88 @@ class Application:
     desc  = 'CHWs%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], sc or kw.get('group')), 
 					) if sc or kw.get('group') else '', )
     return self.dynamised('chw_table', mapping = locals(), *args, **kw)
+
+
+  @cherrypy.expose
+  def tables_reminder(self, *args, **kw):
+    navb, auth, cnds, cols    = self.neater_tables(basics = [] , *args, **kw)
+    cols = [
+		('id', 'ID'),                   
+		('type_id',  'Role'),                
+		('village_id',  'Village'),             
+		('cell_id',  'Cell'),                
+		('sector_id',  'Sector'),              
+		('location_id',  'Health Center'),       
+		('district_id',  'District'),            
+		('province_id',  'Province'),            
+		#('nation_id',  'Country'),              
+		('date',  'Sent On')    
+      
+    ]
+    DESCRI = []
+
+    DICT = makedict(queries.REMINDER_DATA['attrs'])
+    INDICS = [DICT[key] for key in DICT.keys()]
+    wcl = []
+
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
+    cnds    = navb.conditions(None, auth)
+    #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
+    
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.REMINDER_DATA['attrs']]:
+     cnds.update({ DICT[kw.get('subcat')][0] : ''})
+     INDICS = [DICT[kw.get('subcat')]]
+
+    if kw.get('summary'):
+     province = kw.get('province') or auth.him()['province_pk']
+     district = kw.get('district') or auth.him()['district_pk']
+     location = kw.get('hc') or auth.him()['health_center_pk']
+     if kw.get('subcat'):
+      DATADICT = DICT if kw.get('subcat') in [x[0] for x in queries.REMINDER_DATA['attrs']] else  {}
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+     if kw.get('subcat') is None:
+      pass
+     
+     if kw.get('view') == 'table' or kw.get('view') != 'log' :
+      print INDICS, wcl
+      locateds = summarize_by_location(primary_table = 'ubuzima_reminder', MANY_INDICS = INDICS, where_clause = wcl, 
+						province = province,
+						district = district,
+						location = location,
+						#start =  navb.start,
+						#end = navb.finish,
+											
+						)
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
+
+    sc      = kw.get('subcat')
+
+    markup  = {
+      #'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'type_id': lambda x, _, __: '%s' % ( DICT.get('type_id%d'%x)[1] if DICT.get('type_id%d'%x) else ''),
+      'province_id': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
+      'district_id': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
+      'location_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
+      #'referral_hospital_id': lambda x, _, __: '%s' % (self.hps.get(str(x)), ),
+      'sector_id': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
+      'cell_id': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
+      'village_id': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
+    }
+    
+    
+    cnds = change_pks_cnds(cnds)
+    nat     = orm.ORM.query('ubuzima_reminder', cnds,
+				      cols  = [x[0] for x in cols ],
+				      
+				    )
+    desc  = 'Reminders%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], sc or kw.get('subcat')), 
+					) if sc or kw.get('subcat') else '', )
+    return self.dynamised('reminder_table', mapping = locals(), *args, **kw)
+
 
   @cherrypy.expose
   def dashboards_chwreg(self, *args, **kw):

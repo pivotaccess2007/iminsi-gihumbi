@@ -28,13 +28,32 @@ def fetch_data_cursor(conn, query_string):
  curseur.execute(query_string)
  return curseur
 
+def colincomments(s):
+  if s.__contains__("/*") and s.__contains__("*/"):
+    index_start = s.index("/*")
+    index_end = s.index("*/")
+    return s[index_start:index_end].replace("/*", '').replace("*/", '').replace(' ', '')
+  return s
+
 def makecol(s):
+  #Use name in comments
+  s = colincomments(s)
   # Remove invalid characters
   s = re.sub('[^0-9a-zA-Z_]', '', s)
   # Remove leading characters until we find a letter or underscore
   s = re.sub('^[^a-zA-Z_]+', '', s)
   return s.lower()
 
+def replaceincol(v, rv):
+  return v % rv
+
+def replaceindictcol(dictv, rv):
+  for m in dictv.keys():
+    x = dictv[m]
+    x = ( x[0] % rv if x[0].__contains__("%s") else x[0], x[1] )
+    dictv[m] = x
+  return dictv
+  
 def makedict(x):
  ans = {}
  for y in x: ans[makecol(y[0])] = (y[0], y[1])
@@ -120,34 +139,34 @@ def summarize_by_location(primary_table = 'pre_table', tables = [], where_clause
  if nationwide:
   fields.append( {'value': 'id', 'alias': 'province_id', 'table': 'chws_province'})
   fields.append( {'value': 'name', 'alias': 'province_name', 'table': 'chws_province'} )
-  if (primary_table.strip() != 'chws_reporter'):  inner_joins.append({'table': 'chws_province', 'field': 'id' , 'outer_field': 'province_pk'})
+  if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']):  inner_joins.append({'table': 'chws_province', 'field': 'id' , 'outer_field': 'province_pk'})
   else: inner_joins.append({'table': 'chws_province', 'field': 'id' , 'outer_field': 'province_id'})
   group_by.append('chws_province.name')
   group_by.append('chws_province.id')
   if province:
-    if (primary_table.strip() != 'chws_reporter'):  where_clause.append({'field_name': '%s.province_pk' % primary_table, 'compare': '=', 'value': int(province)})
+    if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']):  where_clause.append({'field_name': '%s.province_pk' % primary_table, 'compare': '=', 'value': int(province)})
     else: where_clause.append({'field_name': '%s.province_id' % primary_table, 'compare': '=', 'value': int(province)})
 
  if province:
   fields.append( {'value': 'id', 'alias': 'district_id', 'table': 'chws_district'})
   fields.append( {'value': 'name', 'alias': 'district_name', 'table': 'chws_district'} )
-  if (primary_table.strip() != 'chws_reporter'): inner_joins.append({'table': 'chws_district', 'field': 'id' ,  'outer_field': 'district_pk'})
+  if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']): inner_joins.append({'table': 'chws_district', 'field': 'id' ,  'outer_field': 'district_pk'})
   else: inner_joins.append({'table': 'chws_district', 'field': 'id' ,  'outer_field': 'district_id'})
   group_by.append('chws_district.name')
   group_by.append('chws_district.id')
   if district:
-    if (primary_table.strip() != 'chws_reporter'):  where_clause.append({'field_name': '%s.district_pk' % primary_table, 'compare':'=', 'value': int(district)})
+    if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']):  where_clause.append({'field_name': '%s.district_pk' % primary_table, 'compare':'=', 'value': int(district)})
     else: where_clause.append({'field_name': '%s.district_id' % primary_table, 'compare':'=', 'value': int(district)})
 
  if district:
   fields.append( {'value': 'id', 'alias': 'location_id', 'table': 'chws_healthcentre'})
   fields.append( {'value': 'name', 'alias': 'location_name', 'table': 'chws_healthcentre'} )
-  if (primary_table.strip() != 'chws_reporter'):  inner_joins.append({'table': 'chws_healthcentre', 'field': 'id' , 'outer_field': 'health_center_pk'})
+  if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']):  inner_joins.append({'table': 'chws_healthcentre', 'field': 'id' , 'outer_field': 'health_center_pk'})
   else: inner_joins.append({'table': 'chws_healthcentre', 'field': 'id' , 'outer_field': 'health_centre_id'})
   group_by.append('chws_healthcentre.name')
   group_by.append('chws_healthcentre.id')
   if location:
-    if (primary_table.strip() != 'chws_reporter'):  where_clause.append({'field_name': '%s.health_center_pk' % primary_table, 'compare': '=', 'value': int(location)})
+    if (primary_table.strip() not in ['chws_reporter', 'ubuzima_reminder']):  where_clause.append({'field_name': '%s.health_center_pk' % primary_table, 'compare': '=', 'value': int(location)})
     else: where_clause.append({'field_name': '%s.health_centre_id' % primary_table, 'compare': '=', 'value': int(location)}) 
 
  if start:
