@@ -79,9 +79,11 @@
   <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
     
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
-    <div class="risknumber"><a href="{{ nav.link('/dashboards/predash', group = 'at_risk', view = 'graphic')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
+    <div class="risknumber"><a href="{{ nav.link('/tables/predash', group = 'at_risk', view = 'graphic')}}">{{  display.nat[0]['at_risk']|neat_numbers }}</a></div>
   </div>
-  <div class="descrrisk">At Risk</div>
+  <div class="descrrisk">At Risk
+  <br><a style="color:#d3da81;" href="{{ nav.link('/dashboards/predash', group = 'at_risk', view = 'graphic')}}"> Disagregated by Symptoms</a>
+  </div>
   </div>
   
   <div class="space">  
