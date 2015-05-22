@@ -148,8 +148,11 @@
 		   <li class="{%  if  ref == 'pregnancy' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("predash", minus = ["group"])}}'><span>Pregnancies</span></a></li>
 		   <li class="{%  if  ref == 'anc' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("nbcdash", view= "graphic") }}'><span>New Borns</span></a></li>
 		   <li class="{%  if  ref == 'brithreport' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("ccmdash", view= "graphic") }}'><span>Child Health</span></a></li>
-		   <li class="{%  if  ref == 'vaccination' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("ccmdash", view= "graphic") }}'><span>Post Natal</span></a></li>
+		   <li class="{%  if  ref == 'vaccination' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("pncdash", view= "graphic") }}'><span>Post Natal</span></a></li>
 		   <li class="{%  if  ref == 'vaccination' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("nutr") }}'><span>Nutrition</span></a></li>
+        <li class="{%  if  ref == 'vaccination' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("reddash") }}'><span>RED ALERT</span></a></li>
+         <li class="{%  if  ref == 'vaccination' %} active{%  endif %}"><a href='/dashboards/{{ nav.link("chw") }}'><span>CHWS</span></a></li>
+        
   		   </ul>
        </li>
           {% block menu %}
@@ -209,7 +212,7 @@
       <div class="view">
       <div class="tabular {% if view == 'log' %} {{ module }}background {% endif %} "><a href="/tables/{{ nav.link(ref, view = 'log', minus = ['summary']) }}">Log</a></div>
       <div class="tabular {% if view == 'table'%} {{ module }}background {% endif %}"><a href="/tables/{{ nav.link(ref, summary = 'on', view = 'table')}}">Table</a></div>
-      <div class="graphic {% if view == 'graphic' %} {{ module }}background {% endif %}"><a href="/dashboards/{{ nav.link(ref, view = 'graphic', minus = ['summary'])}}">Bubbles</a></div>
+      <div class="graphic {% if view == 'graphic' %} {{ module }}background {% endif %}"><a href="/dashboards/{{ nav.link(ref, view = 'graphic', minus = ['summary'])}}">Summary</a></div>
       </div>
   {% endif %}
 	</div>
