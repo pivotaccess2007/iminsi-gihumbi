@@ -2,11 +2,22 @@
 				
 				//START FILTERING LOCATIONS
 				var locations = [];
+				var villages   = [];
+				var hps = [];
+				var sectors = [];
+				var cells = [];
+				var villages = [];
+				var url  = document.URL.split("?");
+				var url2 = "";
+				if (url.length > 1) url2 = url[1];
+				$.getJSON( "/locs?"+url2 , function( result ){
 				
-
-				$.getJSON( "/locs" , function( result ){
-				
-						var provinces = _.map(_.indexBy(result, 'province_id'), function(obj){return obj});
+						var provinces = _.map(_.indexBy(result['hcs'], 'province_id'), function(obj){return obj});
+						locations = result['hcs'];
+						hps = result['hps'];
+						sectors = _.map(_.indexBy(result['villages'], 'sector_id'), function(obj){return obj});
+						cells = _.map(_.indexBy(result['villages'], 'cell_id'), function(obj){return obj});
+						villages = result['villages'];
 					
 						for ( var i=0; i<provinces.length; i++ ){
 							province = provinces[i]
@@ -14,8 +25,27 @@
 							document.getElementById('provchoose').options[i] = new Option(province.province_name, province.province_id);
 							}
 
-				
-						locations = result;
+						for ( var i=0; i<hps.length; i++ ){
+								hp = hps[i]
+								document.getElementById('referralchoose').options.length = hps.length;
+								document.getElementById('referralchoose').options[i] = new Option(hp.name, hp.id);
+								}
+
+
+						for ( var i=0; i<sectors.length; i++ ){
+							sector = sectors[i]
+							document.getElementById('secchoose').options.length= sectors.length;
+							document.getElementById('secchoose').options[i] = new Option(sector.sector_name, sector.sector_id);
+							}
+						
+						document.getElementById('provchoose').options[provinces.length] = new Option("", "");
+						document.getElementById("provchoose").selectedIndex = provinces.length;
+						
+						document.getElementById('referralchoose').options[hps.length] = new Option("", "");
+						document.getElementById("referralchoose").selectedIndex = hps.length;
+
+						document.getElementById('secchoose').options[sectors.length] = new Option("", "");
+						document.getElementById("secchoose").selectedIndex = sectors.length;
 
 						// IS There a province selected, then apply
 						sel_prov = getQueryParameter ( "province" );
@@ -66,20 +96,51 @@
 							document.getElementById('distchoose').options.length = selected_districts.length;
 							document.getElementById('distchoose').options[i] = new Option(district.district_name, district.district_id);
 								}
-
+						document.getElementById('distchoose').options[selected_districts.length] = new Option("", "");
+						document.getElementById("distchoose").selectedIndex = selected_districts.length;
 
 					}
 
 				function changeLocation(value){
 
 					var selected_locations = _.filter(locations, function(item) {  return item.district_id == value; });
-			
+								
 					for ( var i=0; i<selected_locations.length; i++ ){
 								hc = selected_locations[i]
 								document.getElementById('locchoose').options.length = selected_locations.length;
 								document.getElementById('locchoose').options[i] = new Option(hc.name, hc.id);
 								}
+					
+						document.getElementById('locchoose').options[selected_locations.length] = new Option("", "");
+						document.getElementById("locchoose").selectedIndex = selected_locations.length;
 
+					}
+
+				function changeSector(value){
+					
+					var selected_cells = _.filter(cells, function(item) {  return item.sector_id == value;  });
+
+					for ( var i=0; i<selected_cells.length; i++ ){
+								cell = selected_cells[i]
+								document.getElementById('cellchoose').options.length = selected_cells.length;
+								document.getElementById('cellchoose').options[i] = new Option(cell.cell_name, cell.cell_id);
+								}
+						document.getElementById('cellchoose').options[selected_cells.length] = new Option("", "");
+						document.getElementById("cellchoose").selectedIndex = selected_cells.length;
+					}
+
+
+			       function changeCell(value){
+
+					var selected_villages = _.filter(villages, function(item) {  return item.cell_id == value;  });
+			
+					for ( var i=0; i<selected_villages.length; i++ ){
+								village = selected_villages[i]
+								document.getElementById('villchoose').options.length = selected_villages.length;
+								document.getElementById('villchoose').options[i] = new Option(village.name, village.id);
+								}
+						document.getElementById('villchoose').options[selected_villages.length] = new Option("", "");
+						document.getElementById("villchoose").selectedIndex = selected_villages.length;
 					}
 				
 				function PassCheck(filter_form){

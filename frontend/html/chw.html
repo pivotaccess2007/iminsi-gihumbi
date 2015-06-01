@@ -13,8 +13,11 @@
             <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
           </li>
           <li class="homelink">
-            <a href=''><span>Staff</span></a>
-          </li>          
+            <a href='/dashboards/{{ nav.link("chwstaff") }}'><span>Staff</span></a>
+          </li>
+	 <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
+          </li>       
 {% endblock %}
 
 {% block position %}

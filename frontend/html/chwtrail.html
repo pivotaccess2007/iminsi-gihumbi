@@ -1,9 +1,9 @@
 {%  extends "novabase.html" %}
-{%  block title %}Pregnancies{%  endblock  %}
-{%  block subtitle %} Pregnancy Risks {%  endblock  %}
+{%  block title %}CHW{%  endblock  %}
+{%  block subtitle %} CHW Trail {%  endblock  %}
 
 {% block menu %}
- 		  <li class="homelink">
+ 		 <li class="homelink">
             <a href='/dashboards/{{ nav.link("chw", view= "graphic") }}'><span>Statistics</span></a>
           </li>
           <li class="homelink">
@@ -13,8 +13,11 @@
             <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
           </li>
           <li class="homelink">
-            <a href=''><span>Staff</span></a>
-          </li>          
+            <a href='/dashboards/{{ nav.link("chwstaff") }}'><span>Staff</span></a>
+          </li>
+	 <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
+          </li>        
 {% endblock %}
 
 {% block position %}

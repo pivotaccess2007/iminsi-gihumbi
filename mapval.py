@@ -72,6 +72,25 @@ def fields(fs = [], ans = {}):
  
 #FIELDS = fields(fs = sms_report_fields, fans = fans(sms_reports))
 
+REPORTS_LOGS = {
+            'PRE' : ((u'Pregnancy', u'Ugusama'), ( 'rw_pregnancies', '') ) ,
+            'DTH' : ((u'Death', u'Urupfu'), ( 'rw_deaths', '')) ,
+            'RISK' : ((u'Risk', u'Ibibazo mpuruza'), ( 'rw_risks', '')) ,
+            'ANC' : ((u'Antenatal Consultation', u'Ukwipimisha'), ( 'rw_ancvisits', '')) ,
+            'DEP' : ((u'Departure', u'Ukwimuka'), ( 'rw_departures', '')) ,
+            'RES' : ((u'Risk Result', u'Igisubizo ku bibazo mpuruza'), ( 'rw_risks', '')) ,
+            'CBN' : ((u'Community Based Nutrition', u'Imirire') , ( 'rw_nutritions', '')),
+            'CCM' : ((u'Community Case Management', u'Ukuvura abana'), ( 'rw_ccms' , '')) ,
+            'RAR' : ((u'Red Alert Result', u'Igisubizo ku bibazo simusiga') , ( 'rw_redalerts', '')),
+            'REF' : ((u'Refusal', u'Ukwanga') , ( 'rw_refusals', '')),
+            'CHI' : ((u'Child Health', u'Ugukingira') , ( 'rw_childhealth', '')),
+            'NBC' : ((u'Newborn Care', u"Isurwa ry'uruhinja") , ( 'rw_nbcvisits', '')),
+            'PNC' : ((u'Postnatal Care', u"Isurwa ry'umubyeyi") , ( 'rw_pncvisits', '')),
+            'BIR' : ((u'Birth', u'Ukuvuka') , ( 'rw_children', '')),
+            'CMR' : ((u'Case Management Response', u"Iherezo ry'uburwayi") , ( 'rw_ccms', '')),
+            'RED' : ((u'Red Alert', u'Ibibazo simusiga'), ( 'rw_redalerts', '')) 
+        }
+
 REPORTS = {
             'PRE' : ((u'Pregnancy', u'Ugusama'), 'pregmessage') ,
             'DTH' : ((u'Death', u'Urupfu'), 'deathmessage') ,

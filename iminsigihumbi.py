@@ -44,6 +44,23 @@ def child_status(weight = None, height = None, date_of_birth = None, sex = None)
   status.update({'normal': 'NORMAL'})
  return status
 
+def register_chw(nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language):
+ chwhc = orm.ORM.query('chws_healthcentre', {'id = %s': health_center})[0]
+ chw = orm.ORM.query('chws_reporter', {'telephone_moh = %s': telephone_moh, 'national_id = %s': nid} )[0]
+ 
+ thing = {'surname': surname, 'given_name': given_name, 'sex': sex, 'language': language, 'national_id':nid, 'telephone_moh': telephone_moh,
+		'role_id': role, 'education_level': edu_level, 'date_of_birth': dob, 'join_date': djoin,
+		'village_id': village, 'cell_id': cell, 'sector_id': sector,
+		'district_id': chwhc['district_id'], 'province_id': chwhc['province_id'], 'nation_id': chwhc['nation_id'],
+		'health_centre_id': chwhc['id'], 'referral_hospital_id': referral, 
+		'deactivated': False, 'is_active': True, 'correct_registration': True
+	}
+ #print thing
+ if chw is None:
+  orm.ORM.store('chws_reporter', thing)
+ chw = orm.ORM.query('chws_reporter', {'telephone_moh = %s': telephone_moh, 'national_id = %s': nid, 'health_centre_id = %s': health_center} )[0]
+ return chw
+
 def get_display(value):
  if type(value) == bool:
   if value == True: return 'Yes'
@@ -281,11 +298,11 @@ class ThousandNavigation:
         (tn + ' <= %s')  : self.finish
       })
     if 'province' in self.kw:
-      ans['province_pk = (SELECT id FROM chws_province WHERE id = %s LIMIT 1)']  = self.kw.get('province')
+      ans['province_pk = (SELECT id FROM chws_province WHERE id = %s LIMIT 1)']  = self.kw.get('province') or 0
     if 'district' in self.kw:
-      ans['district_pk = (SELECT id FROM chws_district WHERE id = %s LIMIT 1)']  = self.kw.get('district')
+      ans['district_pk = (SELECT id FROM chws_district WHERE id = %s LIMIT 1)']  = self.kw.get('district') or 0
     if 'hc' in self.kw:
-      ans['health_center_pk = (SELECT id FROM chws_healthcentre WHERE id = %s LIMIT 1)']  = self.kw.get('hc')
+      ans['health_center_pk = (SELECT id FROM chws_healthcentre WHERE id = %s LIMIT 1)']  = self.kw.get('hc') or 0
     return ans
 
   @property
@@ -349,24 +366,45 @@ class Application:
 
   def village(self, pk):
     try:
-     num = int(pk) if pk else 'IS NULL'
+     num = int(pk) if pk else 0
      gat = orm.ORM.query('chws_village', {'id = %s': num})[0]
      return gat
     except: return None
 
   def cell(self, pk):
     try:
-     num = int(pk) if pk else 'IS NULL'
+     num = int(pk) if pk else 0
      gat = orm.ORM.query('chws_cell', {'id = %s': num})[0]
      return gat
     except: return None
 
   def sector(self, pk):
     try:
-     num = int(pk) if pk else 'IS NULL'
+     num = int(pk) if pk else 0
      gat = orm.ORM.query('chws_sector', {'id = %s': num})[0]
      return gat
     except: return None
+
+  def sectors(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_sector', {'district_id = %s': num})
+     return gat.list()
+    except: return []
+
+  def cells(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_cell', {'sector_id = %s': num})
+     return gat.list()
+    except: return []
+
+  def villages(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_village', {'cell_id = %s': num})
+     return gat.list()
+    except: return []
 
   def __set_locations(self):
     self.provinces  = {}
@@ -408,21 +446,63 @@ class Application:
 ##### START OF ALL LOCATIONS FILTERING
 
   @cherrypy.expose
-  def locs(self):
+  def locs(self, *args, **kw):
     import json
-    my_locs = []
-    data = orm.ORM.query('chws_healthcentre', {} ).list()
+    auth  = ThousandAuth(cherrypy.session.get('email'))#;print "DIS: %s" % kw.get('district')
+    province = auth.him()['province_pk'] or kw.get('province')
+    district = auth.him()['district_pk'] or kw.get('district')
+    health_center = auth.him()['health_center_pk'] or kw.get('hc')
+    wclause = {}
+    if province: wclause = {'province_id = %s' : province}
+    if district: wclause = {'district_id = %s' : district}
+    if health_center: wclause = {'id = %s' : health_center}
+    my_locs = {'hcs': [], 'villages': [], 'hps': [] }; 
+    data = orm.ORM.query('chws_healthcentre',  wclause).list()
+    hps = orm.ORM.query('chws_hospital',  {'district_id = %s': district } if district else {}).list()
+    if district:
+	villages = orm.ORM.query('chws_village',  {'district_id = %s' : district}).list()
+    	for v in villages:
+		#print v['name']
+		try:
+			cel = orm.ORM.query('chws_cell', {'id = %s' : v['cell_id']})[0]
+       			sec = orm.ORM.query('chws_sector', {'id = %s' : v['sector_id']})[0]
+			dst = orm.ORM.query('chws_district', {'id = %s' : v['district_id']})[0]
+       			prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+			myd = {
+							'id': v['id'], 'name': v['name'], 'code': v['code'],
+							'cell_name': cel['name'], 'cell_id': cel['id'], 'cell_code': cel['code'],
+						 	'sector_name': sec['name'], 'sector_id': sec['id'], 'sector_code': sec['code'],
+						 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+						 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
+						}
+			my_locs['villages'].append( myd )
+			#if myd['sector_id'] == 222: print myd
+		except Exception,e:	continue
+
     for d in data:
        #print d['name'], d['district'], d['province']
        dst = orm.ORM.query('chws_district', {'id = %s' : d['district_id']})[0]
        prv = orm.ORM.query('chws_province', {'id = %s' : d['province_id']})[0]
-       if prv and dst:	my_locs.append( 
+       if prv and dst:	my_locs['hcs'].append( 
 			{
 				'id': d['id'], 'name': d['name'], 'code': d['code'],
 			 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
 			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
 			}
 		      )
+
+    for h in hps:
+       #print d['name'], d['district'], d['province']
+       dst = orm.ORM.query('chws_district', {'id = %s' : h['district_id']})[0]
+       prv = orm.ORM.query('chws_province', {'id = %s' : h['province_id']})[0]
+       if prv and dst:	my_locs['hps'].append( 
+			{
+				'id': h['id'], 'name': h['name'], 'code': h['code'],
+			 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
+			}
+		      )
+
     return json.dumps(my_locs)
 
 ##### END OF ALL LOCATIONS FILTERING
@@ -3220,6 +3300,8 @@ class Application:
     navb    = ThousandNavigation(auth, *args, **kw)
     cnds    = navb.conditions(None, auth)
     navb.gap= timedelta(days = 0)
+    cnds.update({"(date) >= '%s'" % (navb.start) : ''})
+    cnds.update({"(date) <= '%s'" % (navb.finish) : ''})#;print cnds
     #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
     attrs = [( makecol(x[0]), x[1]) for x in queries.REMINDER_DATA['attrs'] ]
     exts = {}
@@ -3233,6 +3315,48 @@ class Application:
 			  extended = exts
 			)#;print "query : %s" %nat.query
     return self.dynamised('reminder', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_reportsdash(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
+    #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
+    attrs = [( makecol(x), REPORTS_LOGS[x][0][0]) for x in REPORTS_LOGS.keys() ];print attrs
+    exts = {}
+    cnds = change_pks_cnds(cnds)#;print cnds
+    data = {}
+    for key in attrs:
+      try: data[key[0]] = orm.ORM.query( REPORTS_LOGS[key[0].upper()][1][0], cnds, cols = ['COUNT(*) AS total'])[0]['total']
+      except: data[key[0]] = 0
+    
+    return self.dynamised('reportsdash', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def tables_reportsdash(self, *args, **kw):
+    navb, auth, cnds, cols    = self.neater_tables(basics = [] , *args, **kw)
+    sc = kw.get('subcat')
+    cols = FIELDS.get(kw.get('subcat').upper())['attrs']
+    cnds = change_pks_cnds(cnds)#;print cnds
+    DESCRI = []
+    markup  = {
+      'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'province_pk': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
+      'district_pk': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
+      'health_center_pk': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
+      'sector_pk': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
+      'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
+      'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
+    }
+    nat     = orm.ORM.query(REPORTS_LOGS[kw.get('subcat').upper()][1][0], cnds,
+				      cols  = [x[0] for x in cols ],
+				      
+				    )
+    desc  = 'Reports%s' % (' (%s)' % (self.find_descr(DESCRI + [(x[0], x[1]) for x in cols], sc or kw.get('subcat')), 
+					) if sc or kw.get('subcat') else '', )
+    
+    return self.dynamised('reportsdash_table', mapping = locals(), *args, **kw)
 
 
   @cherrypy.expose
@@ -3342,7 +3466,7 @@ class Application:
 		('village_id',  'Village'),             
 		('cell_id',  'Cell'),                
 		('sector_id',  'Sector'),              
-		('location_id',  'Health Center'),       
+		('health_centre_id',  'Health Center'),       
 		('district_id',  'District'),            
 		('province_id',  'Province'),            
 		#('nation_id',  'Country'),              
@@ -3357,6 +3481,8 @@ class Application:
 
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     cnds    = navb.conditions(None, auth)
+    cnds.update({"(date) >= '%s'" % (navb.start) : ''})
+    cnds.update({"(date) <= '%s'" % (navb.finish) : ''})
     #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
     
     if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.REMINDER_DATA['attrs']]:
@@ -3377,7 +3503,7 @@ class Application:
       pass
      
      if kw.get('view') == 'table' or kw.get('view') != 'log' :
-      print INDICS, wcl
+      #print INDICS, wcl
       locateds = summarize_by_location(primary_table = 'ubuzima_reminder', MANY_INDICS = INDICS, where_clause = wcl, 
 						province = province,
 						district = district,
@@ -3396,7 +3522,7 @@ class Application:
       'type_id': lambda x, _, __: '%s' % ( DICT.get('type_id%d'%x)[1] if DICT.get('type_id%d'%x) else ''),
       'province_id': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_id': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
-      'location_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
+      'health_centre_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
       #'referral_hospital_id': lambda x, _, __: '%s' % (self.hps.get(str(x)), ),
       'sector_id': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
       'cell_id': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
@@ -3418,11 +3544,53 @@ class Application:
   def dashboards_chwreg(self, *args, **kw):
     auth    = ThousandAuth(cherrypy.session.get('email'))
     navb    = ThousandNavigation(auth, *args, **kw)
-    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
-    cnds    = navb.conditions('report_date')
-    exts = {}
-
+    cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
+    cnds.update({ queries.CHW_DATA['query_str'] : ''})
+    hc	    = {'id': auth.him()['health_center_pk'] or kw.get('hc'), 'name': self.hcs.get(str(auth.him()['health_center_pk'] or kw.get('hc'))) }
+    sectors = self.sectors(auth.him()['district_pk'] or kw.get('district') )
+    cnds = change_pks_cnds(cnds)
+    roles =  orm.ORM.query(  'chws_role', {}).list()
+    nat = orm.ORM.query(  'chws_reporter', 
+			  cnds, 
+			  cols = ['COUNT(*) AS total']
+			)
+    ###start checking and register TODO
+    error = ""
+    success = ""
+    nodata = False
+    chw = None
+    nid = kw.get('nid')
+    surname = kw.get('surname')
+    given_name = kw.get('given_name')
+    sex = kw.get('sex')
+    role = kw.get('role')
+    edu_level = kw.get('edu_level')
+    dob = navb.make_time(kw.get('dob')) if kw.get('dob') else kw.get('dob') 
+    djoin = navb.make_time(kw.get('djoin')) if kw.get('djoin') else kw.get('djoin')
+    sector = kw.get('sector')
+    cell = kw.get('cell')
+    telephone_moh = "+25%s" % kw.get('telephone_moh') if kw.get('telephone_moh') else kw.get('telephone_moh')
+    health_center = kw.get('health_center')
+    village = kw.get('village')
+    language = kw.get('language')
+    referral = kw.get('referral')
+    formdata = [nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language]
+    for xd in formdata :
+     if xd == '' or xd is None:
+      nodata = True
+      break
+     
+    if error == "":
+     try:
+	chw = register_chw(nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language)
+	success = "%s(%s) Registered" % (chw['surname'], chw['telephone_moh'])
+     except Exception, e:
+     	orm.ORM.connection();orm.ORM.connection().reset()
+     	if nodata == False:	error = e
+    
     return self.dynamised('chwreg', mapping = locals(), *args, **kw)
+
 
   @cherrypy.expose
   def dashboards_chwtrail(self, *args, **kw):
@@ -3433,6 +3601,66 @@ class Application:
     exts = {}
 
     return self.dynamised('chwtrail', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_chwamb(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
+    
+    return self.dynamised('chwamb', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_chwstaff(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
+    cnds.update({ queries.STAFF_DATA['query_str'] : ''})
+    hc	    = {'id': auth.him()['health_center_pk'] or kw.get('hc'), 'name': self.hcs.get(str(auth.him()['health_center_pk'] or kw.get('hc'))) }
+    sectors = self.sectors(auth.him()['district_pk'] or kw.get('district') )
+    cnds = change_pks_cnds(cnds)
+    roles =  orm.ORM.query(  'chws_role', {}).list()
+    nat = orm.ORM.query(  'chws_facilitystaff', 
+			  cnds, 
+			  cols = ['COUNT(*) AS total']
+			)
+    ###start checking and register TODO
+    error = ""
+    success = ""
+    nodata = False
+    chw = None
+    nid = kw.get('nid')
+    surname = kw.get('surname')
+    given_name = kw.get('given_name')
+    sex = kw.get('sex')
+    role = kw.get('role')
+    edu_level = kw.get('edu_level')
+    dob = navb.make_time(kw.get('dob')) if kw.get('dob') else kw.get('dob') 
+    djoin = navb.make_time(kw.get('djoin')) if kw.get('djoin') else kw.get('djoin')
+    sector = kw.get('sector')
+    cell = kw.get('cell')
+    telephone_moh = "+25%s" % kw.get('telephone_moh') if kw.get('telephone_moh') else kw.get('telephone_moh')
+    health_center = kw.get('health_center')
+    village = kw.get('village')
+    language = kw.get('language')
+    referral = kw.get('referral')
+    formdata = [nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language]
+    for xd in formdata :
+     if xd == '' or xd is None:
+      nodata = True
+      break
+     
+    if error == "":
+     try:
+	chw = register_chw(nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language)
+	success = "%s(%s) Registered" % (chw['surname'], chw['telephone_moh'])
+     except Exception, e:
+     	orm.ORM.connection();orm.ORM.connection().reset()
+     	if nodata == False:	error = e
+    
+    return self.dynamised('chwstaff', mapping = locals(), *args, **kw)
+
 
 #### END OF MARVIN VIEWS
 

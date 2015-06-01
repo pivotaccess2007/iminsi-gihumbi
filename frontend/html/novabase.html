@@ -51,6 +51,19 @@
   {% set module = 'single' %}
   {% endif %}
 
+  {% if ref == 'reportsdash'  %}
+  {% set module = 'single' %}
+  {% endif %}
+  {% if ref == 'chwstaff'  %}
+  {% set module = 'single' %}
+  {% endif %}
+  {% if ref == 'chwreg'  %}
+  {% set module = 'single' %}
+  {% endif %}
+  {% if ref == 'chwamb'  %}
+  {% set module = 'single' %}
+  {% endif %}
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -181,8 +194,9 @@
           </form>
 
           <form id="myform">
+		<!--<input type="hidden" id="loginuser" name="loginuser" value="{{ display.auth.username() }}" /> -->
 		<input type="checkbox" name="ca" onchange="chgtx();" />
-		<select name="province" id="provchoose" onChange="changeDistrict(this.value);"><option> Select Province</option> </select>
+		<select name="province" id="provchoose" onChange="changeDistrict(this.value);"> </select>
 		<input type="checkbox" name="cb" onchange="chgty();" />
 		<select name="district" id="distchoose" onChange="changeLocation(this.value);"><option >  </option>  </select>
 		<input type="checkbox" name="cc" onchange="chgtz();" />
