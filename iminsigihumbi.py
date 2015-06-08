@@ -246,6 +246,21 @@ class ThousandNavigation:
     gat = orm.ORM.query('chws_district', {'id = %s': num})[0]
     return gat
 
+  def sector(self, sec = None):
+    num = sec
+    gat = orm.ORM.query('chws_sector', {'id = %s': num})[0]
+    return gat
+
+  def cell(self, cell = None):
+    num = cell
+    gat = orm.ORM.query('chws_cell', {'id = %s': num})[0]
+    return gat
+
+  def village(self, vill = None):
+    num = vill
+    gat = orm.ORM.query('chws_village', {'id = %s': num})[0]
+    return gat
+
   def has_hc(self, prv = None):
     num = prv or self.kw.get('hc')
     if num:
@@ -3597,9 +3612,13 @@ class Application:
     auth    = ThousandAuth(cherrypy.session.get('email'))
     navb    = ThousandNavigation(auth, *args, **kw)
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
-    cnds    = navb.conditions('report_date')
+    cnds    = navb.conditions('date')
     exts = {}
-
+    nat = orm.ORM.query('messagelog_message', {'connection_id = %s': 0 });print nat.query
+    if kw.get('telephone_moh'):
+      conn = orm.ORM.query('rapidsms_connection', {'identity = %s' : kw.get('telephone_moh') })[0]
+      cnds.update({'connection_id = %s': conn['id'] } )
+      nat     = orm.ORM.query('messagelog_message', cnds, sort  = ('date', False));print nat.query
     return self.dynamised('chwtrail', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
@@ -3660,6 +3679,18 @@ class Application:
      	if nodata == False:	error = e
     
     return self.dynamised('chwstaff', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
+  def dashboards_searchchw(self, *args, **kw):
+    navb    = ThousandNavigation(args, *kw)
+    chws = []
+    if kw.get('q'):
+      mkw = "%"+kw.get('q')+"%"
+      qry = orm.ORM.query('chws_reporter', {"telephone_moh LIKE %s OR national_id LIKE %s": (mkw, mkw)} );print qry.query
+      for chw in qry.list():
+        chws.append({ 'surname': chw['surname'],'given_name': chw['given_name'], 'national_id': chw['national_id'],'telephone_moh': chw['telephone_moh'], 			'village': navb.village(chw['village_id']),'cell': navb.cell(chw['cell_id']),'sector': navb.sector(chw['sector_id']),
+		'district': navb.district(chw['district_id']), 'id' : chw['id']})
+    return self.dynamised('search', mapping = locals(), *args, **kw)
 
 
 #### END OF MARVIN VIEWS
