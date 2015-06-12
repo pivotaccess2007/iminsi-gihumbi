@@ -3614,11 +3614,11 @@ class Application:
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
     cnds    = navb.conditions('date')
     exts = {}
-    nat = orm.ORM.query('messagelog_message', {'connection_id = %s': 0 });print nat.query
+    nat = orm.ORM.query('messagelog_message', {'connection_id = %s': 0 })#;print nat.query
     if kw.get('telephone_moh'):
       conn = orm.ORM.query('rapidsms_connection', {'identity = %s' : kw.get('telephone_moh') })[0]
       cnds.update({'connection_id = %s': conn['id'] } )
-      nat     = orm.ORM.query('messagelog_message', cnds, sort  = ('date', False));print nat.query
+      nat     = orm.ORM.query('messagelog_message', cnds, sort  = ('date', False))#;print nat.query
     return self.dynamised('chwtrail', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
@@ -3686,7 +3686,7 @@ class Application:
     chws = []
     if kw.get('q'):
       mkw = "%"+kw.get('q')+"%"
-      qry = orm.ORM.query('chws_reporter', {"telephone_moh LIKE %s OR national_id LIKE %s": (mkw, mkw)} );print qry.query
+      qry = orm.ORM.query('chws_reporter', {"telephone_moh LIKE %s OR national_id LIKE %s": (mkw, mkw)} )#;print qry.query
       for chw in qry.list():
         chws.append({ 'surname': chw['surname'],'given_name': chw['given_name'], 'national_id': chw['national_id'],'telephone_moh': chw['telephone_moh'], 			'village': navb.village(chw['village_id']),'cell': navb.cell(chw['cell_id']),'sector': navb.sector(chw['sector_id']),
 		'district': navb.district(chw['district_id']), 'id' : chw['id']})
