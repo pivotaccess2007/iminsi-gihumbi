@@ -1,9 +1,9 @@
 {%  extends "novabase.html" %}
-{%  block title %}Pregnancies{%  endblock  %}
-{%  block subtitle %} Pregnancy Risks {%  endblock  %}
+{%  block title %}CHW{%  endblock  %}
+{%  block subtitle %} CHW Trail {%  endblock  %}
 
 {% block menu %}
- 		  <li class="homelink">
+ 		 <li class="homelink">
             <a href='/dashboards/{{ nav.link("chw", view= "graphic") }}'><span>Statistics</span></a>
           </li>
           <li class="homelink">
@@ -13,8 +13,11 @@
             <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
           </li>
           <li class="homelink">
-            <a href=''><span>Staff</span></a>
-          </li>          
+            <a href='/dashboards/{{ nav.link("chwstaff") }}'><span>Staff</span></a>
+          </li>
+	 <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
+          </li>        
 {% endblock %}
 
 {% block position %}
@@ -45,19 +48,113 @@
 <div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">View CHW Trail</div>
   <form method="POST" class="regform">
 	<label id="nid">National ID: </label>
-	<input type="text" name="nid" id="national_id" value="" class="ac_input">
+	<input type="text" name="nid" id="search_national_id" value="" class="ac_input">
 	<br><br>
 	<label id="tel">Telephone: </label>
-	<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
+	<input type="text" name="telephone_moh" id="search_telephone_moh" value="" class="ac_input">
 	<br><br>
-  	<label id="dob">Start Date: </label><input value="" placeholder="" class="activedate" type="text" name="dob" />
+  	<label id="dob">Start Date: </label><input value="" placeholder="" class="activedate" type="text" name="start" />
   	<br><br>
-	<label id="jod">End Date: </label><input value="" placeholder="" class="activedate" type="text" name="join" />
+	<label id="jod">End Date: </label><input value="" placeholder="" class="activedate" type="text" name="end" />
 	<br><br>
-	<input type="submit" value="Show Me" />
+        <input type="hidden" name="pk" id="pk" value="" />
+	<input type="hidden" name="info" id="info" value="" />
+	<input type="submit" value="Show Me" onclick="showLogs(this.form, this.form.pk.value, this.form.info.value);" />
   </form>
 
 
   </div>
+
+{%if display.nat.count() > 0 %}
+<div class="messages module">
+	<h2>Message Log</h2>
+	
+	{% include 'message_table.html' %}
+</div>
+{%endif%}
+
+
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/jquery.js"></script>
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/autocomplete.js"></script>
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/facebox.js"></script>
+<script type="text/javascript">
+
+jQuery(document).ready(function($) {
+      $('a[rel*=facebox]').facebox({
+        loading_image : '{{ static_path }}/javascripts/facebox/loading.gif',
+        close_image   : '{{ static_path }}/javascripts/facebox/closelabel.gif'
+      }) 
+    })
+
+
+</script>  
+
+<script type="text/javascript"> 
+
+//CHW autocomplete
+$().ready(function() {
+
+function formatItem(row) {
+		return "<tr><td width=90>" + row[0] + "</td><td width=90>" + row[1] + "</td><td width=90>" + row[2] + "</td><td width=90>" + row[3] + "</td><td width=90>" + row[4] + "</td><td width=90>" + row[5] + "</td><td width=90>" + row[6] + "</td><td width=90>" + row[7] + "</td></tr>";
+	}
+	function formatResultNID(row) {
+		$("#pk").val(row[8]);
+		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+		return row[2].replace(/(<.+?>)/gi, '');
+	}
+	function formatResultPhone(row) {
+                $("#pk").val(row[8]);
+		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+		return row[3].replace(/(<.+?>)/gi, '');
+	}
+
+	
+
+
+$("#search_national_id").autocomplete('/dashboards/searchchw', {
+		width: 600,
+		minChars: 15,
+		multiple: false,
+		matchContains: true,
+		formatItem: formatItem,
+		formatResult: formatResultNID
+		});
+
+
+$("#search_telephone_moh").autocomplete('/dashboards/searchchw', {
+		width: 600,
+		minChars: 9,
+		multiple: false,
+		matchContains: true,
+		formatItem: formatItem,
+		formatResult: formatResultPhone
+		});
+
+
+});
+
+function showLogs(form, reporter, info){
+	
+			var tariki = "";
+			path=document.URL;
+			if (info!= "") alert("CHW TRAILS: " + info)
+			
+			if (path.indexOf("start") <0 )
+			{ 
+				tariki = tariki+'&start='+form.start_date.value+'&end='+form.end_date.value;
+				window.location = window.location.pathname +'?reporter=' + reporter + tariki;
+			}else {
+				path = path.replace(/(start=)[^\&]+/, '$1' + form.start_date.value);
+				path = path.replace(/(end=)[^\&]+/, '$1' + form.end_date.value);
+				window.location=path;				
+				}
+			
+		}
+
+
+// end of CHW autocomplete
+
+</script>
+
 
 {%  endblock  %}

@@ -1,6 +1,7 @@
 {%  extends "novabase.html" %}
-{%  block title %}Pregnancies{%  endblock  %}
-{%  block subtitle %} Pregnancy Risks {%  endblock  %}
+{%  block title %}CHW Registration{%  endblock  %}
+{%  block subtitle %} CHW Registration {%  endblock  %}
+
 
 {% block menu %}
  		  <li class="homelink">
@@ -13,16 +14,18 @@
             <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
           </li>
           <li class="homelink">
-            <a href=''><span>Staff</span></a>
+            <a href='/dashboards/{{ nav.link("chwstaff") }}'><span>Staff</span></a>
           </li>
-
+	 <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
+          </li>
          
 
           
 {% endblock %}
 
 {% block position %}
-<li>&#187; <a href='/dashboards/{{ nav.link("predash", view= "graphic", minus = ["group"]) }}'>CHW Registration</a></li>
+<li>&#187; <a href='/dashboards/{{ nav.link("chwreg", view= "graphic", minus = ["group"]) }}'>CHW Registration</a></li>
 {% if group %}
 <li> &#187; {{ group }}</li>
 {% endif %}
@@ -36,7 +39,7 @@
     <div class="infoname" style="font-size: 20px;">Total Number of CHWs</div>
     <div class="moretotal" ><a href="">View by Location</a></div>
     <div class="infodata goodnum">
-      <a href="">3242</a>
+      <a href="">{{display.nat[0]['total']}}</a>
     </div>
 
 
@@ -49,6 +52,8 @@
 
    <form class="regform" method="POST">
     
+<label style="color:red;">{{display.error}}</label> <label style="color:blue;">{{display.success}}</label>
+<br><br>
     
 <label>Surname: </label>
 <input type="text" name="surname" value="">
@@ -66,9 +71,7 @@
 <br><br>
 
 <label id="role">Role: </label>
-<select name="role" id="rolechoose"><option></option>
-<option value="asm">ASM</option>
-<option value="binome">Binome</option>   
+<select name="role" id="rolechoose">{%for x in display.roles%}<option value={{x.id}}> {{x.name}}</option>{%endfor%}   
 </select>
 <br><br>
 
@@ -86,14 +89,27 @@
 
 
 <label id="jod">Joining Date: </label>
-<input value="" placeholder="Joining Date" class="activedate" type="text" name="join" />
+<input value="" placeholder="Joining Date" class="activedate" type="text" name="djoin" />
 <br><br>
 
+<label id="referral">Referral Hospital: </label>
+<select name="referral" id="referralchoose"><option></option></select> 
+<br><br>
 
-<label id="hp">Referral Hospital: </label>
-<select name="hospital" id="hpchoose"><option></option>
+<label id="health_center">Health Center: </label>
+<select name="health_center" id="locchoose"><option value="{{display.hc.id}}" selected="selected">{{display.hc.name}} </option></select> 
+<br><br>
 
-</select>
+<label id="sector">Sector: </label>
+<select name="sector" id="secchoose" onChange="changeSector(this.value);">{%for x in display.sectors%}<option value={{x.id}}> {{x.name}}</option>{%endfor%}</select> 
+<br><br>
+
+<label id="cell">Cell: </label>
+<select name="cell" id="cellchoose" onChange="changeCell(this.value);"><option > </option></select> 
+<br><br>
+
+<label id="village">Village: </label>
+<select name="village" id="villchoose"><option > </option></select> 
 <br><br>
 
 
@@ -105,9 +121,95 @@
 <label id="tel">Telephone: </label>
 <input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
 <br><br>
-  <input type="submit" value="Register" />
+
+<label id="lang">Language: </label>
+<select name="language" id="language">
+<option value="rw">Kinyarwanda</option>
+<option value="fr">Francais</option>
+<option value="en">English</option>  
+</select>
+<br><br>
+
+
+  <input type="button"  onClick="return PassCheck(this.form);" value="Register" />
   </form>
 
   </div>
+
+<script type="text/javascript">
+
+function PassCheck(form1)
+	{ 
+	if(form1.telephone_moh.value=="" || form1.telephone_moh.value.indexOf("078") < 0 || form1.telephone_moh.value.length != 10 || isNaN(form1.telephone_moh.value) )
+	{
+	alert("Get in the Valid Telephone Number please.");
+		form1.telephone_moh.focus();
+		return false;
+	}
+	else if(form1.nid.value=="" || form1.nid.value.length != 16 || isNaN(form1.nid.value) )
+	{
+	alert("Get in the Valid National ID.");
+	form1.new_pass.focus();
+	return false;
+	}
+	else if(form1.role.value=="" || isNaN(form1.role.value))
+	{
+	alert("Select ASM or Binome.");
+	form1.role.focus();
+	return false;
+	}
+	else if(form1.health_center.value=="" || isNaN(form1.health_center.value))
+	{
+	alert("Select Health Center");
+	form1.health_center.focus();
+	return false;
+	}
+	else if( form1.referral.value == "" || isNaN(form1.referral.value))
+	{
+	alert("Select Referral Hospital.");
+	form1.referral.focus();
+	return false;
+	}
+	else if(form1.village.value=="" || isNaN(form1.village.value))
+	{
+	alert("Select Village Please.");
+	form1.village.focus();
+	return false;
+	}
+
+	else if(form1.surname.value=="" || form1.given_name.value == "")
+	{
+	alert("Get in Names Please.");
+	form1.surname.focus();
+	return false;
+	}
+
+	else if(form1.dob.value=="")
+	{
+	alert("Get in Date Of Birth Please.");
+	form1.dob.focus();
+	return false;
+	}
+
+	else if(form1.djoin.value=="")
+	{
+	alert("Get in Joining Date Please.");
+	form1.djoin.focus();
+	return false;
+	}
+
+	else if(form1.sex.value=="")
+	{
+	alert("Select Sex Please.");
+	form1.sex.focus();
+	return false;
+	}
+	
+	else
+	{
+		form1.submit();
+	}
+    }
+</script>
 
 {%  endblock  %}

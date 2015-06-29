@@ -1,4 +1,13 @@
 {%  extends "basicmothers.html" %}
+{% block menu %}
+ 		  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("nutr", view= "graphic") }}'><span>Nutrition</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("grownthcharts", view= "graphic") }}'><span>Grownth Charts</span></a>
+          </li>
+          
+{% endblock %}
 {% block position %}
 
 <li>&#187; <a href="/dashboards/nbcdash">Child</a></li>

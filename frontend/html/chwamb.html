@@ -1,0 +1,69 @@
+{%  extends "novabase.html" %}
+{%  block title %}Ambulances{%  endblock  %}
+{%  block subtitle %} Ambulance Registration {%  endblock  %}
+
+{% block menu %}
+	<li class="homelink">
+            <a href='/dashboards/{{ nav.link("chw", view= "graphic") }}'><span>Statistics</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwreg") }}'><span>Register</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwtrail") }}'><span>CHW Trial</span></a>
+          </li>
+          <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwstaff") }}'><span>Staff</span></a>
+          </li>
+	 <li class="homelink">
+            <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
+          </li>
+{% endblock %}
+
+{% block position %}
+<li>&#187; <a href='/dashboards/{{ nav.link("chwamb", view= "graphic", minus = ["group"]) }}'>CHW Ambulance</a></li>
+{% if group %}
+<li> &#187; {{ group }}</li>
+{% endif %}
+{% endblock %}
+
+
+{%  block mainpart  %}
+<div class="smallcontainer" style="padding-top:50px;">
+
+	 <img class="icon" src="{{  static_path }}/images/chwphone.png" />
+    <div class="infoname" style="font-size: 20px;">Total Number of Ambulances</div>
+    <div class="moretotal" ><a href="">View by Location</a></div>
+    <div class="infodata goodnum">
+      <a href="">3242</a>
+    </div>
+
+
+
+  </div>
+  </div>
+  
+  <div class="humblecontainer">
+  
+<div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">Register Ambulance</div>
+  <form method="POST" class="regform">
+	<label id="nid">Name Of Coordinator/Driver: </label>
+	<input type="text" name="nid" id="national_id" value="" class="ac_input">
+	<br><br>
+	<label id="tel">Telephone: </label>
+	<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
+	<br><br>
+  	<label id="referral">Referral Hospital: </label>
+	<select name="referral" id="referralchoose"><option></option></select> 
+	<br><br>
+
+	<label id="health_center">Health Center: </label>
+	<select name="health_center" id="locchoose"><option > </option></select> 
+	<br><br>
+	<input type="submit" value="Register" />
+  </form>
+
+
+  </div>
+
+{%  endblock  %}
