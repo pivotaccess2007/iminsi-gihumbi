@@ -96,6 +96,27 @@
 <br><a href="{{ nav.link('/dashboards/predash', group = 'high_risk', view = 'graphic')}}"> Disagregated by Symptoms</a>
   </div>
   </div>
+
+  <div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">SANITATION</div>
+    <div class="datapoint {{ module }}circle" style="margin-left:120px;">
+    <div class="descr">With Toilet</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/predash', group = 'toilet', view = 'graphic')}}">{{  display.nat[0]['toilet']|neat_numbers }}</a></div>
+  </div>
+
+      <div class="datapoint {{ module }}circle">
+    <div class="descr">With handwashing</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/predash', group = 'handwash', view = 'graphic')}}">{{  display.nat[0]['handwash']|neat_numbers }}</a></div>
+  </div>
+
+      <div class="datapoint {{ module }}circle">
+    <div class="descr">With No Toilet</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/predash', group = 'notoilet', view = 'graphic')}}">{{  display.nat[0]['notoilet']|neat_numbers }}</a></div>
+  </div>
+
+      <div class="datapoint {{ module }}circle">
+    <div class="descr">With No handwashing</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/predash', group = 'nohandwash', view = 'graphic')}}">{{  display.nat[0]['nohandwash']|neat_numbers }}</a></div>
+  </div>
   
   </div>
 {% endif %}

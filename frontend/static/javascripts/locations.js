@@ -1,78 +1,79 @@
 	
 				
 				//START FILTERING LOCATIONS
+				var provinces = [];
+				var districts = [];
 				var locations = [];
 				var villages   = [];
 				var hps = [];
 				var sectors = [];
 				var cells = [];
-				var villages = [];
 				var url  = document.URL.split("?");
 				var url2 = "";
 				if (url.length > 1) url2 = url[1];
+
+				sel_prov = getQueryParameter ( "province" );
+				sel_dist = getQueryParameter ( "district" );
+				sel_loc = getQueryParameter ( "hc" );
+
 				$.getJSON( "/locs?"+url2 , function( result ){
 				
-						var provinces = _.map(_.indexBy(result['hcs'], 'province_id'), function(obj){return obj});
+						provinces = _.map(_.indexBy(result['hcs'], 'province_id'), function(obj){return obj});
+						districts = _.map(_.indexBy(result['hcs'], 'district_id'), function(obj){ return obj });
 						locations = result['hcs'];
 						hps = result['hps'];
 						sectors = _.map(_.indexBy(result['villages'], 'sector_id'), function(obj){return obj});
 						cells = _.map(_.indexBy(result['villages'], 'cell_id'), function(obj){return obj});
 						villages = result['villages'];
+
+						//alert( sel_prov+ ", "+ sel_dist + ", " + sel_loc );
+						if (sel_prov == '' || sel_prov == undefined || sel_prov == null) sel_prov = getQueryParameter ( "province" );
+						if (sel_dist == '' || sel_dist == undefined || sel_dist == null) sel_dist = getQueryParameter ( "district" );
+						if (sel_loc == '' || sel_loc == undefined || sel_loc == null) sel_loc = getQueryParameter ( "hc" );
 					
+						//alert( provinces.length+ ", "+ districts.length + ", " + locations.length );
+						
+						document.getElementById('provchoose').options.length = provinces.length + 1;
+						document.getElementById('provchoose').options[0] = new Option("", "");
+
+						document.getElementById('distchoose').options.length = districts.length +1 ;
+						document.getElementById('distchoose').options[0] = new Option("", "");
+
+						document.getElementById('locchoose').options.length = locations.length + 1;
+						document.getElementById('locchoose').options[0] = new Option("", "");
+
 						for ( var i=0; i<provinces.length; i++ ){
-							province = provinces[i]
-							document.getElementById('provchoose').options.length= provinces.length;
-							document.getElementById('provchoose').options[i] = new Option(province.province_name, province.province_id);
+							province = provinces[i]							
+							document.getElementById('provchoose').options[i+1] = new Option(province.province_name, province.province_id);
 							}
 
-						for ( var i=0; i<hps.length; i++ ){
-								hp = hps[i]
-								document.getElementById('referralchoose').options.length = hps.length;
-								document.getElementById('referralchoose').options[i] = new Option(hp.name, hp.id);
+						for ( var i=0; i<districts.length; i++ ){
+							district = districts[i]
+							document.getElementById('distchoose').options[i+1] = new Option(district.district_name, district.district_id);
+								}
+					
+						for ( var i=0; i<locations.length; i++ ){
+								hc = locations[i]
+								document.getElementById('locchoose').options[i+1] = new Option(hc.name, hc.id);
 								}
 
-
-						for ( var i=0; i<sectors.length; i++ ){
-							sector = sectors[i]
-							document.getElementById('secchoose').options.length= sectors.length;
-							document.getElementById('secchoose').options[i] = new Option(sector.sector_name, sector.sector_id);
-							}
-						
-						document.getElementById('provchoose').options[provinces.length] = new Option("", "");
-						document.getElementById("provchoose").selectedIndex = provinces.length;
-						
-						document.getElementById('referralchoose').options[hps.length] = new Option("", "");
-						document.getElementById("referralchoose").selectedIndex = hps.length;
-
-						document.getElementById('secchoose').options[sectors.length] = new Option("", "");
-						document.getElementById("secchoose").selectedIndex = sectors.length;
-
-						// IS There a province selected, then apply
-						sel_prov = getQueryParameter ( "province" );
 						if (sel_prov != '' ){
-								 changeDistrict(sel_prov);
-								 prv_index = fetch_index_from_option_value(document.getElementById('provchoose').options, sel_prov);
-								 document.getElementById('provchoose').options[prv_index].selected = true;
-								 
-								     }
-
-						// IS There a district selected, then apply
-						sel_dist = getQueryParameter ( "district" );
+							 prv_index = fetch_index_from_option_value(document.getElementById('provchoose').options, sel_prov);
+							 document.getElementById('provchoose').options[prv_index].selected = true;
+							 changeDistrict(sel_prov);							 
+							     }	
+	
 						if (sel_prov != '' && sel_dist != '') {
-								changeLocation(sel_dist);
 								dist_index = fetch_index_from_option_value(document.getElementById('distchoose').options, sel_dist);
 							 	document.getElementById('distchoose').options[dist_index].selected = true;
+								changeLocation(sel_dist);
 									}
 
-						// IS There a location selected, then apply
-						sel_loc = getQueryParameter ( "hc" );
-						if (sel_loc != '' && sel_dist != '') { 
-									changeLocation(sel_dist);
+						if (sel_loc != '' && sel_dist != '') { 									
 								loc_index = fetch_index_from_option_value(document.getElementById('locchoose').options, sel_loc);
 							 	document.getElementById('locchoose').options[loc_index].selected = true;
-								}
-						
-						
+								}				
+				
 	    					});
 					
 				function fetch_index_from_option_value(options, value){
@@ -87,33 +88,46 @@
 
 				function changeDistrict(value){
 
-					var districts = _.map(_.indexBy(locations, 'district_id'), function(obj){ return obj });
-
 					var selected_districts = _.filter(districts, function(item) {  return item.province_id == value;  });
-			
+					document.getElementById('distchoose').options.length = selected_districts.length + 1;
+					document.getElementById('distchoose').options[0] = new Option("", "");
 					for ( var i=0; i<selected_districts.length; i++ ){
 							district = selected_districts[i]
-							document.getElementById('distchoose').options.length = selected_districts.length;
-							document.getElementById('distchoose').options[i] = new Option(district.district_name, district.district_id);
+							document.getElementById('distchoose').options[i+1] = new Option(district.district_name, district.district_id);
 								}
-						document.getElementById('distchoose').options[selected_districts.length] = new Option("", "");
-						document.getElementById("distchoose").selectedIndex = selected_districts.length;
-
+					/*
+					sel_prov = document.getElementById('provchoose').value;
+					sel_dist = document.getElementById('distchoose').value;
+					sel_loc  = document.getElementById('locchoose').value; 
+					
+					prv_index = fetch_index_from_option_value(document.getElementById('provchoose').options, sel_prov);
+					if( prv_index != '') document.getElementById('provchoose').options[prv_index].selected = true;
+					dist_index = fetch_index_from_option_value(document.getElementById('distchoose').options, sel_dist);
+					if( dist_index != '') document.getElementById('distchoose').options[dist_index].selected = true;				
+					loc_index = fetch_index_from_option_value(document.getElementById('locchoose').options, sel_loc);
+				 	if( loc_index != '') document.getElementById('locchoose').options[loc_index].selected = true;
+					*/
 					}
 
 				function changeLocation(value){
 
 					var selected_locations = _.filter(locations, function(item) {  return item.district_id == value; });
-								
+					document.getElementById('locchoose').options.length = selected_locations.length + 1;
+					document.getElementById('locchoose').options[0] = new Option("", "");
+											
 					for ( var i=0; i<selected_locations.length; i++ ){
 								hc = selected_locations[i]
-								document.getElementById('locchoose').options.length = selected_locations.length;
-								document.getElementById('locchoose').options[i] = new Option(hc.name, hc.id);
+								document.getElementById('locchoose').options[i+1] = new Option(hc.name, hc.id);
 								}
-					
-						document.getElementById('locchoose').options[selected_locations.length] = new Option("", "");
-						document.getElementById("locchoose").selectedIndex = selected_locations.length;
-
+					/*
+					sel_prov = document.getElementById('provchoose').value;
+					sel_dist = document.getElementById('distchoose').value;
+					sel_loc  = document.getElementById('locchoose').value; 
+					dist_index = fetch_index_from_option_value(document.getElementById('distchoose').options, sel_dist);
+					if( dist_index != '') document.getElementById('distchoose').options[dist_index].selected = true;				
+					loc_index = fetch_index_from_option_value(document.getElementById('locchoose').options, sel_loc);
+				 	if( loc_index != '') document.getElementById('locchoose').options[loc_index].selected = true;
+					*/
 					}
 
 				function changeSector(value){
@@ -224,7 +238,64 @@
 							window.location.href = url; 
 
 						}
-				
-				
+
+	function deroulement(form){
+
+				var path=document.URL;
+				start = form.start;
+				finish = form.finish;
+				prv = form.province; 
+				dst = form.district; 
+				loc = form.hc;	
+
+		if (path.indexOf("?") < 0 ){ //alert("here1");
+				if(start != '' && start != undefined && start != null)path = path +'?start='+start.value;
+				if(finish != '' && finish != undefined && finish != null)path = path +'&finish='+finish.value;
+				if(prv.value != '' && prv.value != undefined && prv.value != null)path = path +'&province='+prv.value;
+				if(dst.value != '' && dst.value != undefined && dst.value != null)path = path +'&district='+dst.value;
+				if(loc.value != '' && loc.value != undefined && loc.value != null)path = path +'&hc='+loc.value;
+				window.location=path;	
+			}
+		else if (((prv.value != '' && prv.value != undefined && prv.value != null) && path.indexOf("province") < 0) || 
+				((dst.value != '' && dst.value != undefined && dst.value != null) && path.indexOf("district") < 0) || 
+				((loc.value != '' && loc.value != undefined && loc.value != null) && path.indexOf("hc") < 0 ) ){ //alert("here2");
+			((start != '' && start != undefined && start != null) && path.indexOf("start") < 0)  ? path = path +'&start='+start.value: path=path.replace(/(start=)[^\&]+/, '$1' + start.value);
+			((finish != '' && finish != undefined && finish != null)&& path.indexOf("finish") < 0)  ? path = path +'&finish='+finish.value: path=path.replace(/(finish=)[^\&]+/, '$1' + finish.value);
+			((prv.value != '' && prv.value != undefined && prv.value != null)&& path.indexOf("province") < 0)  ? path = path +'&province='+prv.value : "";
+			((dst.value != '' && dst.value != undefined && dst.value != null) && path.indexOf("district") < 0) ? path = path +'&district='+dst.value: "";
+			((loc.value != '' && loc.value != undefined && loc.value != null) && path.indexOf("hc") < 0 )? path = path +'&hc='+loc.value: "";
+			
+			window.location=path;
+			}
+
+		else {  //alert("here3");
+			path.indexOf("start") >= 0 ? path=path.replace(/(start=)[^\&]+/, '$1' + start.value) :path=path+'&start='+start.value;
+			path.indexOf("finish") >= 0 ? path=path.replace(/(finish=)[^\&]+/, '$1' + finish.value) : path=path +'&finish='+finish.value;
+			(path.indexOf("province") >= 0 &&  (prv.value != '' && prv.value != undefined && prv.value != null)) ? path=path.replace(/(province=)[^\&]+/, '$1' + prv.value): path = removeQueryStringParameter(path, ["province", "district", "hc"]);
+			(path.indexOf("district") >= 0 && (dst.value != '' && dst.value != undefined && dst.value != null))? path=path.replace(/(district=)[^\&]+/, '$1' + dst.value):  path = removeQueryStringParameter(path, ["district", "hc"]);
+			(path.indexOf("hc") >= 0 && (loc.value != '' && loc.value != undefined && loc.value != null)) ? path=path.replace(/(hc=)[^\&]+/, '$1' + loc.value):  path = removeQueryStringParameter(path, ["hc"]);
+
+			//alert("PATH:" + path);
+			window.location=path;
+				}
+
+			}
+
+			function removeQueryStringParameter(uri, keys) 
+						{
+						var vre = uri;
+						for (i=0; i<keys.length; i++){
+							
+							var re = new RegExp("([?&])" + keys[i] + "=([a-z0-9]+)", "i");
+						    	//var separator = vre.indexOf('?') !== -1 ? "&" : "?";
+						    
+							    if (vre.match(re)) { 
+									vre = vre.replace(re, ''); //alert("PATH FOR "+ keys[i]+" :"+ vre);
+								}
+							}
+						 if(vre.indexOf("?") < 0 ) vre = vre.replace( uri.slice(0, uri.indexOf("?")) , uri.slice(0, uri.indexOf("?")) + "?" );
+						 return vre;
+						}
+
 				// END FILTERING
 				

@@ -256,7 +256,7 @@ class Reporter(models.Model):
     education_level 	= models.CharField(max_length = 1, blank=True, null = True, choices= EDUCATION_CHOICES, help_text="Select Education Level")
     date_of_birth		= models.DateField(blank=True, null = True, help_text="Your Date Of Birth, if date not known just pick First January")
     join_date		= models.DateField(blank=True, null = True, help_text="The date you joined the Community Health Worker program")
-    national_id		= models.CharField(max_length=16, unique = True, help_text="The National ID as a sixteen digit please")
+    national_id		= models.CharField(max_length=16, help_text="The National ID as a sixteen digit please")
     telephone_moh		= models.CharField(max_length=13, unique = True, help_text="The telephone number only the one provided by Ministry of Health")
     nation            = models.ForeignKey(Nation, related_name="chw_nation", null=True, blank=True, help_text=" The country you live in")
     province        = models.ForeignKey(Province, related_name="chw_province", null=True, blank=True, help_text=" The province you live in")
@@ -1198,7 +1198,7 @@ def ensure_connections_exists(sender, **kwargs):
 
 def ensure_phone_and_nid(sender, instance, *args, **kwargs):
     if len(instance.telephone_moh) != 13 or len(instance.national_id) != 16:
-        raise Exception("Please make sure telephone and National Id are written correctly and try again")
+        print "OK"#raise Exception("Please make sure telephone and National Id are written correctly and try again")
     else:   return True
 
 pre_save.connect(ensure_phone_and_nid, sender = Reporter)

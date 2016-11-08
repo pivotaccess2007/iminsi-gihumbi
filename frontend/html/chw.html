@@ -17,7 +17,13 @@
           </li>
 	 <li class="homelink">
             <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
-          </li>       
+          </li>   
+	  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("updatechw") }}'><span>Update CHW</span></a>
+          </li>
+	  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("groupmessage") }}'><span>Group Messages</span></a>
+          </li>     
 {% endblock %}
 
 {% block position %}
@@ -29,40 +35,59 @@
 
 
 {%  block mainpart  %}
-<div class="smallcontainer" style="padding-top:50px;">
-
-	 <img class="icon" src="{{  static_path }}/images/chwphone.png" />
+  <div class="smallcontainer" style="padding-top:50px;">
+    <img class="icon" src="{{  static_path }}/images/chwphone.png" />
     <div class="infoname" style="font-size: 20px;">Total Number of CHWs</div>
-    <div class="moretotal" ><a href="">View by Location</a></div>
+    <div class="moretotal" ><a href="{{ nav.link('/tables/chw', summary = 'on')}}">View by Location</a></div>
     <div class="infodata goodnum">
-      <a href="">{{display.chws[0]['total']}}</a>
+      <a href="{{ nav.link('/tables/chw')}}">{{display.chws[0]['total']|neat_numbers}}</a>
     </div>
 
-
-
-  </div>
   </div>
   
   <div class="humblecontainer">
 
-  	<div class="infoname" style="padding-left:200px; padding-top:50px; padding-bottom: 20px;">ASM ({{display.chws[0]['role_id1']}})</div>
-    <div class="datapoint chwcircle" style="margin-left:150px;">
-    <div class="descr">Active</div>
-    <div class="number"><a href="">{{display.chws[0]['activeasm']}}</a></div>
+  	<div class="infoname" style="padding-left:20px; padding-top:10px; padding-bottom: 20px;">
+		ASM {{display.chws[0]['role_id1']|neat_numbers}}  ({{ display.avg(display.chws[0]['role_id1'], display.chws[0]['total']) }})
 	</div>
- 	<div class="datapoint chwcircle">
-    <div class="descr">Inactive</div>
-    <div class="number"><a href="">{{display.chws[0]['inactiveasm']}}</a></div>
+    <div class="datapoint chwcircle" style="margin-left:80px;width:260px;height:260px;">
+	<div class="infoname" style="margin-left:80px; margin-top:70px">Active </div>
+    	<div class="number"><a href="{{ nav.link('/tables/chw', view = 'log', subcat = 'activeasm' )}}">
+				{{display.chws[0]['activeasm']|neat_numbers}}</br>
+				({{ display.avg(display.chws[0]['activeasm'], display.chws[0]['role_id1']) }})
+			</a>
+	</div>
+    </div>
+
+    <div class="datapoint inactivecircle" style="margin-left:80px;width:260px;height:260px;" >
+    <div class="infoname" style="margin-left:80px; margin-top:70px">Inactive</div>
+    		<div class="number">
+		<a href="{{ nav.link('/tables/chw', view = 'log', subcat = 'inactiveasm' )}}">{{display.chws[0]['inactiveasm']|neat_numbers}}</br>
+			({{ display.avg(display.chws[0]['inactiveasm'], display.chws[0]['role_id1']) }})
+		</a>
+		</div>
 	</div>
 
-	<div class="infoname" style="padding-left:200px; padding-top:180px; padding-bottom: 20px;">BINOME ({{display.chws[0]['role_id2']}})</div>
-	<div class="datapoint chwcircle" style="margin-left:150px;">
-    <div class="descr">Active</div>
-    <div class="number"><a href="">{{display.chws[0]['activebinome']}}</a></div>
+  </div>
+
+  <div class="humblecontainer">
+
+	<div class="infoname" style="padding-left:20px; padding-top:30px; padding-bottom: 20px;">
+		BINOME {{display.chws[0]['role_id2']|neat_numbers}}({{ display.avg(display.chws[0]['role_id2'], display.chws[0]['total']) }})
 	</div>
- 	<div class="datapoint chwcircle">
-    <div class="descr">Inactive</div>
-    <div class="number"><a href="">{{display.chws[0]['inactivebinome']}}</a></div>
+	<div class="datapoint chwcircle" style="margin-left:80px;width:260px;height:260px;" >
+    <div class="infoname" style="margin-left:80px; margin-top:70px">Active</div>
+    <div class="number"><a href="{{ nav.link('/tables/chw', view = 'log', subcat = 'activebinome' )}}">{{display.chws[0]['activebinome']|neat_numbers}}</br>
+			({{ display.avg(display.chws[0]['activebinome'], display.chws[0]['role_id2']) }})
+		</a>
+		</div>
+	</div>
+ 	<div class="datapoint inactivecircle" style="margin-left:80px;width:260px;height:260px;" >
+    <div class="infoname" style="margin-left:80px; margin-top:70px">Inactive</div>
+    <div class="number"><a href="{{ nav.link('/tables/chw', view = 'log', subcat = 'inactivebinome' )}}">{{display.chws[0]['inactivebinome']|neat_numbers}}</br>
+			({{ display.avg(display.chws[0]['inactivebinome'], display.chws[0]['role_id2']) }})
+		</a>
+		</div>
     </div>
 
 

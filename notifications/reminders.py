@@ -27,6 +27,33 @@ def fetch_data(cursor):
     conn.reset()
  return ans
 
+def store_data(tbl, cols, vals):
+    ans = None
+    curseur = conn.cursor()
+    escer   = {
+      type(lambda x: x) : lambda c, s, f: f[0](c, s)
+    }
+    nvals = []
+    for dval in vals:
+        try:
+            him   = escer[type(dval)]
+            elval = him(curseur, u'%s', (dval, ))
+        except KeyError:
+            elval = curseur.mogrify(u'%s', (dval, ))
+        nvals.append(elval.decode('utf-8'))
+    qry = (u'INSERT INTO %s (%s) VALUES (%s) RETURNING id;' % (tbl, u', '.join(cols), u', '.join(nvals)))
+    #print qry
+    try:
+        curseur.execute(qry) 
+        ans = curseur.fetchone()[0]        
+        #print 'INSERTED: %s' % ans
+    except psycopg2.ProgrammingError, e:
+        #print e        
+        conn.reset()
+    conn.commit()
+    curseur.close()   
+    return ans
+
 def fetch_data_cursor(conn, query_string):
  curseur = conn.cursor()
  try:   curseur.execute(query_string)
@@ -75,7 +102,7 @@ class Track:
     def initialize_track(mother_query, pregnancy_query, child_query):
         """ Initialize if the track was already there in db but missing some staff ."""
 
-        print mother_query, pregnancy_query, child_query
+        #print mother_query, pregnancy_query, child_query
         mother      = get_record_by_query(conn, mother_query)  
         pregnancy   = get_record_by_query(conn, pregnancy_query)
         child       = get_record_by_query(conn, child_query)
@@ -86,7 +113,7 @@ class Track:
     def pull_from_init(obj, data, fields):
         values = {}
         ans = obj.initialize_track(data.get('mother_query'), data.get('pregnancy_query'), data.get('child_query') )
-        print ans
+        #print ans
         for f in fields:
             try:
                 for x in ans:
@@ -121,7 +148,7 @@ class Track:
         data = []
         for obj in objs:
             data = obj.pull_track_data(obj, sourcetable, drecord)
-            print obj.table, obj.uniques, data
+            #print obj.table, obj.uniques, data
             data = obj.save_track(obj.table, obj.uniques, data)
         return data
 
@@ -366,6 +393,179 @@ def get_sms_report(keyword):
     curz = fetch_data_cursor(conn, qry)
     return fetch_data(curz)
 
+def get_reminder_type(name = ''):
+    an = None
+    qry = " SELECT * FROM ubuzima_remindertype WHERE name = '%s' ;" % name; print qry
+    curz = fetch_data_cursor(conn, qry)
+    ans = fetch_data(curz)
+    if ans: an = ans[0]
+    return an
+
+def calculate_edd(last_menses):
+    """
+    Given the date of the last menses, figures out the expected delivery date
+    """
+
+    # first add seven days
+    edd = last_menses + timedelta(7)
+
+    neufmois = timedelta(days = settings.GESTATION)
+    return edd + neufmois
+
+def calculate_last_menses(edd):
+    """
+    Given an EDD, figures out the last menses date.  This is basically the opposite
+    function to calculate_edd
+    """
+
+    # now subtract 7 days
+    edd = edd - timedelta(7)
+    return edd - timedelta(days = settings.GESTATION)
+
+
+def calculate_edd_reminder_range(date, days):
+        """
+        Passed in a day (of today), figures out the range for the menses dates for
+        our reminder.  The ``days`` variable is the number of days before delivery
+        we want to figure out the date for.  ####(bracketed by 2 days each way -----No longer in use)
+
+        """
+        # figure out the expected delivery date
+        edd = date - timedelta(days)#; print "VIRTUAL LMP:%s" % date,"EDD: %s" % edd
+
+        # calculate the last menses
+        last_menses = calculate_last_menses(edd)#; print "LMP: %s" % last_menses
+
+        # bracket in either direction
+        start = last_menses - timedelta(2)
+        end = last_menses + timedelta(2)
+
+        return (start, end)
+
+def calculate_dob_reminder_range(date, days):
+        """
+        Passed in a day (of today), figures out the range for the menses dates for
+        our reminder.  The ``days`` variable is the number of days before delivery
+        we want to figure out the date for.  ####(bracketed by 2 days each way -----No longer in use)
+
+        """
+        # figure out the expected delivery date
+        dob = date - timedelta(days)#; print "VIRTUAL LMP:%s" % date,"EDD: %s" % edd
+
+        # bracket in either direction
+        start = dob - timedelta(2)
+        end = dob + timedelta(2)
+
+        return (start, end)
+
+
+def get_reports_with_edd_in(date, days, reminder_table, track_table, field, date_field, comp1, comp2 ):
+    """
+    Returns all the reports which have an EDD within ``days`` of ``date``.  The results
+    will be filtered to not include items which have at least one reminder of the passed
+    in type.
+    """
+    (start, end) = calculate_edd_reminder_range(date, days)
+
+    # For now we assume everybody needs to register with a pregnancy report first
+    qry = """SELECT *, (SELECT %(field)s FROM %(reminder_table)s WHERE %(comp1)s = %(comp2)s ) AS reminder FROM %(table)s WHERE (%(field)s IS  NULL OR %(field)s = 0)  
+             AND (%(date_field)s >= '%(start)s' AND %(date_field)s <= '%(end)s' ) 
+            """ % { 'table': track_table,
+                    'reminder_table': reminder_table,
+                    'field': field,
+                     'date_field': date_field,
+                     'start': start,
+                     'end': end,
+                     'comp1': comp1,
+                     'comp2': comp2
+                    }
+
+    print qry
+
+    # we only allow one report per patient
+    curz = fetch_data_cursor(conn, qry)
+    reports = fetch_data(curz)
+
+    return reports
+
+def get_reports_with_dob_in(date, days, reminder_table, track_table, field, date_field, comp1, comp2 ):
+    """
+    Returns all the reports which have an EDD within ``days`` of ``date``.  The results
+    will be filtered to not include items which have at least one reminder of the passed
+    in type.
+    """
+    (start, end) = calculate_dob_reminder_range(date, days)
+
+    # For now we assume everybody needs to register with a pregnancy report first
+    qry = """SELECT *, (SELECT %(field)s FROM %(reminder_table)s WHERE %(comp1)s = %(comp2)s ) AS reminder FROM %(table)s WHERE (%(field)s IS  NULL OR %(field)s = 0)  
+             AND (%(date_field)s >= '%(start)s' AND %(date_field)s <= '%(end)s' ) 
+            """ % { 'table': track_table,
+                    'reminder_table': reminder_table,
+                    'field': field,
+                     'date_field': date_field,
+                     'start': start,
+                     'end': end,
+                     'comp1': comp1,
+                     'comp2': comp2
+                    }
+
+    print qry
+
+    # we only allow one report per patient
+    curz = fetch_data_cursor(conn, qry)
+    reports = fetch_data(curz)
+
+    return reports
+
+
+def get_reminder_message(receiver, reminder_type):
+    #print receiver, reminder_type
+    msg = reminder_type.message_kw
+    if receiver is not None:
+        if receiver.language == 'en':
+            msg = reminder_type.message_en
+        elif receiver.language == 'fr':
+            msg = reminder_type.message_fr
+    return msg
+
+def get_receiver(table="chws_reporter", field="telephone_moh", value = ''):
+    qry = """SELECT * FROM %(table)s WHERE %(field)s = '%(value)s' 
+            """ % { 'table': table,
+                    'field': field,
+                     'value': value
+                    }
+
+    curz = fetch_data_cursor(conn, qry)
+    receiver = fetch_data(curz)
+    if receiver : return receiver[0]
+    return None
+
+
+def send_reminders(reminder_type, reminders, stopers):
+    for reminder in reminders:
+        #print "REMINDER SENT: %s" % reminder.reminder
+        if not reminder.reminder:
+            STOPS = [ getattr(reminder, x) for x in stopers if getattr(reminder, x)]
+            #print "STOPPERS : %s" % STOPS
+            if STOPS: continue
+            else:
+                receiver = get_receiver(table="chws_reporter", field="telephone_moh", value = reminder.reporter_phone)
+                #print "SEND: %s" % get_reminder_message(receiver, reminder_type)
+                text = get_reminder_message(receiver, reminder_type) % reminder.indangamuntu
+                #send_notification( reminder.reporter_phone , text )
+                store_reminder(reminder_type, reminder)
+        else:
+            continue
+    return True 
+
+def store_reminder(reminder_type, reminder):
+    tbl = 'ubuzima_reminder'
+    cols = [ "health_centre_id", "reporter_id", "report_id", "type_id", "village_id", "cell_id", "sector_id", "district_id", "province_id", "nation_id", "date"]
+    vals = [reminder.health_center_pk, reminder.reporter_pk, reminder.indexcol, reminder_type.id, reminder.village_pk, reminder.cell_pk,
+             reminder.sector_pk, reminder.district_pk, reminder.province_pk, reminder.nation_pk, datetime.today()]
+    store_data(tbl, cols, vals)
+    return True
+
 def get_alert( language, smsreport, smsreportfield, msgtype, destination):
     ''' Figure out reds symptom and their title in the # languages '''
 
@@ -396,7 +596,7 @@ def fetch_notification( NOTIFS = [] , DESTINATION = [], BASE = []):
 def send_notification( telephone , text ):
     '''  telephone = '+250789634210', text = 'ibusta umubyeyi 1234567890123456 ko igihe cyo kubonana na muganga bwa kabiri cyageze, navayo uduhe raporo.'  '''
     return Smser().send_message_via_kannel(telephone, text)
-
+    #print telephone, text
 
 def send_redalerts_notification(drecord):
     sms_report = get_sms_report('red')#;print sms_report[0].id
@@ -517,8 +717,8 @@ def send_nutrition_notifications(tablename, track_record):
         except: 
             try:    msg = notif[1] % track_record['indangamuntu']
             except: msg = notif[1]
-        #print track_record['reporter_phone'] , msg
-        send_notification( track_record['reporter_phone'] , msg )       
+        print track_record['reporter_phone'] , msg
+        #send_notification( track_record['reporter_phone'] , msg )       
     
     return True
     
@@ -528,7 +728,7 @@ def track_notifications(tablename, drecord):
     ### Send red alert notifications
     track = None
     try: track = Track.process(tablename, drecord)
-    except Exception, e: print e;pass
+    except Exception, e: pass
 
     if tablename == 'redmessage':
        send_redalerts_notification(drecord)

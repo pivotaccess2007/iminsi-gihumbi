@@ -54,7 +54,22 @@ class Smser(object):
             return False
 
 
+### STOP JOKING GUYS
+"""
 
+
+from api.smser import *
+import datetime
+from api.messagelog.models import *
+
+cmd = Smser()
+
+msgs = Message.objects.filter(text = "Ntabwo tukuzi, banza wiyandikishe ujya ku kigo nderauzima kikwegereye!", direction = 'O', date__gte = datetime.datetime.now() - datetime.timedelta(days = 2))
+
+for msg in msgs: cmd.send_message_via_kannel( msg.connection.identity, "This number you are sending message to, is owned by the Ministry of Health, and is only reserved for Community Health Workers. Please, if you are not a Community Health Worker do not try it again! Iyi Numero uri koherezaho ubutumwa ni iya Ministeri y'Ubuzima y'u Rwanda, igenewe abajyanama b'ubuzima gusa. Niba utariwe ntimwongere.")
+
+
+"""
 
 	
 

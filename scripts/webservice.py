@@ -1,4 +1,12 @@
 #!  /usr/bin/env python
+# vim: ai ts=4 sts=4 et sw=4
+
+##
+##
+## @author UWANTWALI ZIGAMA Didier
+## d.zigama@pivotaccess.com/zigdidier@gmail.com
+##
+
 
 import cherrypy
 import copy
@@ -473,6 +481,10 @@ def rwabugiri_main(argv):
         'tools.staticdir.dir':  ''
       }
     })
+    def error(self, code): 
+        # raise an error based on the get query 
+        raise cherrypy.HTTPError("403 Forbidden", "You are not allowed to access this resource.") 
+    error.exposed = True
   # thd       = thread.start_new_thread(launch, (None, ))
   hst = '0.0.0.0'
   prt = '8081'
@@ -484,3 +496,4 @@ def rwabugiri_main(argv):
 
 if __name__ == '__main__':
   bottom  = sys.exit(rwabugiri_main(sys.argv))
+

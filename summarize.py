@@ -24,9 +24,15 @@ def fetch_data(cursor):
 
 def fetch_data_cursor(conn, query_string):
  curseur = conn.cursor()
- print query_string
+ #print query_string
  curseur.execute(query_string)
  return curseur
+
+def fetch_columns(table):
+  qry = "SELECT column_name FROM information_schema.columns WHERE table_name = '%s';" % table
+  ans = fetch_data(fetch_data_cursor(conn, qry))
+  cols = [ x.column_name for x in ans ]
+  return cols
 
 def colincomments(s):
   if s.__contains__("/*") and s.__contains__("*/"):
@@ -34,6 +40,10 @@ def colincomments(s):
     index_end = s.index("*/")
     return s[index_start:index_end].replace("/*", '').replace("*/", '').replace(' ', '')
   return s
+
+def average(nom, den):
+  ans =  "%.2f%s" % (float(nom)*100/float(den), '%')
+  return ans
 
 def makecol(s):
   #Use name in comments
@@ -207,7 +217,7 @@ def summarize_by_location(primary_table = 'pre_table', tables = [], where_clause
     data = fetch_data(curz)
   return data
  except Exception, e:
-  print e;return [] 
+  return [] 
  return []
 
 def get_indexed_value(field, table, indexfieldname, indexfield, alias = 'MyName'):

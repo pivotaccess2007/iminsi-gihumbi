@@ -41,7 +41,6 @@ QUERY = """
             DESC
             LIMIT
                 %s
-
         """  
 
 FIELDS_QUERY = """

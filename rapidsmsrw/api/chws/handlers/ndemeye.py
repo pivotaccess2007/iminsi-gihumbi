@@ -60,6 +60,7 @@ class NdemeyeHandler (KeywordHandler):
             cnf.answer = True
             cnf.save()
         except Exception, e:
+            print e
             if message.supervisor:
                 message.respond("Muraho murakomeye! Ohereza ijambo 'WHO' urebeko wanditse neza, kandi wibutse abajyanamako bagomba kohereza ubutumwa kuri %s. Murakoze" % settings.SHORTCODE)   
             else:   message.respond(_("You need to be registered first"))

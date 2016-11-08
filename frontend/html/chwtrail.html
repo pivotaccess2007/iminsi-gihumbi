@@ -17,7 +17,11 @@
           </li>
 	 <li class="homelink">
             <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
-          </li>        
+          </li>  
+	  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("updatechw") }}'><span>Update CHW</span></a>
+          </li> 
+      
 {% endblock %}
 
 {% block position %}
@@ -53,9 +57,9 @@
 	<label id="tel">Telephone: </label>
 	<input type="text" name="telephone_moh" id="search_telephone_moh" value="" class="ac_input">
 	<br><br>
-  	<label id="dob">Start Date: </label><input value="" placeholder="" class="activedate" type="text" name="start" />
+  	<label id="dob">Start Date: </label><input value="" placeholder="" type="text" name="start" onFocus="displayCalendar(form.start,'dd/mm/yyyy',this)" size = "10"/>
   	<br><br>
-	<label id="jod">End Date: </label><input value="" placeholder="" class="activedate" type="text" name="end" />
+	<label id="jod">End Date: </label><input value="" placeholder="" type="text" name="end" onFocus="displayCalendar(form.end,'dd/mm/yyyy',this)" size = "10"/>
 	<br><br>
         <input type="hidden" name="pk" id="pk" value="" />
 	<input type="hidden" name="info" id="info" value="" />
@@ -98,13 +102,20 @@ function formatItem(row) {
 		return "<tr><td width=90>" + row[0] + "</td><td width=90>" + row[1] + "</td><td width=90>" + row[2] + "</td><td width=90>" + row[3] + "</td><td width=90>" + row[4] + "</td><td width=90>" + row[5] + "</td><td width=90>" + row[6] + "</td><td width=90>" + row[7] + "</td></tr>";
 	}
 	function formatResultNID(row) {
-		$("#pk").val(row[8]);
 		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+
+		$("#pk").val(row[8]);		
+		$("#search_telephone_moh").val(row[3]);
+		
 		return row[2].replace(/(<.+?>)/gi, '');
 	}
 	function formatResultPhone(row) {
-                $("#pk").val(row[8]);
+                
 		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+
+		$("#pk").val(row[8]);		
+		$("#search_national_id").val(row[2]);
+
 		return row[3].replace(/(<.+?>)/gi, '');
 	}
 

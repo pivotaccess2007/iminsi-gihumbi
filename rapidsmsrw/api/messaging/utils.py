@@ -21,6 +21,9 @@ import messageassocs
 import migrations
 import psycopg2
 from notifications.reminders import get_record_by_cursor, get_record_by_sql, track_reminders, track_notifications
+from api.smser import *
+import random
+import sha
 
 TREATED = ('treated_messages', migrations.TREATED)
 FAILED  = 'failed_transfers'
@@ -92,17 +95,17 @@ def get_smsdbconstraints(sms_report, conn = conn):
     curz = fetch_data_cursor(conn, qry)
     return fetch_data(curz)
 
-def get_appropriate_response( DEFAULT_LANGUAGE_ISO = 'rw', message_type = 'unknown_error', sms_report = None, sms_report_field = None, destination = None ):
+def get_appropriate_response( DEFAULT_LANGUAGE_ISO = 'rw', message_type = 'unknown_error', sms_report = None, sms_report_field = None, destination = None, key_value = None, error_code = None ):
     try:
         colm = 'message_%s' % DEFAULT_LANGUAGE_ISO
         msg = SMSMessage.objects.get(message_type = message_type, sms_report = sms_report, sms_report_field = sms_report_field)
-        return [message_type, getattr(msg, colm)]
+        return [message_type, getattr(msg, colm) if getattr(msg, colm) else "" ] 
     except Exception, e:
         try:
             msg = SMSMessage.objects.get(message_type = message_type, sms_report = sms_report, sms_report_field = sms_report_field)
-            return [message_type, msg.get_message_type_display()]
+            return [message_type, msg.get_message_type_display() if msg.get_message_type_display() else "" ]
         except Exception, e:
-            return [get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO )[0], get_appropriate_response( DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO )[1]]
+            return ["unknown_error", "Ikosa, kosora ubutumwa bwawe wongere ugerageze"]
     
 
 def get_sms_report_parts(sms_report = None , text = None, DEFAULT_LANGUAGE_ISO = 'rw'):
@@ -269,7 +272,7 @@ def check_sms_report_semantics( sms_report, positioned_sms , today, DEFAULT_LANG
         #                        report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
         #                                   message_type = 'bad_muac_date', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
 
-        if report['error'] == []:   parse_db_constraints(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
+        #if report['error'] == []:   parse_db_constraints(sms_report, report, DEFAULT_LANGUAGE_ISO  = DEFAULT_LANGUAGE_ISO)
     except Exception, e:
         report['error'].append(get_error_msg(sms_report = sms_report, sms_report_field = None, 
                                            message_type = 'unknown_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO))
@@ -426,7 +429,7 @@ def parse_dependencies(sms_report, report, DEFAULT_LANGUAGE_ISO ):
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[1]])
                 elif field.dependency == 'jam':                    
                     if dep:
-                        jam = SMSReportField.objects.filter(sms_report = sms_report, key = dep)[0]
+                        jam = SMSReportField.objects.filter(sms_report = sms_report, key = dep.lower())[0]
                         report['error'].append([get_error_msg(sms_report = sms_report, sms_report_field = jam, 
                                                                     message_type = 'dependency_error', DEFAULT_LANGUAGE_ISO = DEFAULT_LANGUAGE_ISO)[0], 
                                                 '%s (%s)' % (get_error_msg(sms_report = sms_report, sms_report_field = jam, 
@@ -524,8 +527,8 @@ def check_uniqueness(sms_report, report, DEFAULT_LANGUAGE_ISO):
                     try:
                         ## check if maternal death
                         if got.death and report.get('md'):
-                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND child_id IS NULL" % report.get('nid')
-                            got = get_record_by_sql(query)
+                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND lower(death) LIKE '%s' " % (report.get('nid'), '%md%')
+                            got = get_record_by_sql(query);print query
                             if got:   ans.append(got)
                         else: pass
                     except Exception, e: pass;print e
@@ -572,7 +575,7 @@ def check_stoppers(sms_report, report, DEFAULT_LANGUAGE_ISO):
                     try:
                         ## check if maternal death
                         if got.death and report.get('md'):
-                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND child_id IS NULL" % report.get('nid')
+                            query = "SELECT * FROM rw_deaths WHERE indangamuntu = '%s' AND lower(death) LIKE '%s' " % (report.get('nid'), '%md%')
                             got = get_record_by_sql(query)
                             if got:   ans.append(got)
                         else: pass
@@ -663,12 +666,13 @@ def get_violation(  conn = conn,
         wcllist = []
         for x in fields_keys:
             if x[1]: dt = " %s = '%s' " % (settings.KEYS_MAP.get(x[0]) if settings.KEYS_MAP.get(x[0]) else x[0], x[1])
+            #elif table in ["deathmessage", "rw_deaths"]:    dt = " %s = '%s' " % (settings.KEYS_MAP.get(x[0]) if settings.KEYS_MAP.get(x[0]) else x[0], x[0]) 
             else:    dt = " %s IS NOT NULL" % (settings.KEYS_MAP.get(x[0]) if settings.KEYS_MAP.get(x[0]) else x[0])    
             wcllist.append(dt)
         wcl = "AND".join( m for m in wcllist )
         if wcl.strip() != '':   qry = " %s AND %s ;" % (qry, wcl)
     ### TODO in case column does not exists ... now is returning []
-    #print qry, fields_keys
+    ##print qry, fields_keys, dt
     curz = fetch_data_cursor(conn, qry)
     d = fetch_data(curz)
     return d[0] if len(d) > 0  else None
@@ -691,7 +695,7 @@ def parse_db_constraints(sms_report, report, DEFAULT_LANGUAGE_ISO):
     return True
 
 
-def get_error_msg(sms_report , sms_report_field , DEFAULT_LANGUAGE_ISO , message_type = 'unknown_error'): 
+def get_error_msg(sms_report , sms_report_field , DEFAULT_LANGUAGE_ISO , message_type = 'unknown_error', key_value = None, error_code = None): 
     response = SMSMessage.objects.filter(sms_report = sms_report, sms_report_field = sms_report_field, message_type = message_type)
     if response.exists():
         return [message_type, getattr(response[0], 'message_%s' % DEFAULT_LANGUAGE_ISO)]
@@ -844,6 +848,7 @@ def parseObj(chw, message, pgc = conn, errors = []):
         return True 
 
     except Exception, e:
+        print e
         #errors.append([ 'unknown_error', 'Error(Ikosa)'])
         pass#print e
         
@@ -1051,6 +1056,106 @@ def create_or_update_model(app_label = 'messaging', model_name = 'Test', model_f
     except Exception, e:
         #print e
         return False
+"""
+def fast_chw_correction(telephone_moh)
+    chw = Reporter.objects.get(telephone_moh = telephone_moh)
+    contact, created = Contact.objects.get_or_create(name = chw.national_id)
+    contact.language = chw.language
+    contact.save()
+    b = Backend.objects.get(id = 1)
+    connection, created = Connection.objects.get_or_create(contact = contact, backend = b, identity = chw.telephone_moh)
+    connection.save()
+    return True
+"""
+def import_staff(filepath = "api/messaging/xls/staff.xls", sheetname = "staff"):
+    book = open_workbook(filepath)
+    sheet = book.sheet_by_name(sheetname)
+    
+    for row_index in range(sheet.nrows):
+        if row_index < 1: continue   
+        try:
+            surname             = sheet.cell(row_index,1).value
+            fosa                = str(int(sheet.cell(row_index,2).value))
+            telephone           = str(sheet.cell(row_index,5).value)
+            national_id         = str(sheet.cell(row_index,6).value)
+            
+            
+            hospital = Hospital.objects.get(code = fosa)
+            hc = HealthCentre.objects.get( code = Reporter.objects.filter(referral_hospital = hospital)[5].health_centre.code )
+            village = Village.objects.get( code = Reporter.objects.filter( health_centre = hc)[5].village.code )
+            role = Role.objects.get(code = 'asm')
+            if len(national_id.strip()) != 16: national_id = telephone.strip() + "000000"
+            if len(telephone) == 10: telephone = "+25" + telephone.strip() 
+            #print surname, fosa, telephone, national_id
+            chw, created = Reporter.objects.get_or_create( telephone_moh = telephone )
+                        
+            chw.surname = surname
+            chw.role = role
+            chw.telephone_moh = telephone
+            chw.national_id = national_id
+            chw.referral_hospital = hospital
+            chw.health_centre = hc
+            chw.village = village
+            chw.cell = village.cell
+            chw.sector = village.sector
+            chw.district = hospital.district
+            chw.province = hospital.province
+            chw.nation = hospital.nation
+            chw.language = "rw"
+            chw.deactivated = False
+            chw.is_active = True
+            chw.correct_registration = True
+            try:
+                chw.save()
+                contact, created = Contact.objects.get_or_create(name = chw.national_id)
+                contact.language = chw.language
+                contact.save()
+                b = Backend.objects.get(id = 1)
+                connection, created = Connection.objects.get_or_create(backend = b, identity = chw.telephone_moh)
+                connection.contact = contact
+                connection.save(); print chw, contact, connection
+                naddr = "test%s" % chw.id
+                npwd = "test%s" % chw.id
+                salt  = str(random.random()).join([str(random.random()) for x in range(2)])
+                rslt  = sha.sha('%s%s' % (salt, npwd))
+                thing = {'salt': salt, 'address': naddr, 'sha1_pass': rslt.hexdigest(), 'district_pk': chw.district.id, 'province_pk': chw.province.id, 'health_center_pk': chw.health_centre.id}
+                orm.ORM.store('ig_admins', thing)
+                cmd = Smser()
+                message = "Dear %s, you are registered to RAPIDSMS RWANDA, as %s, in the village of %s, %s Health Centre, for testing purpose. Your username is %s and password is %s, login at http://41.74.172.34:8081 .Thank you!" % (chw.surname, chw.role.name, chw.village.name, chw.health_centre.name, naddr, npwd)
+                print message
+                cmd.send_message_via_kannel(chw.telephone_moh, message )
+            except Exception, e:
+                print e, chw.telephone_moh, chw.national_id
+                        
+            """print  (chw.id, 
+                    chw.surname,
+                    chw.role,
+                    chw.sex,
+                    chw.education_level,
+                    chw.date_of_birth,
+                    chw.join_date,
+                    chw.national_id,
+                    chw.telephone_moh,
+                    chw.village,
+                    chw.cell,
+                    chw.sector,
+                    chw.health_centre,
+                    chw.referral_hospital,
+                    chw.district,
+                    chw.province,
+                    chw.nation,
+                    chw.created,
+                    chw.updated,
+                    chw.language,
+                    chw.deactivated,
+                    chw.is_active,
+                    chw.last_seen,
+                    chw.correct_registration)"""
+
+    
+        except Exception, e:
+            print e, row_index
+            pass
 
 def import_sms_report(filepath = "api/messaging/smsreport.xls", sheetname = "smsreport"):
     book = open_workbook(filepath)
@@ -1129,8 +1234,8 @@ def import_sms_report_field(filepath = "api/messaging/smsreportfield.xls", sheet
             #        minimum_length, maximum_length, position_after_sms_keyword, depends_on_value_of, dependency, allowed_value_list, only_allow_one, required
             
             sms_report                                   = SMSReport.objects.get(keyword = sms_report_keyword)
-            try:    dep                                  = SMSReportField.objects.get(key = depends_on_value_of)
-            except Exception, e:    dep                  = None
+            try:    dep                                  = SMSReportField.objects.get(key = depends_on_value_of, sms_report = sms_report)
+            except Exception, e:    dep                  = None#;print e
             sms_report_field, created                    = SMSReportField.objects.get_or_create(key = key, sms_report = sms_report, 
                                                                                                     position_after_sms_keyword = position_after_sms_keyword)
             sms_report_field.title_en                    = title_en
@@ -1146,7 +1251,7 @@ def import_sms_report_field(filepath = "api/messaging/smsreportfield.xls", sheet
             sms_report_field.maximum_value               = maximum_value
             sms_report_field.minimum_length              = minimum_length
             sms_report_field.maximum_length              = maximum_length
-            sms_report_field.depends_on_value_of         = dep
+            sms_report_field.depends_on_value_of         = dep#;print "DEPEND:: %s" % depends_on_value_of
             sms_report_field.dependency                  = dependency
             sms_report_field.allowed_value_list          = allowed_value_list
             sms_report_field.only_allow_one              = only_allow_one

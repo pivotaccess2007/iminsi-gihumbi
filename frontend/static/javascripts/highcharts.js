@@ -737,8 +737,8 @@
         },
         credits: {
             enabled: !0,
-            text: "Pivotaccess.com",
-            href: "http://www.Pivotaccess.com",
+            text: "",
+            href: "",
             position: {
                 align: "right",
                 x: -10,

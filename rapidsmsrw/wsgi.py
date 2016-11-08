@@ -15,7 +15,7 @@ framework.
 """
 import os
 import sys
-
+#print "WE ARE THERE"
 # set up python path and virtualenv
 activate_this = '/home/zigama/projects/python/virtualenvs/rapidsmsrw1000-env/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))

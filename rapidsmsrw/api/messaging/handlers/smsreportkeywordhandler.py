@@ -80,10 +80,11 @@ class SMSReportKeywordHandler(BaseHandler):
         # it along to the handle method. the instance can always find
         # the original text via self.msg if it really needs it.
         
-        text = match.group(1)
+        text = match.group(1) or " "
         
 
-        if text is None or text.strip() == '':
+        if text is None:# or text.strip() == '':
+            
            msg.respond( '%s, %s' % (get_appropriate_response( DEFAULT_LANGUAGE_ISO = cls.reporter.language, message_type = 'empty_sms_report', destination = None,
                                                      sms_report = None, sms_report_field = None )[1],
                                     get_appropriate_response( DEFAULT_LANGUAGE_ISO = cls.reporter.language, message_type = 'help', destination = None,

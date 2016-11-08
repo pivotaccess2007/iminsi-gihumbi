@@ -22,51 +22,51 @@
  <script src="{{ static_path }}/javascripts/nutrition/d3.min.js"></script>
   <script src="{{ static_path }}/javascripts/nutrition/underscore-min.js"></script>
   <script src="{{ static_path }}/javascripts/nutrition/growthchart.js"></script>
-  <script src="{{ static_path }}/javascripts/nutrition/stuntingchart.js"></script>
-  <script src="{{ static_path }}/javascripts/nutrition/wastingchart.js"></script>
+  <!--<script src="{{ static_path }}/javascripts/nutrition/stuntingchart.js"></script>
+  <script src="{{ static_path }}/javascripts/nutrition/wastingchart.js"></script> -->
   <link rel="stylesheet" type="text/css" href="{{ static_path }}/stylesheets/nutrition/growthchart.css" ></link>
-  <div>
+  <div style="margin-left: 100px;">
     
     <div style="float: left;">
-      <h3>Weight for Age, Boys</h3>
+      <div class="infoname">Weight for Age, Boys</div>
       <div id="boys"></div>
     </div>
-    <div style="float: right;">
-      <h3>Weight for Age, Girls</h3>
+    <div style="float: left;">
+      <div class="infoname">Weight for Age, Girls</div>
       <div id="girls"></div>
      </div>
   </div>
 
     <div class="clear-hack"></div>
-
-  <div>
+<!--
+  <div style="margin-left: 100px;">
 
     <div style="float: left;">
-      <h3>Height for Age, Boys</h3>
+      <div class="infoname">Height for Age, Boys</div>
       <div id="stuntingBoys"></div>
     </div>
-    <div style="float: right;">
-      <h3>Height for Age, Girls</h3>
+    <div style="float: left;">
+      <div class="infoname">Height for Age, Girls</div>
       <div id="stuntingGirls"></div>
     </div>
   </div>
 
     <div class="clear-hack"></div>
 
-  <div>
+  <div style="margin-left: 100px;">
      
     <div style="float: left;">
-      <h3>Weight for Height, Boys</h3>
+      <div class="infoname">Weight for Height, Boys</div>
       <div id="wastingBoys"></div>
     </div>
-    <div style="float: right;">
-      <h3>Weight for Height, Girls</h3>
+    <div style="float: left;">
+      <div class="infoname">Weight for Height, Girls</div>
       <div id="wastingGirls"></div>
     </div>
   </div>
 
 	<div class="clear-hack"></div>
-  
+  -->
   
   <script>
 
@@ -156,11 +156,11 @@
 	var boysChart = display_growth_chart(boysData, "#boys", "wfa_boys_0_to_5", myConfig);
 	var girlsChart = display_growth_chart(girlsData, "#girls", "wfa_girls_0_to_5", myConfig);
 
-	var stuntingBoysChart = display_stunting_chart(boysData, "#stuntingBoys", "lhfa_boys_0_to_5", myConfig);
-	var stuntingGirlsChart = display_stunting_chart(girlsData, "#stuntingGirls", "lhfa_girls_0_to_5", myConfig);
+	//var stuntingBoysChart = display_stunting_chart(boysData, "#stuntingBoys", "lhfa_boys_0_to_5", myConfig);
+	//var stuntingGirlsChart = display_stunting_chart(girlsData, "#stuntingGirls", "lhfa_girls_0_to_5", myConfig);
 
-	var wastingBoysChart = display_wasting_chart(boysData, "#wastingBoys", "wfl_boys_0_to_2", myConfig);
-	var wastingGirlsChart = display_wasting_chart(girlsData, "#wastingGirls", "wfl_girls_0_to_2", myConfig);
+	//var wastingBoysChart = display_wasting_chart(boysData, "#wastingBoys", "wfl_boys_0_to_2", myConfig);
+	//var wastingGirlsChart = display_wasting_chart(girlsData, "#wastingGirls", "wfl_girls_0_to_2", myConfig);
   </script>
 
 {%  endblock  %}

@@ -8,3 +8,4 @@ rapidsmsrw/wsgi.py
 rapidsmsrw/logs/*
 *.log
 *.log.*
+settings.py

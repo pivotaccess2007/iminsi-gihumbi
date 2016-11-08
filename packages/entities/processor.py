@@ -173,7 +173,7 @@ class UniqueEntity(Entity):
       hsh['%s = %%s' % (k, )] = v
       mig.append((k, v))
       cols.append(k)
-    got = orm.ORM.query(self.__class__.table, hsh, migrations = mig, cols = cols)
+    got = orm.ORM.query(self.__class__.table, hsh, migrations = [], cols = cols)# DIDIER STOPPED MIGRATIONS IN PRODUCTION IT'S NOT WISE WHILE reporting mig, cols = cols)
     for ans in got.list():
       for k in cols:
         self.process(k, ans[k])

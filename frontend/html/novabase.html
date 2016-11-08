@@ -63,6 +63,9 @@
   {% if ref == 'chwamb'  %}
   {% set module = 'single' %}
   {% endif %}
+  {% if ref == 'groupmessage'  %}
+  {% set module = 'single' %}
+  {% endif %}
 
 <!DOCTYPE html>
 <html>
@@ -85,7 +88,16 @@
     <script src="{{ static_path }}/javascripts/samples.js" type="text/javascript"></script> 
 	<script src="{{ static_path }}/javascripts/zdmin.js"></script>
 	<script src="{{ static_path }}/javascripts/deactivate.js"></script>
-	<script src="{{ static_path }}/javascripts/locations.js"></script>
+	 <script src="{{ static_path }}/javascripts/locations.js"></script> 
+
+	<!-- NEW FILTER -->
+	
+		<!-- <script type="text/javascript"    src="{{ static_path }}/javascripts/stats.js"></script> 
+		<link rel="stylesheet" type="text/css"    href="{{ static_path }}/stylesheets/stats.css" /> -->
+		<link type="text/css" rel="stylesheet" href="{{ static_path }}/javascripts/calendar/dhtmlgoodies_calendar.css"></link>
+		<script type="text/javascript" src="{{ static_path }}/javascripts/calendar/dhtmlgoodies_calendar.js"></script>
+
+	<!-- END OF NEW FILTER -->
 	
     <script>
     	$(function()
@@ -148,8 +160,8 @@
                 <div id="langs">
           <ul>
             <li>English</li>
-            <li>Kinyarwanda</li>
-            <li>Francais</li>
+            <!--<li>Kinyarwanda</li>
+            <li>Francais</li> -->
           </ul>
         </div>
         <div id="user">{{ display.auth.username() }}- <a href="/authentication?logout=yes">Logout</a></div>
@@ -187,16 +199,18 @@
           {% endblock  %}</div>
         </div>
         <div id="filter">
+	  <!--
           <form id="dateranges">
             
               {%  include "dater.html"  %}
               {%  include "hlocator.html"  %}
+	      {%  include "params.html"  %}
             
             <input type="submit" value="Refresh" />
           </form>
 
           <form id="myform">
-		<!--<input type="hidden" id="loginuser" name="loginuser" value="{{ display.auth.username() }}" /> -->
+		<input type="hidden" id="loginuser" name="loginuser" value="{{ display.auth.username() }}" /> 
 		<input type="checkbox" name="ca" onchange="chgtx();" />
 		<select name="province" id="provchoose" onChange="changeDistrict(this.value);"> </select>
 		<input type="checkbox" name="cb" onchange="chgty();" />
@@ -205,6 +219,33 @@
 		<select name="hc" id="locchoose"><option > </option></select> 
         <input type="submit" value="Refresh" />
           </form>
+	-->
+
+	<!-- START NEW FILTER -->
+
+	<form >
+       	   <div id="dateranges"> 	
+           <input style="background-color: white"  type="text" placeholder="Start date" id="pickstartdate" value="{{  nav.start.strftime('%d/%m/%Y')  }}"  name="start" 					readonly="readonly"  onFocus="displayCalendar(form.start,'dd/mm/yyyy',this)" size = "10"/>
+           <input style="background-color: white" type="text" placeholder="End date" id="pickenddate" value="{{   nav.finish.strftime('%d/%m/%Y')   }}"  name="finish" 					readonly="readonly"  onFocus="displayCalendar(form.finish,'dd/mm/yyyy',this)" size = "10" />
+             </div>
+	    <div id="myform">       
+            <select name="province" id="provchoose" onChange="changeDistrict(this.value);"><option value=""></option>
+                
+            </select>
+                    
+            <select name="district" id="distchoose" onChange="changeLocation(this.value);"><option value=""></option>
+                
+            </select>
+                    
+            <select name="hc" id="locchoose"><option value=""></option>
+                
+            </select>
+                    
+            <input type="button" value="Update Filters"  onClick="return deroulement(this.form);"/>
+            </div>        
+       
+    </form>
+	<!-- END NEW FILTER -->
         </div>
       </div>
       
@@ -246,30 +287,24 @@
       <div id="footer">
         <div id="footerblueline"><img src="{{ static_path }}/images/Layer16.png"></div>
 			<div id="ContactUsReachouttou">
-			<strong>Contact Us</strong>
-			<br/>Reach out to us if you have any 
-			questions or queries regarding 
-			information on rapid SMS 
-			contact us using the information
-			below:
+			<!--<strong>Contact Us</strong>
+			
 			<br><br>
 			+250 78123456<br>
 			114
 			<br><br>
 			info@rapidsms.gov.rw
-			
+			-->
 			</div>
 			
 			
-			<div id="uniceflogo">Rapid Sms Rwanda V3</div>
+			<div id="uniceflogo">RapidSMS Rwanda V3</div>
 			<div id="rapidsmsfooterlogo"><img src="{{ static_path }}/images/Layer19.png"></div>
 			<div id="ministrylogo"><img src="{{ static_path }}/images/rwanda.png"></div>
 			<!--  -->
         
       </div>
-    
-
-
+   
 
   </body>
 </html>

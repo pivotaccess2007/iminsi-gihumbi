@@ -596,6 +596,14 @@ If `vl` is a hash, then 'type' is the SQL type, 'default' the SQL default, 'null
     curz    = self.postgres.cursor()
     curz.execute(u'DELETE FROM %s WHERE indexcol = %s' % (tn, i))
 
+
+  @classmethod
+  def zdquery(self, zdqry):
+    curz    = self.postgres.cursor()
+    curz.execute(zdqry)
+    self.postgres.commit()
+    curz.close()
+
   @classmethod
   def store(self, tn, d, **kw):
     '''Stores in the table `tn` (creating it, if necessary) the hash provided in `dat`. The hash keyword item `indexcol` is treated as the ID of the object.

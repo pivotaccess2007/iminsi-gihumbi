@@ -47,7 +47,7 @@
     </div>
     
     <div class="datapoint nutritioncircle">
-    <div class="descr">Complementry Breastfeeding</div>
+    <div class="descr">Complementary feeding</div>
     <div class="number"><a href="{{  nav.link("/tables/nutr", subcat = "cbf")  }}">{{  display.nut[0]['cbf']|neat_numbers }}</a></div>
     </div>
     
@@ -57,20 +57,21 @@
     </div>
 
     <div class="datapoint nutritioncircle">
+    <div class="descr">Underweight</div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "underweight")  }}">{{  display.nut[0]['underweight']|neat_numbers  }}</a></div>
+    </div>
+    <!--
+    <div class="datapoint nutritioncircle">
     <div class="descr">Stunting</div>
     <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "stunting")  }}">{{  display.nut[0]['stunting']|neat_numbers  }}</a></div>
     </div>
     
-    <div class="datapoint nutritioncircle">
-    <div class="descr">Underweight</div>
-    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "underweight")  }}">{{  display.nut[0]['underweight']|neat_numbers  }}</a></div>
-    </div>
-    
+
     <div class="datapoint nutritioncircle">
     <div class="descr">Wasting</div>
     <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "wasting")  }}">{{  display.nut[0]['wasting']|neat_numbers  }}</a></div>
     </div>
-
+-->
     <div class="datapoint nutritioncircle">
     <div class="descr">Gained Weight</div>
     <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "gainedweight")  }}">{{  display.nut[0]['gainedweight']|neat_numbers  }}</a></div>
@@ -84,6 +85,21 @@
     <div class="datapoint nutritioncircle">
     <div class="descr">Faltering Weight</div>
     <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "falteringweight")  }}">{{  display.nut[0]['falteringweight']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapoint reddeathcircle">
+    <div class="descr"> MUAC &lt; 11.5 cm </div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "muacred")  }}">{{  display.nut[0]['muacred']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
+    <div class="descr"> MUAC 11.5 &ndash; 12.5 cm</div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "muacyellow")  }}">{{  display.nut[0]['muacyellow']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapointrisks" style="background: url(../static/images/circle.png);">
+    <div class="descr"> MUAC &gt; 12.5 cm</div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "muacgreen")  }}">{{  display.nut[0]['muacgreen']|neat_numbers  }}</a></div>
     </div>
 	
  </div>
@@ -123,6 +139,21 @@
     <div class="datapoint nutritioncircle">
     <div class="descr">Faltering Weight</div>
     <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "falteringweight")  }}">{{  display.nut_pre[0]['falteringweight']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapoint reddeathcircle">
+    <div class="descr"> MUAC &lt; 18.5 cm </div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "mmuacred")  }}">{{  display.nut_pre[0]['mmuacred']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapointrisks" style="background: url(../static/images/circleatrisk.png);">
+    <div class="descr"> MUAC 18.5 &ndash; 21.0 cm</div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "mmuacyellow")  }}">{{  display.nut_pre[0]['mmuacyellow']|neat_numbers  }}</a></div>
+    </div>
+
+    <div class="datapointrisks" style="background: url(../static/images/circle.png);">
+    <div class="descr"> MUAC &gt; 21.0 cm</div>
+    <div class="number"><a href="{{ nav.link("/tables/nutr", subcat = "mmuacgreen")  }}">{{  display.nut_pre[0]['mmuacgreen']|neat_numbers  }}</a></div>
     </div>
 	
   </div>

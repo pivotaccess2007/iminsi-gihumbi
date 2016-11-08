@@ -35,7 +35,7 @@
     <div class="infoname" style="font-size: 20px;">Total Number of Ambulances</div>
     <div class="moretotal" ><a href="">View by Location</a></div>
     <div class="infodata goodnum">
-      <a href="">3242</a>
+      <a href="">{{display.nat[0]['total']|neat_numbers}}</a>
     </div>
 
 
@@ -53,17 +53,67 @@
 	<label id="tel">Telephone: </label>
 	<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
 	<br><br>
+	<label> District: </label>
+	<select name="district" id="district" onChange="changeHps(this.value);"> <option value=""></option> </select>
+	<br><br>
   	<label id="referral">Referral Hospital: </label>
 	<select name="referral" id="referralchoose"><option></option></select> 
 	<br><br>
 
-	<label id="health_center">Health Center: </label>
-	<select name="health_center" id="locchoose"><option > </option></select> 
+	<label >Health Center: </label>
+	<select name="health_center" id="health_center"><option > </option></select> 
 	<br><br>
 	<input type="submit" value="Register" />
   </form>
 
 
   </div>
+
+<script type="text/javascript">
+
+function changeHcs(value){
+		var selected_hcs = _.filter(locations, function(item) {  return item.district_id == value; });
+		document.getElementById('health_center').options.length = selected_hcs.length + 1;
+		document.getElementById('health_center').options[0] = new Option("", "");
+		for ( var i=0; i<selected_hcs.length; i++ ){
+						hc = selected_hcs[i];
+						document.getElementById('health_center').options[i+1] = new Option(hc.name, hc.id);
+							}
+}
+
+function changeHps(value){
+		var selected_hps = _.filter(hps, function(item) {  return item.district_id == value; });
+		document.getElementById('referralchoose').options.length = selected_hps.length + 1;
+		document.getElementById('referralchoose').options[0] = new Option("", "");
+		for ( var i=0; i<selected_hps.length; i++ ){
+						hp = selected_hps[i];
+						document.getElementById('referralchoose').options[i+1] = new Option(hp.name, hp.id);
+							}
+}
+
+
+
+$(document).ready(function() {
+
+	var selected_dists = [];
+	$.getJSON( "/alldistricts" , function( result ){  //alert(JSON.stringify(result));
+	selected_dists = _.map(_.indexBy(result, 'id'), function(obj){return obj});
+	
+	for ( var i=0; i<selected_dists.length; i++ ){
+						district = selected_dists[i]
+						document.getElementById('district').options[i+1] = new Option(district.name, district.id);
+							}
+	});	
+	
+	$('#district').change(function(evt){    
+		var value = $(this).attr('value');
+		changeHps(value);
+		changeHcs(value);
+		
+	});
+
+});
+
+</script>
 
 {%  endblock  %}

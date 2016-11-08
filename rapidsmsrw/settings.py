@@ -18,7 +18,7 @@ TRAINING_ENV = True
 SHORTCODE = "3104"
 PRIMARY_BACKEND = 'kannel-smpp'
 SERVER_IP = '127.0.0.1'
-SERVER_PORT = '5050'
+SERVER_PORT = '5000'
 POST_URL="http://%s:%s/backend/%s" % (SERVER_IP, SERVER_PORT, PRIMARY_BACKEND) 
 
 ADMINS = (
@@ -255,8 +255,8 @@ INSTALLED_BACKENDS = {
         "sendsms_url": "http://127.0.0.1:13013/cgi-bin/sendsms",
         "sendsms_params": {"smsc": "smpp",
                            "from": SHORTCODE, # not set automatically by SMSC
-                           "username": "kannel_smpp",
-                           "password": "kannel_smpp"}, # or set in localsettings.py
+                           "username": "moh_2015_kannel",
+                           "password": "moh_2015_kannel_pwd"}, # or set in localsettings.py
         "coding": 0,
         "charset": "ascii",
         "encode_errors": "ignore", # strip out unknown (unicode) characters
@@ -310,7 +310,7 @@ FLEXSELECT = {
 
 LOGIN_REDIRECT_URL = '/'
 
-GESTATION       	     = 270
+GESTATION       	     = 277
 MOTHER_TRACK_GESTATION       = 350
 
 TABLE_MAP = {
@@ -338,12 +338,42 @@ KEYS_MAP = {
 		'cd':	'death',
 		'anc2': 'anc_visit',	
 		'anc3': 'anc_visit',	
-		'anc4': 'anc_visit',		
+		'anc4': 'anc_visit',
+		'pnc1': 'pnc_visit',	
+		'pnc2': 'pnc_visit',	
+		'pnc3': 'pnc_visit',
+		'nbc1': 'nbc_visit',	
+		'nbc2': 'nbc_visit',	
+		'nbc3': 'nbc_visit',
+		'nbc4': 'nbc_visit',	
+		'nbc5': 'nbc_visit',
+		'v1': 'vaccine',
+		'v2': 'vaccine',
+		'v3': 'vaccine',
+		'v4': 'vaccine',
+		'v5': 'vaccine',
+		'v6': 'vaccine',
+		'vc': 'vacc_completion',
+		'vi': 'vacc_completion',
+		'nv': 'vacc_completion',		
 		}
 NUMBER_KEYS_MAP = {
 			'anc2': 2,	
 			'anc3': 3,	
 			'anc4': 4,
-			
+			'pnc1': 1,	
+			'pnc2': 2,	
+			'pnc3': 3,
+			'nbc1': 1,	
+			'nbc2': 2,	
+			'nbc3': 3,
+			'nbc4': 4,	
+			'nbc5': 5,
+			'v1': 1,
+			'v2': 2,
+			'v3': 3,
+			'v4': 4,
+			'v5': 5,
+			'v6': 6,
 			}
 

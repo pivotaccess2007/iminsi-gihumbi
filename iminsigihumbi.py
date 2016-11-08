@@ -1,5 +1,13 @@
 #!  /usr/bin/env python
 # encoding: utf-8
+# vim: ai ts=4 sts=4 et sw=4
+
+##
+##
+## @author UWANTWALI ZIGAMA Didier
+## d.zigama@pivotaccess.com/zigdidier@gmail.com
+##
+
 import cherrypy
 import copy
 from datetime import datetime, timedelta
@@ -61,6 +69,102 @@ def register_chw(nid, telephone_moh, health_center, referral, village, cell, sec
  chw = orm.ORM.query('chws_reporter', {'telephone_moh = %s': telephone_moh, 'national_id = %s': nid, 'health_centre_id = %s': health_center} )[0]
  return chw
 
+def district_by_province(prov = 0):
+    num = prov
+    gat = orm.ORM.query('chws_district', {});
+    if prov:    gat = orm.ORM.query('chws_district', {'province_id = %s': num});
+    print gat.query;
+    myv= []
+    for v in gat.list():
+        prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+        nation = orm.ORM.query('chws_nation', {'id = %s' : v['nation_id']})[0]
+        myv.append({
+					        'id': v['id'], 'name': v['name'], 'code': v['code'],
+					        'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                            'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
+				        })
+    return myv
+
+def sector_by_district(dist = 0):
+    num = dist
+    if not dist: num = 0
+    gat = orm.ORM.query('chws_sector', {'district_id = %s': num});print gat.query;
+    myv= []
+    for v in gat.list():
+        dst = orm.ORM.query('chws_district', {'id = %s' : v['district_id']})[0]
+        prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+        nation = orm.ORM.query('chws_nation', {'id = %s' : v['nation_id']})[0]
+        myv.append({
+					        'id': v['id'], 'name': v['name'], 'code': v['code'],
+					        'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+				         	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                            'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
+				        })
+    return myv
+
+def cell_by_sector(sec = 0):
+    num = sec
+    if not sec: num = 0
+    gat = orm.ORM.query('chws_cell', {'sector_id = %s': num});print gat.query;
+    myv= []
+    for v in gat.list():
+        sec = orm.ORM.query('chws_sector', {'id = %s' : v['sector_id']})[0]
+        dst = orm.ORM.query('chws_district', {'id = %s' : v['district_id']})[0]
+        prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+        nation = orm.ORM.query('chws_nation', {'id = %s' : v['nation_id']})[0]
+        myv.append({
+					        'id': v['id'], 'name': v['name'], 'code': v['code'],
+					        'sector_name': sec['name'], 'sector_id': sec['id'], 'sector_code': sec['code'],
+				         	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+				         	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                            'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
+				        })
+    return myv
+
+
+def village_by_cell(cell = 0):
+    num = cell
+    if not cell: num = 0
+    gat = orm.ORM.query('chws_village', {'cell_id = %s': num});print gat.query;
+    myv= []
+    for v in gat.list():
+        cel = orm.ORM.query('chws_cell', {'id = %s' : v['cell_id']})[0]
+        sec = orm.ORM.query('chws_sector', {'id = %s' : v['sector_id']})[0]
+        dst = orm.ORM.query('chws_district', {'id = %s' : v['district_id']})[0]
+        prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+        nation = orm.ORM.query('chws_nation', {'id = %s' : v['nation_id']})[0]
+        myv.append({
+					        'id': v['id'], 'name': v['name'], 'code': v['code'],
+					        'cell_name': cel['name'], 'cell_id': cel['id'], 'cell_code': cel['code'],
+				         	'sector_name': sec['name'], 'sector_id': sec['id'], 'sector_code': sec['code'],
+				         	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+				         	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                            'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
+				        })
+    return myv
+  
+def village_by_district(dist = 0):
+    num = dist
+    if not dist: num = 0
+    gat = orm.ORM.query('chws_village', {'district_id = %s': num});print gat.query;
+    myv= []
+    for v in gat.list():
+        cel = orm.ORM.query('chws_cell', {'id = %s' : v['cell_id']})[0]
+        sec = orm.ORM.query('chws_sector', {'id = %s' : v['sector_id']})[0]
+        dst = orm.ORM.query('chws_district', {'id = %s' : v['district_id']})[0]
+        prv = orm.ORM.query('chws_province', {'id = %s' : v['province_id']})[0]
+        nation = orm.ORM.query('chws_nation', {'id = %s' : v['nation_id']})[0]
+        myv.append({
+					        'id': v['id'], 'name': v['name'], 'code': v['code'],
+					        'cell_name': cel['name'], 'cell_id': cel['id'], 'cell_code': cel['code'],
+				         	'sector_name': sec['name'], 'sector_id': sec['id'], 'sector_code': sec['code'],
+				         	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
+				         	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                            'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
+				        })
+    return myv
+
+
 def get_display(value):
  if type(value) == bool:
   if value == True: return 'Yes'
@@ -71,7 +175,7 @@ def get_display(value):
 
 def neat_numbers(num):
   pcs = divided_num(str(num), 3)
-  return ', '.join(pcs)
+  return ','.join(pcs)
 
 def report_summary(row):
   ans = read_record_row(row, orm)
@@ -156,7 +260,7 @@ class ThousandNavigation:
     self.kw     = kw
     self.auth   = auth
     td          = datetime.today()
-    self.fin    = datetime(year = td.year, month = td.month, day = td.day)
+    self.fin    = datetime(year = td.year, month = td.month, day = td.day, hour = td.hour, minute = td.minute, second = td.second, microsecond = td.microsecond)
     self.gap    = timedelta(days = 1000 - 1)
 
   def pages(self, qry, limit = 100):
@@ -305,19 +409,22 @@ class ThousandNavigation:
     )
     return prvq.list()
 
-  def conditions(self, tn, ini = None):
+  def conditions(self, tn, ini = None, cols = []):
     ans = ini.conditions() if ini else {}
-    if tn:
+    if tn and tn in cols:
       ans.update({
         (tn + ' >= %s')  : self.start,
         (tn + ' <= %s')  : self.finish
       })
     if 'province' in self.kw:
-      ans['province_pk = (SELECT id FROM chws_province WHERE id = %s LIMIT 1)']  = self.kw.get('province') or 0
+      prv = 'province_pk' if 'province_pk' in cols else COLS_MAP.get('province_pk')
+      if prv:   ans['%s' % prv + ' = (SELECT id FROM chws_province WHERE id = %s LIMIT 1)']  = self.kw.get('province') or 0
     if 'district' in self.kw:
-      ans['district_pk = (SELECT id FROM chws_district WHERE id = %s LIMIT 1)']  = self.kw.get('district') or 0
+      dst = 'district_pk' if 'district_pk' in cols else COLS_MAP.get('district_pk')
+      if dst:   ans['%s' % dst + ' = (SELECT id FROM chws_district WHERE id = %s LIMIT 1)']  = self.kw.get('district') or 0
     if 'hc' in self.kw:
-      ans['health_center_pk = (SELECT id FROM chws_healthcentre WHERE id = %s LIMIT 1)']  = self.kw.get('hc') or 0
+      hc = 'health_center_pk' if 'health_center_pk' in cols else COLS_MAP.get('health_center_pk')
+      if hc:   ans['%s' % hc + ' = (SELECT id FROM chws_healthcentre WHERE id = %s LIMIT 1)']  = self.kw.get('hc') or 0
     return ans
 
   @property
@@ -378,6 +485,14 @@ class Application:
       'report_summary': report_summary
     })
     self.__set_locations()
+    self._cp_config = {'request.error_response': self.internal_error}
+
+  def role(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_role', {'id = %s': num})[0]
+     return gat
+    except: return None
 
   def village(self, pk):
     try:
@@ -397,6 +512,41 @@ class Application:
     try:
      num = int(pk) if pk else 0
      gat = orm.ORM.query('chws_sector', {'id = %s': num})[0]
+     return gat
+    except: return None
+
+  def clinic(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_healthcentre', {'id = %s': num})[0]
+     return gat
+    except: return None
+
+  def hospital(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_hospital', {'id = %s': num})[0]
+     return gat
+    except: return None
+
+  def district(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_district', {'id = %s': num})[0]
+     return gat
+    except: return None
+
+  def province(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_province', {'id = %s': num})[0]
+     return gat
+    except: return None
+
+  def nation(self, pk):
+    try:
+     num = int(pk) if pk else 0
+     gat = orm.ORM.query('chws_nation', {'id = %s': num})[0]
      return gat
     except: return None
 
@@ -422,9 +572,12 @@ class Application:
     except: return []
 
   def __set_locations(self):
+    self.nations  = {}
     self.provinces  = {}
     self.districts  = {}
     self.hcs        = {}
+    for nt in orm.ORM.query('chws_nation', {}).list():
+      self.nations[str(nt['id'])]  = nt['name']
     for prv in orm.ORM.query('chws_province', {}).list():
       self.provinces[str(prv['id'])]  = prv['name']
     for dst in orm.ORM.query('chws_district', {}).list():
@@ -432,6 +585,32 @@ class Application:
     for hc in orm.ORM.query('chws_healthcentre', {}).list():
       self.hcs[str(hc['id'])]  = hc['name']
 
+  def cols_map_vals(self, row, col):
+    #print col, row[col]
+    try:
+        MAPV = {
+            'role_id': lambda x: self.role(x)['name'],
+            'nation_id': lambda x: self.nation(x)['name'],
+            'province_id': lambda x: self.province(x)['name'],
+            'district_id': lambda x: self.district(x)['name'],
+            'referral_hospital_id': lambda x: self.hospital(x)['name'],
+            'health_centre_id': lambda x: self.clinic(x)['name'],
+            'sector_id': lambda x: self.sector(x)['name'],
+            'cell_id': lambda x: self.cell(x)['name'],
+            'village_id': lambda x: self.village(x)['name'],    
+            }
+        return MAPV.get(col)(row[col])    
+    except Exception, e:
+        pass
+    return row[col]
+
+  def extra_cols_vals(self, cols):
+    extra_cols = []
+    for col in cols:
+        if COLS_EXTRA.get(col): extra_cols.append(COLS_EXTRA.get(col))
+        else:   extra_cols.append(col) 
+    return extra_cols
+    
   def match(self, url):
     got = url[1:].replace('/', '_') or 'index'
     sys.stderr.write('%40s:\t%s\n' % (url, got))
@@ -441,7 +620,7 @@ class Application:
     info  = {}
     info.update({
       'ref'           : re.sub(r'_table$', '', chart),
-      'locations'     : ['TODO'],
+      'locations'     : village_by_district,
       'args'          : kw,
       'nav'           : mapping.get('navb', None),
       'static_path'   : self.static_path
@@ -452,21 +631,71 @@ class Application:
     info.update({'display': mapping})
     return self.jinja.get_template('%s.html' % (chart, )).render(*args, **info)
 
+  def internal_error(self):
+    path = urlparse.urlparse(cherrypy.request.__dict__.get('headers').get('Referer')).path
+    print "HERE", path 
+    #return self.default()
+    raise cherrypy.HTTPRedirect(path)
+
+  @cherrypy.expose
+  def default(self, *args, **kwargs):
+    #print "HEAD: ", cherrypy.request.__dict__.get('headers') 
+    return self.dashboards_errorpage()
+    """return ("This is a catch all page, it can handle any URL that you throw. "
+                "If there is no match in any other previous handler this "
+                "is going to be executed: <br/>"
+                "<pre>args: %s \nkwargs: %s</pre>" % (args, kwargs))
+    """
+
   @cherrypy.expose
   def index(self, *args, **kw):
     flash = cherrypy.session.pop('flash', '')
     user  = cherrypy.session.get('user', '')
     return self.dynamised('index', mapping = locals(), *args, **kw)
 
+  @cherrypy.expose
+  def dashboards_errorpage(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions(None, auth)
+    navb.gap= timedelta(days = 0)
+    
+    return self.dynamised('error', mapping = locals(), *args, **kw)
+
+
 ##### START OF ALL LOCATIONS FILTERING
 
   @cherrypy.expose
+  def alldistricts(self, *args, **kw):
+    myv = district_by_province(kw.get('province'))
+    return json.dumps(myv)
+
+  @cherrypy.expose
+  def allvillages(self, *args, **kw):
+    myv = village_by_district(kw.get('district'))
+    return json.dumps(myv)
+
+  @cherrypy.expose
+  def dsectors(self, *args, **kw):
+    myv = sector_by_district(kw.get('district'))
+    return json.dumps(myv)
+
+  @cherrypy.expose
+  def scells(self, *args, **kw):
+    myv = cell_by_sector(kw.get('sector'))
+    return json.dumps(myv)
+
+  @cherrypy.expose
+  def cvillages(self, *args, **kw):
+    myv = village_by_cell(kw.get('cell'))
+    return json.dumps(myv)
+
+  @cherrypy.expose
   def locs(self, *args, **kw):
-    import json
     auth  = ThousandAuth(cherrypy.session.get('email'))#;print "DIS: %s" % kw.get('district')
-    province = auth.him()['province_pk'] or kw.get('province')
-    district = auth.him()['district_pk'] or kw.get('district')
-    health_center = auth.him()['health_center_pk'] or kw.get('hc')
+    province = auth.him()['province_pk'] #or kw.get('province')
+    district = auth.him()['district_pk'] #or kw.get('district')
+    health_center = auth.him()['health_center_pk'] #or kw.get('hc')
     wclause = {}
     if province: wclause = {'province_id = %s' : province}
     if district: wclause = {'district_id = %s' : district}
@@ -495,14 +724,16 @@ class Application:
 		except Exception,e:	continue
 
     for d in data:
-       #print d['name'], d['district'], d['province']
+       #print d['name'], d['district_id'], d['province_id'], d['nation_id']
        dst = orm.ORM.query('chws_district', {'id = %s' : d['district_id']})[0]
        prv = orm.ORM.query('chws_province', {'id = %s' : d['province_id']})[0]
+       nation = orm.ORM.query('chws_nation', {'id = %s' : d['nation_id']})[0]
        if prv and dst:	my_locs['hcs'].append( 
 			{
 				'id': d['id'], 'name': d['name'], 'code': d['code'],
 			 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
-			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
+			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
 			}
 		      )
 
@@ -514,7 +745,8 @@ class Application:
 			{
 				'id': h['id'], 'name': h['name'], 'code': h['code'],
 			 	'district_name': dst['name'], 'district_id': dst['id'], 'district_code': dst['code'],
-			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code']
+			 	'province_name': prv['name'], 'province_id': prv['id'], 'province_code': prv['code'],
+                'nation_name': nation['name'], 'nation_id': nation['id'], 'nation_code': nation['code']
 			}
 		      )
 
@@ -608,42 +840,47 @@ class Application:
 				'nb':('COUNT(*)', "lower(breastfeeding) = 'nb'"),
 				'ebf':('COUNT(*)', "lower(breastfeeding) = 'ebf'"),
 				'cbf':('COUNT(*)', "lower(breastfeeding) = 'cbf'"),
-				'stunting':('COUNT(*)', 'height_for_age < -2'),
+				#'stunting':('COUNT(*)', 'height_for_age < -2'),
 				'underweight':('COUNT(*)', 'weight_for_age < -2'),
-				'wasting':('COUNT(*)', 'weight_for_height < -2'),
-				'lostweight':('COUNT(*)', 'lostweight IS NOT NULL'),
-				'falteringweight':('COUNT(*)', 'falteringweight IS NOT NULL'),
-				'gainedweight':('COUNT(*)', 'gainedweight IS NOT NULL'),
+				#'wasting':('COUNT(*)', 'weight_for_height < -2'),
+				'lostweight':('COUNT(*)', 'lostweight'), # IS NOT NULL'),
+				'falteringweight':('COUNT(*)', 'falteringweight'), # IS NOT NULL'),
+				'gainedweight':('COUNT(*)', 'gainedweight'), # IS NOT NULL'),
+                'muacred': ('COUNT(*)', 'muac < 11.5'),
+                'muacyellow': ('COUNT(*)', 'muac >= 11.5 AND muac < 12.5'),
+                'muacgreen': ('COUNT(*)', 'muac >= 12.5'),
 			      }
-			    )
+			    )#; print nut.query
     # raise Exception, nut.query
     preg_cnds = navb.conditions(None, auth)
     preg_cnds.update({"(lmp + INTERVAL '%s days') >= '%s' " % (settings.GESTATION , datetime.today().date()): ''})
     allpregs = orm.ORM.query(  'rw_pregnancies', 
 			  preg_cnds,
                           cols = ['COUNT(*) AS total'],
-			)
+			); #print allpregs.query
     nut_pre = orm.ORM.query('mother_track', preg_cnds,
 			      cols      = ['COUNT(*) AS allpregs'],
 			      extended  = {
 				'mother_height_less_145':('COUNT(*)', " mother_height < 145 "),
 				'mother_weight_less_50':('COUNT(*)', " mother_weight < 50 "),
 				'bmi_less_18_dot_5':('COUNT(*)', " bmi < 18.5 "),
-				'lostweight':('COUNT(*)', 'lostweight IS NOT NULL'),
-				'falteringweight':('COUNT(*)', 'falteringweight IS NOT NULL'),
-				'gainedweight':('COUNT(*)', 'gainedweight IS NOT NULL'),
+				'lostweight':('COUNT(*)', 'lostweight'), # IS NOT NULL'),
+				'falteringweight':('COUNT(*)', 'falteringweight'), # IS NOT NULL'),
+				'gainedweight':('COUNT(*)', 'gainedweight'), # IS NOT NULL'),
+                'mmuacred': ('COUNT(*)', 'muac < 18.5'),
+                'mmuacyellow': ('COUNT(*)', 'muac >= 18.5 AND muac < 21.0'),
+                'mmuacgreen': ('COUNT(*)', 'muac >= 21.0'),
 			      }
     			)
     
     total   = nut[0]['allnuts']
-    #print nut_pre.query
+    #print nut_pre.query, cnds, preg_cnds
     return self.dynamised('nutr', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def tables_nutr(self, *args, **kw):
     navb, auth, cnds, cols    = self.neater_tables(basics = [
-      ('child',          'Entry ID'),
-      ('indangamuntu',            'Mother ID'),
+       ('indangamuntu',            'Mother ID'),
       ('child_number',            'Child Number'),
       ('gender',            'Gender'),
       ('birth_date', 'Date of Birth'),
@@ -727,17 +964,17 @@ class Application:
     	cols    = queries.MOTHER_DATA
     	cols 	+= queries.LOCATION_INFO
     	nat     = orm.ORM.query('mother_track', preg_cnds,
-		      cols  = [x[0] for x in cols + [('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate')] ],
+		      cols  = [x[0] for x in cols + [('(lmp + INTERVAL \'%d days\') AS edd' % settings.GESTATION, 'EDDate'), ('indexcol', '')] ],
 		      
 		    );
 
     else:
     	cols    += queries.LOCATION_INFO  
     	nat     = orm.ORM.query('child_track', cnds,
-	      cols  = [x[0] for x in cols + [('(((EXTRACT(DAYS FROM (NOW() - birth_date)) / 30)) :: INTEGER) AS age_in_months', 'Age')] ],
+	      cols  = [x[0] for x in cols + [('(((EXTRACT(DAYS FROM (NOW() - birth_date)) / 30)) :: INTEGER) AS age_in_months', 'Age'), ('indexcol', '')] ],
 	      
 	    ); 
-    print nat.query
+    #print nat.query
     desc  = 'Nutrition%s' % (' (%s)' % (
 					self.find_descr([ (x[0], x[1]) for x in INDICS+PREG_INDICS], kw.get('subcat')),
 												 ) if kw.get('subcat') else '', )
@@ -1307,13 +1544,21 @@ class Application:
   def exports_general(self, *args, **kw):
     auth      = ThousandAuth(cherrypy.session.get('email'))
     navb      = ThousandNavigation(auth, *args, **kw)
-    tbl, srt  = settings.EXPORT_KEYS.get(kw.get('key', '_'))
-    cnds  = navb.conditions(srt or 'report_date', auth)
-    btc   = 5000
+    tbl, srt  = settings.EXPORT_KEYS.get(kw.get('key', '_'))#;print tbl, srt
+    cols = fetch_columns(tbl)
+    extra_cols = self.extra_cols_vals(cols)
+    cnds  = navb.conditions(srt or 'report_date', auth,  cols=cols)#; print cols, extra_cols
+
+    DICT = replaceindictcol(makedict(queries.CHW_DATA['attrs']), navb.start)#;print kw, args, kw.get('subcat'), DICT
+    
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.CHW_DATA['attrs']]:
+     cnds.update({ DICT[kw.get('subcat')][0] : ''})#;print cnds
+  
+    btc   = 100000
     pos   = int(kw.get('pos', '0'))
     eid   = kw.get('eid')
     tot   = 0
-    beg   = False;print tbl
+    beg   = False#;print tbl, kw, args, cnds
     if not eid:
       toq = orm.ORM.query(tbl, cnds, cols = ['COUNT(*) AS total'])#;print toq.query
       tot = toq[0]['total']
@@ -1334,7 +1579,7 @@ class Application:
       # cherrypy.response.headers['Content-Disposition']  = 'attachment; filename=download-%d.xls' % (eid, )
       raise cherrypy.HTTPRedirect('/static/downloads/%d.xls' % (eid, ))
     with open(dst, 'a') as fch:
-      nat = orm.ORM.query(tbl, cnds, sort = ('indexcol', True))
+      nat = orm.ORM.query(tbl, cnds, cols = extra_cols, sort = ('indexcol', True))#; print nat.query
       nat[0]
       if beg:
         fch.write('ID;P\n')
@@ -1349,8 +1594,8 @@ class Application:
         stt = stt + 1
         xps = 0
         for hd in nat.cursor.description:
-          xps = xps + 1
-          fch.write('C;Y%d;X%d;K%s\n' % (stt, xps, json.dumps(str(row[hd.name]))))
+          xps = xps + 1#;print stt, xps, row[hd.name], self.provinces.get(str(row[hd.name])) if hd.name == 'province_id' else hd.name
+          fch.write('C;Y%d;X%d;K%s\n' % (stt, xps, json.dumps(str( row[hd.name] )))) # json.dumps(str( self.cols_map_vals(row, hd.name) ))))
     # raise cherrypy.HTTPRedirect('/exports/general?pos=%d&eid=%d' % (pos + 1, eid))
     cherrypy.response.headers['Content-Type'] = 'application/json'
     cherrypy.response.headers['Location']     = '/exports/general?lmt=%d&pos=%d&eid=%d' % (pgs, pos + 1, eid)
@@ -1430,7 +1675,7 @@ class Application:
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
     cnds    = navb.conditions(None, auth)
     cnds.update({"(report_date) <= '%s'" % (navb.finish) : ''})
-    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
+    cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})#;print cnds
     #cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.finish) : ''})
 
     exts = {}
@@ -1468,6 +1713,39 @@ class Application:
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
 			)
+    elif kw.get('group') == 'toilet':
+      title = 'With Toilet'
+      group = 'toilet'
+      cnds.update({"toilet": ''})
+      nat = orm.ORM.query(  'rw_pregnancies', 
+			  cnds,
+                          cols = ['COUNT(*) AS total'],
+			)
+    elif kw.get('group') == 'handwash':
+      title = 'With Handwashing'
+      group = 'handwash'
+      cnds.update({'handwash': ''})
+      nat = orm.ORM.query(  'rw_pregnancies', 
+			  cnds,
+                          cols = ['COUNT(*) AS total'],
+			)
+
+    elif kw.get('group') == 'notoilet':
+      title = 'No Toilet'
+      group = 'notoilet'
+      cnds.update({"NOT toilet": ''})
+      nat = orm.ORM.query(  'rw_pregnancies', 
+			  cnds,
+                          cols = ['COUNT(*) AS total'],
+			)
+    elif kw.get('group') == 'nohandwash':
+      title = 'No Handwashing'
+      group = 'nohandwash'
+      cnds.update({'NOT handwash': ''})
+      nat = orm.ORM.query(  'rw_pregnancies', 
+			  cnds,
+                          cols = ['COUNT(*) AS total'],
+			)
     else:
       nat = orm.ORM.query(  'rw_pregnancies', 
 			  cnds, 
@@ -1475,8 +1753,12 @@ class Application:
 			  extended = {'no_risk': ('COUNT(*)', queries.NO_RISK['query_str']), 
 					'at_risk': ('COUNT(*)', queries.RISK['query_str']),
 					'high_risk': ('COUNT(*)', queries.HIGH_RISK['query_str']),
+                    'toilet': ('COUNT(*)', 'toilet'),
+					'notoilet': ('COUNT(*)', 'NOT toilet'),
+                    'handwash': ('COUNT(*)', 'handwash'),
+					'nohandwash': ('COUNT(*)', 'NOT handwash')					
 					}
-			)
+			)##;print nat.query
     return self.dynamised('predash', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
@@ -1504,6 +1786,14 @@ class Application:
      if kw.get('group'):
       if kw.get('group') == 'no_risk':
        cnds.update({'(%s)' % queries.NO_RISK['query_str']: ''})
+      elif kw.get('group') == 'toilet':
+       cnds.update({'(%s)' % "toilet": ''})
+      elif kw.get('group') == 'handwash':
+       cnds.update({'(%s)' % "handwash": ''})
+      elif kw.get('group') == 'notoilet':
+       cnds.update({'(%s)' % "NOT toilet": ''})
+      elif kw.get('group') == 'nohandwash':
+       cnds.update({'(%s)' % "NOT handwash": ''})
       else:
        if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.HIGH_RISK['attrs']]:
         cnds.update({queries.HIGH_RISK['query_str']: ''})
@@ -1528,6 +1818,18 @@ class Application:
      if kw.get('subcat') is None:
       if kw.get('group') == 'no_risk':
        wcl.append({'field_name': '(%s)' % queries.NO_RISK['query_str'], 'compare': '', 'value': '', 'extra': True})
+       INDICS = []
+      if kw.get('group') == 'toilet':
+       wcl.append({'field_name': '(%s)' % "toilet", 'compare': '', 'value': '', 'extra': True})
+       INDICS = []
+      if kw.get('group') == 'handwash':
+       wcl.append({'field_name': '(%s)' % "handwash", 'compare': '', 'value': '', 'extra': True})
+       INDICS = []
+      if kw.get('group') == 'notoilet':
+       wcl.append({'field_name': '(%s)' % "NOT toilet", 'compare': '', 'value': '', 'extra': True})
+       INDICS = []
+      if kw.get('group') == 'nohandwash':
+       wcl.append({'field_name': '(%s)' % "NOT handwash", 'compare': '', 'value': '', 'extra': True})
        INDICS = []
       if kw.get('group') == 'at_risk':
        wcl.append({'field_name': '(%s)' % queries.RISK['query_str'], 'compare': '', 'value': '', 'extra': True})
@@ -1578,6 +1880,18 @@ class Application:
     if kw.get('group') == 'no_risk':
      cnds.update({'(%s)' % queries.NO_RISK['query_str']: ''})
      DESCRI.append(('no_risk', 'No Risk'))
+    if kw.get('group') == 'toilet':
+     cnds.update({'(%s)' % "toilet": ''})
+     DESCRI.append(('toilet', 'With Toilet'))
+    if kw.get('group') == 'handwash':
+     cnds.update({'(%s)' % "handwash": ''})
+     DESCRI.append(('handwash', 'With Handwashing'))
+    if kw.get('group') == 'notoilet':
+     cnds.update({'(%s)' % "NOT toilet": ''})
+     DESCRI.append(('notoilet', 'No Toilet'))
+    if kw.get('group') == 'nohandwash':
+     cnds.update({'(%s)' % "NOT handwash": ''})
+     DESCRI.append(('nohandwash', 'No Handwashing'))
     if kw.get('group') == 'at_risk':
      cnds.update({'(%s)' % queries.RISK['query_str']: ''})
      DESCRI.append(('at_risk', 'At Risk'))
@@ -1614,11 +1928,13 @@ class Application:
     pre_cnds.update({"(lmp + INTERVAL \'%d days\') >= '%s'" % (settings.GESTATION, navb.start) : ''})
 
     exts = {}
+    pre_exts = dict([(makecol('(lmp + INTERVAL \'90 days\') <= report_date'), ('COUNT(*)', '(lmp + INTERVAL \'90 days\') <= report_date'))  ])
     attrs = [(makecol(x[0]), x[1]) for x in queries.ANC_DATA['attrs'] ]
 
     pre = orm.ORM.query(  'rw_pregnancies', 
 			  pre_cnds, 
-			  cols = ['COUNT(*) AS total']
+			  cols = ['COUNT(*) AS total'],
+              extended = pre_exts
 			)
 
     cnds    = navb.conditions(None, auth)
@@ -1893,7 +2209,7 @@ class Application:
 	]
     exts.update(dict([(x[0], ('COUNT(*)',x[2])) for x in attrs]))
     nat = orm.ORM.query(  'rw_pregnancies', 
-    			  cnds, 
+    			  pre_cnds, 
     			  cols = ['COUNT(*) AS total'],
                           extended = exts, 
     			)#; print nat.query
@@ -2402,7 +2718,7 @@ class Application:
 		      cols  = ['child'],
 		      
 		    )
-     nbcindexcol = [x['child'] for x in nbcnat.list()];print nbcindexcol
+     nbcindexcol = [x['child'] for x in nbcnat.list()]#;print nbcindexcol
      if len(nbcindexcol) > 1: cnds.update({'indexcol IN %s' % str(tuple(nbcindexcol))  : ''})
      if len(nbcindexcol) == 1: cnds.update({'indexcol = %s' % str(nbcindexcol[0])  : ''})      
     nat     = orm.ORM.query('rw_children', cnds,
@@ -2416,7 +2732,7 @@ class Application:
     desc  = 'Newborn Visits%s' % (' (%s)' % (self.find_descr(DESCRI + [( makecol(x[0]), x[1]) for x in INDICS
 									] + [ ( makecol(x[0]), x[1]) for x in NBC_INDICS], 
 						sc or kw.get('group')), 
-					) if sc or kw.get('group') else '', );print desc
+					) if sc or kw.get('group') else '', )#;print desc
     return self.dynamised('nbcdash_table', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
@@ -2965,8 +3281,10 @@ class Application:
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
 			  extended = exts,
-			);print nat.query
+			)#;print nat.query
 
+    """ CHANGED BECAUSE OF ATTR BY LOC NOT ALL ATTR BY LOCS
+    
     bylocs_attrs = [(makecol(x[0]), x[1]) for x in queries.DEATH_DATA['bylocs']['attrs']]
     bylocs_cnds = navb.conditions('report_date')
     bylocs_cnds.update({queries.DEATH_DATA['bylocs']['query_str']: ''})
@@ -2976,6 +3294,22 @@ class Application:
 			  cols = ['COUNT(*) AS total'], 
 			  extended = bylocs_exts,
 			)
+    """
+    bylocs_attrs = {}
+    bylocs = {}
+    bylocs_cnds = {}
+    bylocs_exts = {}
+    for attr in attrs:
+        bylocs_attrs[attr[0]] = [(makecol(x[0]), x[1]) for x in queries.DEATH_DATA['attr_bylocs'][attr[0]]['attrs']]
+        bylocs_cnds[attr[0]] = navb.conditions('report_date')
+        bylocs_cnds[attr[0]].update({queries.DEATH_DATA['attr_bylocs'][attr[0]]['query_str']: ''})
+        bylocs_exts[attr[0]] = dict([(makecol(x[0]), ('COUNT(*)',x[0])) for x in queries.DEATH_DATA['attr_bylocs'][attr[0]]['attrs']])
+        bylocs[attr[0]] = orm.ORM.query(  'rw_deaths', 
+			      bylocs_cnds[attr[0]], 
+			      cols = ['COUNT(*) AS total'], 
+			      extended = bylocs_exts[attr[0]],
+			    )#;print "\n", bylocs[attr[0]].query, "\n"
+    
 
     return self.dynamised('deathdash', mapping = locals(), *args, **kw)
 
@@ -3083,7 +3417,7 @@ class Application:
     nutr_notifications = []
     pre_reports = [ x for x in nat.list() ]
     cnds.update({'pregnancy_id = %s' % patient['indexcol']: ''})
-    anc_reports = orm.ORM.query('rw_ancvisits', cnds, sort = ('report_date', False) );print anc_reports.query, cnds
+    anc_reports = orm.ORM.query('rw_ancvisits', cnds, sort = ('report_date', False) )#;print anc_reports.query, cnds
     #risk_reports = orm.ORM.query('rw_risks', cnds, sort = ('report_date', False) )
     #red_reports = orm.ORM.query('rw_redalerts', cnds, sort = ('report_date', False) )
     #bir_reports = orm.ORM.query('rw_children', cnds, sort = ('report_date', False) )
@@ -3173,7 +3507,7 @@ class Application:
     for ext in attrs:
       if len(ext) > 3:
         for cs in ext[3]:
-	  print cs
+	  #print cs
           ncnds[cs[0]] = cs[1]
       else:
         exts[ext[0]] = ('COUNT(*)' if len(ext) < 3 else ext[2], ext[0])
@@ -3302,6 +3636,7 @@ class Application:
     exts.update(dict([( makecol(x[0]), ('COUNT(*)', (x[0] % navb.start) if x[0].__contains__("%s") else x[0] ) ) for x in queries.CHW_DATA['attrs'] ]))
     #print exts,navb.start
     cnds = change_pks_cnds(cnds)
+    avg = average
     chws = orm.ORM.query(  'chws_reporter', 
 			  cnds, 
 			  cols = ['COUNT(*) AS total'], 
@@ -3335,10 +3670,10 @@ class Application:
   def dashboards_reportsdash(self, *args, **kw):
     auth    = ThousandAuth(cherrypy.session.get('email'))
     navb    = ThousandNavigation(auth, *args, **kw)
-    cnds    = navb.conditions(None, auth)
-    navb.gap= timedelta(days = 0)
+    cnds    = navb.conditions("report_date", auth)
+    #navb.gap= timedelta(days = 0)
     #cnds.update({ queries.REMINDER_DATA['query_str'] : ''})
-    attrs = [( makecol(x), REPORTS_LOGS[x][0][0]) for x in REPORTS_LOGS.keys() ];print attrs
+    attrs = [( makecol(x), REPORTS_LOGS[x][0][0]) for x in REPORTS_LOGS.keys() ]#;print attrs
     exts = {}
     cnds = change_pks_cnds(cnds)#;print cnds
     data = {}
@@ -3350,9 +3685,12 @@ class Application:
 
   @cherrypy.expose
   def tables_reportsdash(self, *args, **kw):
-    navb, auth, cnds, cols    = self.neater_tables(basics = [] , *args, **kw)
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    cnds    = navb.conditions("report_date", auth)
+    #navb.gap= timedelta(days = 0)
     sc = kw.get('subcat')
-    cols = FIELDS.get(kw.get('subcat').upper())['attrs']
+    cols = FIELDS.get(sc.upper())['attrs']
     cnds = change_pks_cnds(cnds)#;print cnds
     DESCRI = []
     markup  = {
@@ -3364,10 +3702,10 @@ class Application:
       'cell_pk': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
       'village_pk': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
     }
-    nat     = orm.ORM.query(REPORTS_LOGS[kw.get('subcat').upper()][1][0], cnds,
+    nat     = orm.ORM.query(REPORTS_LOGS[sc.upper()][1][0], cnds,
 				      cols  = [x[0] for x in cols ],
-				      
-				    )
+				      sort  = ('report_date', False) 
+				    )#;print nat.query
     desc  = 'Reports%s' % (' (%s)' % (self.find_descr(DESCRI + [(x[0], x[1]) for x in cols], sc or kw.get('subcat')), 
 					) if sc or kw.get('subcat') else '', )
     
@@ -3452,6 +3790,7 @@ class Application:
     markup  = {
       #'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
       'role_id': lambda x, _, __: '%s' % ("Binome" if x == 2 else 'ASM'),
+      'nation_id': lambda x, _, __: '%s' % (self.nations.get(str(x)), ),
       'province_id': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
       'district_id': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
       'health_centre_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
@@ -3571,6 +3910,7 @@ class Application:
 			  cols = ['COUNT(*) AS total']
 			)
     ###start checking and register TODO
+    #print kw
     error = ""
     success = ""
     nodata = False
@@ -3585,12 +3925,13 @@ class Application:
     djoin = navb.make_time(kw.get('djoin')) if kw.get('djoin') else kw.get('djoin')
     sector = kw.get('sector')
     cell = kw.get('cell')
-    telephone_moh = "+25%s" % kw.get('telephone_moh') if kw.get('telephone_moh') else kw.get('telephone_moh')
+    telephone_moh = "+25%s" % kw.get('telephone_moh') if (kw.get('telephone_moh') and not kw.get('telephone_moh').__contains__("+250")) else kw.get('telephone_moh')
     health_center = kw.get('health_center')
     village = kw.get('village')
     language = kw.get('language')
     referral = kw.get('referral')
     formdata = [nid, telephone_moh, health_center, referral, village, cell, sector, surname, given_name, sex, role, edu_level, dob, djoin, language]
+    #print formdata
     for xd in formdata :
      if xd == '' or xd is None:
       nodata = True
@@ -3622,12 +3963,127 @@ class Application:
     return self.dynamised('chwtrail', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
+  def dashboards_updatechw(self, *args, **kw):
+    auth    = ThousandAuth(cherrypy.session.get('email'))
+    navb    = ThousandNavigation(auth, *args, **kw)
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
+    cnds    = navb.conditions('date')
+    exts = {}
+    nat = orm.ORM.query('messagelog_message', {'connection_id = %s': 0 })#;print nat.query
+    if kw.get('telephone_moh'):
+      conn = orm.ORM.query('rapidsms_connection', {'identity = %s' : kw.get('telephone_moh') })[0]
+      cnds.update({'connection_id = %s': conn['id'] } )
+      nat     = orm.ORM.query('messagelog_message', cnds, sort  = ('date', False))#;print nat.query
+    return self.dynamised('updatechw', mapping = locals(), *args, **kw)
+
+  @cherrypy.expose
   def dashboards_chwamb(self, *args, **kw):
     auth    = ThousandAuth(cherrypy.session.get('email'))
     navb    = ThousandNavigation(auth, *args, **kw)
     navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT SITUATION
-    
+    nat = orm.ORM.query(  'ambulances_ambulancedriver', 
+			  {}, 
+			  cols = ['COUNT(*) AS total']
+			)
     return self.dynamised('chwamb', mapping = locals(), *args, **kw)
+
+
+  @cherrypy.expose
+  def dashboards_groupmessage(self, *args, **kw):
+    navb, auth, cnds, cols    = self.neater_tables(basics = [] , *args, **kw)
+    cols = [
+		('id', 'ID'),                   
+		('surname',  'Surname'),               
+		('given_name',  'Given Name'),             
+		('role_id',  'Role'),                
+		('sex',  'Sex'),                    
+		('education_level',  'Education Level'),        
+		('date_of_birth',  'Date Of Birth'),          
+		('join_date',  'Join Date'),              
+		('national_id',  'National ID'),            
+		('telephone_moh',  'Telephone'),          
+		('village_id',  'Village'),             
+		('cell_id',  'Cell'),                
+		('sector_id',  'Sector'),              
+		('health_centre_id',  'Health Center'),       
+		#('referral_hospital_id',  'Hospital'),   
+		('district_id',  'District'),            
+		('province_id',  'Province'),            
+		('nation_id',  'Country'),              
+		('created',  'Created'),                
+		('updated',  'Updated'),                
+		('language',  'Language'),               
+		('deactivated',  'Deactivated'),            
+		('is_active',  'Is Active'),              
+		('last_seen',  'Last Seen')    
+      
+    ]
+    DESCRI = []
+
+    navb.gap= timedelta(days = 0)## USE THIS GAP OF ZERO DAYS TO DEFAULT TO CURRENT PREGNANCY, AND LET THE USER GO BACK AND FORTH
+    cnds    = navb.conditions(None, auth)
+    cnds.update({ queries.CHW_DATA['query_str'] : ''})
+
+    DICT = replaceindictcol(makedict(queries.CHW_DATA['attrs']), navb.start)
+    INDICS = [DICT[key] for key in DICT.keys()]
+    #print INDICS, DICT
+    wcl = []
+    wcl.append({'field_name': '(%s)' % queries.CHW_DATA['query_str'], 'compare': '', 'value': '', 'extra': True})
+    
+    if kw.get('subcat') and kw.get('subcat') in [makecol(x[0]) for x in queries.CHW_DATA['attrs']]:
+     cnds.update({ DICT[kw.get('subcat')][0] : ''})
+     INDICS = [DICT[kw.get('subcat')]]
+  
+    if kw.get('summary'):
+     province = kw.get('province') or auth.him()['province_pk']
+     district = kw.get('district') or auth.him()['district_pk']
+     location = kw.get('hc') or auth.him()['health_center_pk']
+     if kw.get('subcat'):
+      DATADICT = DICT if kw.get('subcat') in [x[0] for x in queries.CHW_DATA['attrs']] else  {}
+      wcl = [
+		{'field_name': '(%s)' % DATADICT[kw.get('subcat')][0], 'compare': '', 'value': '', 'extra': True}
+
+		] if DATADICT.get(kw.get('subcat')) else []
+      
+     if kw.get('subcat') is None:
+      pass
+     
+     if kw.get('view') == 'table' or kw.get('view') != 'log' :
+      #print INDICS
+      locateds = summarize_by_location(primary_table = 'chws_reporter', MANY_INDICS = INDICS, where_clause = wcl, 
+						province = province,
+						district = district,
+						location = location,
+						#start =  navb.start,
+						#end = navb.finish,
+											
+						)
+      tabular = give_me_table(locateds, MANY_INDICS = INDICS, LOCS = { 'nation': None, 'province': province, 'district': district, 'location': location } )
+      INDICS_HEADERS = dict([ ( makecol(x[0]), x[1]) for x in INDICS])
+
+    sc      = kw.get('subcat')
+    
+    markup  = {
+      #'indangamuntu': lambda x, _, __: '<a href="/tables/patient?pid=%s">%s</a>' % (x, x),
+      'role_id': lambda x, _, __: '%s' % ("Binome" if x == 2 else 'ASM'),
+      'province_id': lambda x, _, __: '%s' % (self.provinces.get(str(x)), ),
+      'district_id': lambda x, _, __: '%s' % (self.districts.get(str(x)), ),
+      'health_centre_id': lambda x, _, __: '%s' % (self.hcs.get(str(x)), ),
+      #'referral_hospital_id': lambda x, _, __: '%s' % (self.hps.get(str(x)), ),
+      'sector_id': lambda x, _, __: '%s' % (self.sector(str(x))['name'] if self.sector(str(x)) else '', ),
+      'cell_id': lambda x, _, __: '%s' % (self.cell(str(x))['name'] if self.cell(str(x)) else '', ),
+      'village_id': lambda x, _, __: '%s' % (self.village(str(x))['name'] if self.village(str(x)) else '', ),
+    }
+    
+    
+    cnds = change_pks_cnds(cnds)
+    nat     = orm.ORM.query('chws_reporter', cnds,
+				      cols  = [x[0] for x in cols ],
+				      
+				    )
+    desc  = 'CHWs%s' % (' (%s)' % (self.find_descr(DESCRI + [(makecol(x[0]), x[1]) for x in INDICS], sc or kw.get('group')), 
+					) if sc or kw.get('group') else '', )
+    return self.dynamised('groupmessage', mapping = locals(), *args, **kw)
 
   @cherrypy.expose
   def dashboards_chwstaff(self, *args, **kw):
@@ -3692,6 +4148,20 @@ class Application:
 		'district': navb.district(chw['district_id']), 'id' : chw['id']})
     return self.dynamised('search', mapping = locals(), *args, **kw)
 
+  @cherrypy.expose
+  def dashboards_searchstaff(self, *args, **kw):
+    navb    = ThousandNavigation(args, *kw)
+    chws = []
+    if kw.get('q'):
+      mkw = "%"+kw.get('q')+"%"
+      qry = orm.ORM.query('chws_facilitystaff', {"telephone_moh LIKE %s OR national_id LIKE %s": (mkw, mkw)} )#;print qry.query
+      for chw in qry.list():
+        chws.append({ 'names': chw['names'], 'national_id': chw['national_id'],'telephone_moh': chw['telephone_moh'], 			'village': navb.village(chw['village_id']),'cell': navb.cell(chw['cell_id']),'sector': navb.sector(chw['sector_id']),
+		'district': navb.district(chw['district_id']), 'id' : chw['id']})
+    return self.dynamised('searchstaff', mapping = locals(), *args, **kw)
+
 
 #### END OF MARVIN VIEWS
+
+    
 

@@ -140,7 +140,8 @@ class Map:
     def ourpregnancy(self):
         try:
             pregnancy = orm.ORM.query('rw_pregnancies', 
-                                {'indangamuntu = %s': self.record.indangamuntu, 'lmp >= %s' : self.record.report_date - timedelta(days = settings.GESTATION)},
+                                {'indangamuntu = %s': self.record.indangamuntu, 'lmp >= %s' : self.record.report_date - timedelta(days = settings.GESTATION),
+                                    'lmp < %s' : self.record.report_date },
                                  sort = ('lmp', False)
                                 )
             self.DATA.append(('pregnancy_query', pregnancy.query))
@@ -398,7 +399,7 @@ class Map:
                 self.DATA.append( ('weight_for_age', float(wfa)))
             except Exception, e: pass
             try: 
-                hfa = cg.zscore_for_measurement('hfa', data.get('child_height') , valid_age, valid_gender)
+                hfa = cg.zscore_for_measurement('lhfa', data.get('child_height') , valid_age, valid_gender)
                 self.DATA.append( ('height_for_age', float(hfa) ))
             except Exception, e: pass
             try:

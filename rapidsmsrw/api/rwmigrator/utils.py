@@ -77,6 +77,45 @@ def parse_date(value):
 def send_record_to_smpp(record):
     return Smser().send_message_to_kannel(record.telephone_moh, record.text)
 
+def dummy_pregnancy(r):
+    nid = r.national_id
+    try:
+        if r.date:
+            xd = r.date.split(".")
+            r.date = datetime.date(int(xd[2]), int(xd[1]), int(xd[0]))
+        
+        da = r.date - datetime.timedelta(days = 270) if (r.date and r.date.year <= 2015 ) else r.created.date() - datetime.timedelta(days = 270) 
+
+        danc2 = da + datetime.timedelta(days = 60)
+
+        TEXT = "PRE %(national_id)s %(date)s %(edd_anc2_date)s 02 01 NR NP CL WT60 HT170 TO HW" % {"national_id": nid,
+                                                                                                 "date": "%d.%d.%d" % (da.day, da.month, da.year),
+                                                                                                 "edd_anc2_date": "%d.%d.%d" % (danc2.day, danc2.month, danc2.year) }
+        r.text = TEXT
+        r.keyword = "PRE"
+        r.date = "%d.%d.%d" % (da.day, da.month, da.year)
+        r.edd_anc2_date = "%d.%d.%d" % (danc2.day, danc2.month, danc2.year)
+        r.created = r.created - datetime.timedelta(days = 270)
+    except Exception, e: print "NO PREGNANCY: %s" % e;pass
+    return r
+
+def dummy_birth(r):
+    nid = r.national_id
+    try:
+        if r.date:
+            xd = r.date.split(".")
+            r.date = datetime.date(int(xd[2]), int(xd[1]), int(xd[0]))
+        
+        da = r.date if (r.date and r.date.year <= 2015) else r.created.date() - datetime.timedelta(days = 48)
+        chino = r.child_number
+        TEXT = "BIR %(national_id)s %(child_number)s %(date)s GI NP CL BF1 WT3.0" % {"national_id": nid,
+                                                                                 "child_number": chino,  "date": "%d.%d.%d" % (da.day, da.month, da.year)}
+        r.text = TEXT
+        r.date = "%d.%d.%d" % (da.day, da.month, da.year)
+        r.keyword = "BIR"
+    except Exception, e: print "NO BIRTH: %s" % e;pass
+    return r
+
 def send_record_to_smshandler(record):
 
     sms_report = SMSReport.objects.filter(keyword = record.keyword)[0]
@@ -85,12 +124,28 @@ def send_record_to_smshandler(record):
     p = get_sms_report_parts(sms_report, record.text, DEFAULT_LANGUAGE_ISO = chw.language)
     pp = putme_in_sms_reports(sms_report, p, DEFAULT_LANGUAGE_ISO = chw.language)
     report = check_sms_report_semantics( sms_report, pp , date.date() or datetime.datetime.now().date(), DEFAULT_LANGUAGE_ISO = chw.language)
-    message, created = Message.objects.get_or_create( text  = record.text, direction = 'I', connection = chw.connection(),
-                                                         contact = chw.contact(), date = date or datetime.datetime.now() )
+    
+    message, created = Message.objects.get_or_create( text  = record.text, direction = 'I', connection_id = chw.connection().id,
+                                                         contact_id = chw.contact().id, date = date or datetime.datetime.now() )
 
+    
+    for x in report['error']:
+        if (x[0] == 'missing_based_data' and record.keyword in ['ANC', 'RED', 'RAR', 'RISK', 'RES', 'DEP', 'REF', 'DTH', 'BIR']):
+            dum = dummy_pregnancy(record);print dum.text, dum.keyword, dum.telephone_moh, dum.created
+            send_record_to_smshandler(dum)
+            report['error'].remove(x)
+        elif (x[0] == 'missing_based_data' and record.keyword in ['CBN', 'NBC', 'PNC', 'CCM', 'CMR', 'CHI']):
+            dum = dummy_birth(record);print dum.text, dum.keyword, dum.telephone_moh, dum.created
+            send_record_to_smshandler(dum)
+            report['error'].remove(x) 
+        else: pass
+     
+    print "\nCHW: %s\n" % chw, "\nMSG: %s\n" % message, "\nERR: %s\n" % report["error"]    
     ddobj = parseObj(chw, message, errors = report['error'])
-
+    print "TRANS: %s" % ddobj
     return True
+    
+
 
 def migrate_hospitals():
     hospitals = Hospital.objects.all().exclude(name = "TEST")

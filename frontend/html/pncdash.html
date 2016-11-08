@@ -64,13 +64,29 @@
     </div>
 
     <div class="datapoint newborncircle">
-    <div class="descr">PNC3</div>
+    <div class="descr">PNC3 </div>
     <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc3', view= 'graphic')}}">{{  display.visits[0]['pnc3']|neat_numbers }}</a></div>
     </div>
+
+    <div class="datapoint newborncircle"  style="background: url(../static/images/circleatrisk.png);">
+    <div class="descr">PNC4 </br>(Low Birth Weight)</div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc4', view= 'graphic')}}">{{  display.visits[0]['pnc4']|neat_numbers }}</a></div>
+    </div>
+
+    <div class="datapoint newborncircle">
+    <div class="descr">PNC5 </div>
+    <div class="number"><a href="{{ nav.link('/dashboards/pncdash', group = 'pnc5', view= 'graphic')}}">{{  display.visits[0]['pnc5']|neat_numbers }}</a></div>
+    </div>
+
     <div class="datapoint ">
     <div class="descr"></div>
     <div class="number"></div>
     </div>
+
+
+ </div>
+ <div class="humblecontainer">
+
 
   <div class="datapointrisks" style="background: url(../static/images/circle.png);">
     <div class="descr">No Risk</div>

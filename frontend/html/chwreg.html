@@ -19,7 +19,9 @@
 	 <li class="homelink">
             <a href='/dashboards/{{ nav.link("chwamb") }}'><span>Ambulance</span></a>
           </li>
-         
+	  <li class="homelink">
+            <a href='/dashboards/{{ nav.link("updatechw") }}'><span>Update CHW</span></a>
+          </li>          
 
           
 {% endblock %}
@@ -37,9 +39,9 @@
 
 	 <img class="icon" src="{{  static_path }}/images/chwphone.png" />
     <div class="infoname" style="font-size: 20px;">Total Number of CHWs</div>
-    <div class="moretotal" ><a href="">View by Location</a></div>
+    <div class="moretotal" ><a href="{{ nav.link('/tables/chw', summary = 'on')}}">View by Location</a></div>
     <div class="infodata goodnum">
-      <a href="">{{display.nat[0]['total']}}</a>
+      <a href="{{ nav.link('/tables/chw')}}">{{display.nat[0]['total']}}</a>
     </div>
 
 
@@ -54,13 +56,25 @@
     
 <label style="color:red;">{{display.error}}</label> <label style="color:blue;">{{display.success}}</label>
 <br><br>
+
+<input type="hidden" name="pk" id="pk" value="" />
+<input type="hidden" name="info" id="info" value="" />
+	
+<label id="nid">National ID: </label>
+<input type="text" name="nid" id="national_id" value="" class="ac_input">
+<br><br>
+
+
+<label id="tel">Telephone: </label>
+<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
+<br><br>
     
 <label>Surname: </label>
-<input type="text" name="surname" value="">
+<input type="text" name="surname" id="surname" value="">
 <br><br>
 
 <label id="gn">Given Name: </label>
-<input type="text" name="given_name" value="">
+<input type="text" name="given_name" id="given_name" value="">
 <br><br>
 
 <label id="sex">Sex: </label>
@@ -84,20 +98,24 @@
 <br><br>
 
 <label id="dob">Date of Birth: </label>
-<input value="" placeholder="Date of birth" class="activedate" type="text" name="dob" />
+<input value="" placeholder="Date of birth" type="text" name="dob" onFocus="displayCalendar(form.dob,'dd/mm/yyyy',this)" size = "10" />
 <br><br>
 
 
 <label id="jod">Joining Date: </label>
-<input value="" placeholder="Joining Date" class="activedate" type="text" name="djoin" />
+<input value="" placeholder="Joining Date" type="text" name="djoin" onFocus="displayCalendar(form.djoin,'dd/mm/yyyy',this)" size = "10"/>
+<br><br>
+
+<label> District: </label>
+<select name="district" id="district" onChange="changeHps(this.value);"> <option value=""></option> </select>
 <br><br>
 
 <label id="referral">Referral Hospital: </label>
 <select name="referral" id="referralchoose"><option></option></select> 
 <br><br>
 
-<label id="health_center">Health Center: </label>
-<select name="health_center" id="locchoose"><option value="{{display.hc.id}}" selected="selected">{{display.hc.name}} </option></select> 
+<label >Health Center: </label>
+<select name="health_center" id="health_center"><option value="{{display.hc.id}}" selected="selected">{{display.hc.name}} </option></select> 
 <br><br>
 
 <label id="sector">Sector: </label>
@@ -110,16 +128,6 @@
 
 <label id="village">Village: </label>
 <select name="village" id="villchoose"><option > </option></select> 
-<br><br>
-
-
-<label id="nid">National ID: </label>
-<input type="text" name="nid" id="national_id" value="" class="ac_input">
-<br><br>
-
-
-<label id="tel">Telephone: </label>
-<input type="text" name="telephone_moh" id="telephone_moh" value="" class="ac_input">
 <br><br>
 
 <label id="lang">Language: </label>
@@ -136,11 +144,170 @@
 
   </div>
 
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/jquery.js"></script>
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/autocomplete.js"></script>
+<script type="text/javascript" src="{{ static_path }}/javascripts/facebox/facebox.js"></script>
 <script type="text/javascript">
+
+jQuery(document).ready(function($) {
+      $('a[rel*=facebox]').facebox({
+        loading_image : '{{ static_path }}/javascripts/facebox/loading.gif',
+        close_image   : '{{ static_path }}/javascripts/facebox/closelabel.gif'
+      }) 
+    })
+
+
+</script>  
+
+<script type="text/javascript">
+
+//CHW autocomplete
+$().ready(function() {
+
+function formatItem(row) {
+		return "<tr><td width=90>" + row[0] + "</td><td width=90>" + row[1] + "</td><td width=90>" + row[2] + "</td><td width=90>" + row[3] + "</td><td width=90>" + row[4] + "</td><td width=90>" + row[5] + "</td><td width=90>" + row[6] + "</td><td width=90>" + row[7] + "</td></tr>";
+	}
+	function formatResultNID(row) {
+		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+
+		$("#pk").val(row[8]);		
+		$("#telephone_moh").val(row[3]);
+		$("#surname").val(row[0]);
+		$("#given_name").val(row[1]);
+		return row[2].replace(/(<.+?>)/gi, '');
+	}
+	function formatResultPhone(row) {
+                
+		$("#info").val(row[0] + " "+ row[1] + "(National ID: " + row[2] + ", Telephone MoH: " +row[3] + ", Village: " + row[4] + ", Cell: " +row[5] + ", Sector: " +row[6] + ", District: " +row[7]+")");
+
+		$("#pk").val(row[8]);		
+		$("#national_id").val(row[2]);
+		$("#surname").val(row[0]);
+		$("#given_name").val(row[1]);
+
+		return row[3].replace(/(<.+?>)/gi, '');
+	}
+
+	
+
+
+$("#national_id").autocomplete('/dashboards/searchchw', {
+		width: 600,
+		minChars: 15,
+		multiple: false,
+		matchContains: true,
+		formatItem: formatItem,
+		formatResult: formatResultNID
+		});
+
+
+$("#telephone_moh").autocomplete('/dashboards/searchchw', {
+		width: 600,
+		minChars: 9,
+		multiple: false,
+		matchContains: true,
+		formatItem: formatItem,
+		formatResult: formatResultPhone
+		});
+
+
+});
+
+
+
+// end of CHW autocomplete
+
+function changeHcs(value){
+		var selected_hcs = _.filter(locations, function(item) {  return item.district_id == value; });
+		document.getElementById('health_center').options.length = selected_hcs.length + 1;
+		document.getElementById('health_center').options[0] = new Option("", "");
+		for ( var i=0; i<selected_hcs.length; i++ ){
+						hc = selected_hcs[i];
+						document.getElementById('health_center').options[i+1] = new Option(hc.name, hc.id);
+							}
+}
+
+function changeHps(value){
+		var selected_hps = _.filter(hps, function(item) {  return item.district_id == value; });
+		document.getElementById('referralchoose').options.length = selected_hps.length + 1;
+		document.getElementById('referralchoose').options[0] = new Option("", "");
+		for ( var i=0; i<selected_hps.length; i++ ){
+						hp = selected_hps[i];
+						document.getElementById('referralchoose').options[i+1] = new Option(hp.name, hp.id);
+							}
+}
+
+
+
+$(document).ready(function() {
+
+	
+	
+	$('#national_id').focus(function(){
+    
+		for ( var i=0; i<districts.length; i++ ){
+						district = districts[i]
+						document.getElementById('district').options[i+1] = new Option(district.district_name, district.district_id);
+							}	
+	});
+
+	$('#telephone_moh').focus(function(){
+    
+		for ( var i=0; i<districts.length; i++ ){
+						district = districts[i]
+						document.getElementById('district').options[i+1] = new Option(district.district_name, district.district_id);
+							}	
+	});
+
+	$('#district').change(function(evt){    
+		var value = $(this).attr('value');
+		changeHps(value);
+		changeHcs(value);
+		var selected_secs = [];
+		$.getJSON( "/dsectors?district="+value , function( result ){ // alert(JSON.stringify(result));
+		selected_secs = _.map(_.indexBy(result, 'id'), function(obj){return obj}); // alert(JSON.stringify(selected_secs));
+		for ( var i=0; i<selected_secs.length; i++ ){ 
+						sector = selected_secs[i];
+						document.getElementById('secchoose').options[i+1] = new Option(sector.name, sector.id);
+							}
+
+		}); 	
+	});
+
+	$('#secchoose').change(function(evt){    
+		var value = $(this).attr('value');
+		var selected_clls = [];
+		$.getJSON( "/scells?sector="+value , function( result ){ // alert(JSON.stringify(result));
+		selected_clls = _.map(_.indexBy(result, 'id'), function(obj){return obj}); // alert(JSON.stringify(selected_secs));
+		for ( var i=0; i<selected_clls.length; i++ ){ 
+						cell = selected_clls[i];
+						document.getElementById('cellchoose').options[i+1] = new Option(cell.name, cell.id);
+							}
+
+		}); 	
+	});
+
+	$('#cellchoose').change(function(evt){    
+		var value = $(this).attr('value');
+		var selected_vills = [];
+		$.getJSON( "/cvillages?cell="+value , function( result ){ // alert(JSON.stringify(result));
+		selected_vills = _.map(_.indexBy(result, 'id'), function(obj){return obj}); // alert(JSON.stringify(selected_secs));
+		for ( var i=0; i<selected_vills.length; i++ ){ 
+						village = selected_vills[i];
+						document.getElementById('villchoose').options[i+1] = new Option(village.name, village.id);
+							}
+
+		}); 	
+	});
+
+	
+
+});
+
 
 function PassCheck(form1)
 	{ 
-	if(form1.telephone_moh.value=="" || form1.telephone_moh.value.indexOf("078") < 0 || form1.telephone_moh.value.length != 10 || isNaN(form1.telephone_moh.value) )
+	if(form1.telephone_moh.value=="" || form1.telephone_moh.value.indexOf("078") < 0 || form1.telephone_moh.value.replace("+25","").length != 10 || isNaN(form1.telephone_moh.value.replace("+25",""))  )
 	{
 	alert("Get in the Valid Telephone Number please.");
 		form1.telephone_moh.focus();

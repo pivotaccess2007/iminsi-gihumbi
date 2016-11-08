@@ -62,13 +62,13 @@
     <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc20', view= 'graphic')}}">{{  display.visits[0]['nbc20']|neat_numbers }}</a></div>
     </div>
 
-    <div class="datapoint newborncircle">
-    <div class="descr">NBC3</div>
+    <div class="datapoint newborncircle" >
+    <div class="descr">NBC3 </div>
     <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc30', view= 'graphic')}}">{{  display.visits[0]['nbc30']|neat_numbers }}</a></div>
-    </div>
+    </div>   
 
-    <div class="datapoint newborncircle">
-    <div class="descr">NBC4</div>
+    <div class="datapoint newborncircle" style="background: url(../static/images/circleatrisk.png);">
+    <div class="descr">NBC4 </br>(Low Birth Weight)</div>
     <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc40', view= 'graphic')}}">{{  display.visits[0]['nbc40']|neat_numbers }}</a></div>
     </div>
 
@@ -77,8 +77,11 @@
     <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'nbc50', view= 'graphic')}}">{{  display.visits[0]['nbc50']|neat_numbers }}</a></div>
     </div>
 
+   </div>
+
 <!----------------------------risks--------------------------->
-<div class="datapointrisks" style="background: url(../static/images/circle.png);">
+<div class="humblecontainer">
+  <div class="datapointrisks" style="background: url(../static/images/circle.png);">
     <div class="descr">No Risk</div>
     <div class="moreoptions startshidden" > <a href="">View by Location</a></div>
     <div class="number"><a href="{{ nav.link('/dashboards/nbcdash', group = 'no_risk', view= 'graphic')}}">{{  display.nat[0]['no_risk']|neat_numbers }}</a></div>

@@ -4,6 +4,8 @@ DROP TABLE messaging_smslanguage   ;
 DROP TABLE messaging_smsmessage    ;
 DROP TABLE messaging_smsreportfield;
 DROP TABLE messaging_smsreport     ;
+DROP TABLE messaging_smserrorcode;
+
 
 DROP TABLE pregmessage_pregnancy ;
 DROP TABLE pregmessage_prev_pregnancy ;      

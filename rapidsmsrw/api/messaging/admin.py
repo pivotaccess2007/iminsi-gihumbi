@@ -13,8 +13,8 @@ from .models import *
 class SMSReportAdmin(admin.ModelAdmin):                                                        
     list_filter = ()                                                        
     exportable_fields = ( 'title_en', 'title_rw', 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
-    search_fields = ( 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
-    list_display = ( 'keyword', 'description', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                    
+    search_fields = ( 'keyword', 'description', 'title_en', 'title_rw', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                        
+    list_display = ( 'keyword', 'description', 'title_en', 'title_rw', 'field_separator', 'in_use' , 'case_sensitive', 'syntax_regex', 'created', )                                                    
     actions = (export_model_as_csv, export_model_as_excel)
     
 class SMSReportFieldAdmin(admin.ModelAdmin):                                                        
@@ -66,6 +66,6 @@ admin.site.register(SMSReport, SMSReportAdmin)
 admin.site.register(SMSReportField, SMSReportFieldAdmin)
 admin.site.register(SMSLanguage, SMSLanguageAdmin)
 admin.site.register(SMSMessage, SMSMessageAdmin)
-admin.site.register(SMSErrorCode, SMSErrorCodeAdmin)
-admin.site.register(SMSDBConstraint, SMSDBConstraintAdmin)
+#admin.site.register(SMSErrorCode, SMSErrorCodeAdmin)
+#admin.site.register(SMSDBConstraint, SMSDBConstraintAdmin)
 

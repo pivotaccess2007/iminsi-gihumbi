@@ -9,11 +9,11 @@ function prepWastingData(conf) {
 	
 	wfl_boys_0_to_2_meta = {};
 	wfl_boys_0_to_2_meta.lines =  conf.wfl_all_0_to_2_meta.lines.slice();
-	wfl_boys_0_to_2_meta.title = "Height for Height, Boys";
+	wfl_boys_0_to_2_meta.title = "Weight for Height, Boys";
 
 	wfl_girls_0_to_2_meta = {};
 	wfl_girls_0_to_2_meta.lines = conf.wfl_all_0_to_2_meta.lines.slice();
-	wfl_girls_0_to_2_meta.title = "Height for Height, Girls";
+	wfl_girls_0_to_2_meta.title = "Weight for Height, Girls";
 
 	wfl_boys_0_to_2_zscores = [{
 		"Length":"45",

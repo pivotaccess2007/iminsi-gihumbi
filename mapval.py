@@ -3,6 +3,28 @@
 # vim: ts=2 expandtab
 
 
+COLS_MAP = {
+              'indexcol': 'id',
+              'nation_pk': 'nation_id',
+              'province_pk': 'province_id',
+              'district_pk': 'district_id',
+              'health_center_pk': 'health_centre_id'
+              }
+
+
+COLS_EXTRA = { 
+                  'role_id': '(SELECT name FROM chws_role WHERE id = role_id) AS role',
+                  'nation_id': '(SELECT name FROM chws_nation WHERE id = nation_id) AS country',
+                  'province_id': '(SELECT name FROM chws_province WHERE id = province_id) AS province',
+                  'district_id': '(SELECT name FROM chws_district WHERE id = district_id) AS district',
+                  'referral_hospital_id': '(SELECT name FROM chws_hospital WHERE id = referral_hospital_id) AS referral',
+                  'health_centre_id': '(SELECT name FROM chws_healthcentre WHERE id = health_centre_id) AS healthcentre',
+                  'sector_id': '(SELECT name FROM chws_sector WHERE id = sector_id) AS sector',
+                  'cell_id': '(SELECT name FROM chws_cell WHERE id = cell_id) AS cell',
+                  'village_id': '(SELECT name FROM chws_village WHERE id = village_id) AS village', 
+                      
+              }
+
 def fans( sms_report = [] ):
  ans = {}
  for sms in sms_report: ans.update({sms.keyword: (sms.title_en, sms.title_rw)})
@@ -45,7 +67,7 @@ def read_record_row(row, orm):
       except KeyError,e:  continue
 
   except Exception, e:
-    print e;pass
+    pass
   return ans
 
 def fields(fs = [], ans = {}):

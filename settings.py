@@ -24,7 +24,8 @@ PREGNANCY_TRIMESTER = [ (0, 90), (91, 180), (181, 270) ]
 EXPORT_KEYS     = {
   '_'       : ('rw_pregnancies', None),
   'patient' : ('rw_mothers', 'indangamuntu'),
-  'child' : ('rw_children', 'indexcol')
+  'child' : ('rw_children', 'indexcol'),
+  'chw': ('chws_reporter', None)
 }
 
 APP_DATA  = {

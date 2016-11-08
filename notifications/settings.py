@@ -19,7 +19,7 @@ SMPP_PASSWORD = 'kannel_smpp'
 PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                             ''))
 PROJECT_ROOT = os.path.abspath(os.path.join(PROJECT_PATH, os.pardir))
-print PROJECT_PATH, PROJECT_ROOT
+#print PROJECT_PATH, PROJECT_ROOT
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'packages')) 
 
 
@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'packages'))
 
 GESTATION = 270
 
-DELIVERY_NOTIFICATION = [
+DELIVERY_NOTIFICATION = [   ('EDD', -0   ),
                             ('EDD_7DAYS_BEFORE', -7   ),
                             ('EDD_14DAYS_BEFORE', -14 ),
                         ]
@@ -40,15 +40,17 @@ ANC_REMINDER = [
                 ]
 
 NBC_REMINDER = [
-                    ('NBC1', +3  ),
-                    ('NBC2', +7  ),
-                    ('NBC3', +28 ),
+                    ('NBC2', +3  ),
+                    ('NBC3', +7  ),
+                    ('NBC4', +14 ),
+                    ('NBC5', +28 ),
                 ]
 
 PNC_REMINDER = [
-                    ('PNC1', +3  ),
-                    ('PNC2', +28 ),
-                    ('PNC3', +42 ),
+                    ('PNC2', +3  ),
+                    ('PNC3', +7  ),
+                    ('PNC4', +14 ),
+                    ('PNC5', +28 ),
                 ]
 
 VACCINATION_REMINDER = [

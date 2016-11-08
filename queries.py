@@ -146,6 +146,7 @@ PREGNANCY_DATA = [
       ('parity', 'Parity'),
       ('mother_weight', 'Weight'),
       ('mother_height', 'Height'),
+      ('bmi', 'BMI'),
       ('report_date', 'Submission Date'),
     ]
 
@@ -154,6 +155,9 @@ ANC_DATA = {
 			('anc_visit = 2', 'ANC2'),
 			('anc_visit = 3', 'ANC3'),
 			('anc_visit = 4', 'ANC4'),
+			('anc_visit = 2 AND (lmp + INTERVAL \'150 days\') <= anc_date', 'Standard ANC2'),
+			('anc_visit = 3 AND (lmp + INTERVAL \'180 days\') <= anc_date', 'Standard ANC3'),
+			('anc_visit = 4 AND (lmp + INTERVAL \'270 days\') <= anc_date', 'Standard ANC4')
 		],
 
 	'query_str': '((anc_visit = 2) OR (anc_visit = 3) OR (anc_visit = 4))'
@@ -167,12 +171,18 @@ CBN_DATA = {
 		'ebf': ("lower(breastfeeding) = 'ebf'", u'Exclusive Breastfeeding'),
 		'cbf': ("lower(breastfeeding) = 'cbf'", u'Complementary Breastfeeding'),
 		'bf1':    ("lower(bf1) = 'bf1'", u'Breastfeeding Within 1 hour'),
-		'stunting': (u'height_for_age < -2', u'Stunting'),
+		#'stunting': (u'height_for_age < -2', u'Stunting'),
 		'underweight': (u'weight_for_age < -2', u'Underweight'),
-		'wasting':     (u'weight_for_height < -2', u'Wasting'),
-		'lostweight':('lostweight IS NOT NULL', 'Lost Weight'),
-		'falteringweight':('falteringweight IS NOT NULL', 'Faltering Weight'),
-		'gainedweight':('gainedweight IS NOT NULL', 'Gained Weight')
+		#'wasting':     (u'weight_for_height < -2', u'Wasting'),
+		#'lostweight':('lostweight IS NOT NULL', 'Lost Weight'),
+		#'falteringweight':('falteringweight IS NOT NULL', 'Faltering Weight'),
+		#'gainedweight':('gainedweight IS NOT NULL', 'Gained Weight')
+		'lostweight':('lostweight', 'Lost Weight'),
+		'falteringweight':('falteringweight', 'Faltering Weight'),
+		'gainedweight':('gainedweight', 'Gained Weight'),
+		'muacred': ('muac < 11.5', 'MUAC < 11.5 cm'),
+		'muacyellow': ('muac >= 11.5 AND muac < 12.5', 'MUAC 11.5 - 12.5 cm'),
+		'muacgreen': ('muac > 12.5', 'MUAC > 12.5 cm'),
 
 		}
 
@@ -180,9 +190,15 @@ MOTHER_NUTR = {
 		'mother_height_less_145': ("mother_height < 145", u'Proportion of pregnant women with height <150cm at 1st ANC'),
 		'mother_weight_less_50': ("mother_weight < 50", u'Proportion of pregnant women with weight < 50kg'),
 		'bmi_less_18_dot_5': (" bmi < 18.5", u'Proportion of pregnant women with BMI <18.5 at 1st ANC'),
-		'lostweight':('lostweight IS NOT NULL', 'Lost Weight'),
-		'falteringweight':('falteringweight IS NOT NULL', 'Faltering Weight'),
-		'gainedweight':('gainedweight IS NOT NULL', 'Gained Weight')
+		#'lostweight':('lostweight IS NOT NULL', 'Lost Weight'),
+		#'falteringweight':('falteringweight IS NOT NULL', 'Faltering Weight'),
+		#'gainedweight':('gainedweight IS NOT NULL', 'Gained Weight')
+		'lostweight':('lostweight', 'Lost Weight'),
+		'falteringweight':('falteringweight', 'Faltering Weight'),
+		'gainedweight':('gainedweight', 'Gained Weight'),
+		'mmuacred': ('muac < 18.5', 'MUAC < 18.5 cm'),
+		'mmuacyellow': ('muac >= 18.5 AND muac < 21.0', 'MUAC 18.5 - 21.0 cm'),
+		'mmuacgreen': ('muac > 21.0', 'MUAC > 21.0 cm'),
 
 		}
 
@@ -262,7 +278,9 @@ PNC_DATA = {
 
 			'pnc1': ('pnc1 != 0', 'PNC1'),
 			'pnc2': ('pnc2 != 0', 'PNC2'),
-			'pnc3': ('pnc3 != 0', 'PNC3')
+			'pnc3': ('pnc3 != 0', 'PNC3'),
+			'pnc4': ('pnc4 != 0', 'PNC4'),
+			'pnc5': ('pnc5 != 0', 'PNC5')
 
 			},
 	
@@ -347,22 +365,58 @@ DEATH_DATA = {
 		'attrs': [
 						(u"lower(death) = 'md'", u'Maternal Death'),
 						(u"lower(death) = 'nd'", u'Newborn Death'),
-						(u"lower(death) = 'd'", u'Child Death'),
+						(u"lower(death) = 'cd'", u'Child Death'),
 											
 					],
 
 		'query_str': "((lower(death) = 'md' ) OR (lower(death) = 'nd') OR (lower(death) = 'cd' ))",
+		
+		'attr_bylocs': {
+				"lowerdeathmd": {'attrs': [
+						(u"lower(location) = 'hp' AND lower(death) = 'md'", u'At Hospital'),
+						(u"(lower(location) = 'cl' OR lower(location) = 'hc') AND lower(death) = 'md'", u'At Health Centre'),
+						(u"lower(location) = 'or' AND lower(death) = 'md'", u'En Route'),
+						(u"lower(location) = 'ho' AND lower(death) = 'md'", u'At home'),
+					
+					],
+
+				'query_str': "( lower(death) = 'md') AND ((lower(location) = 'hp') OR (lower(location) = 'cl'  OR lower(location) = 'hc') OR (lower(location) = 'or') OR (lower(location) = 'ho'))",
+					},
+
+				"lowerdeathnd": {'attrs': [
+						(u"lower(location) = 'hp' AND lower(death) = 'nd'", u'At Hospital'),
+						(u"(lower(location) = 'cl' OR lower(location) = 'hc') AND lower(death) = 'nd'", u'At Health Centre'),
+						(u"lower(location) = 'or' AND lower(death) = 'nd'", u'En Route'),
+						(u"lower(location) = 'ho' AND lower(death) = 'nd'", u'At home'),
+					
+					],
+
+				'query_str': " (lower(death) = 'nd') AND ((lower(location) = 'hp') OR (lower(location) = 'cl'  OR lower(location) = 'hc') OR (lower(location) = 'or') OR (lower(location) = 'ho'))",
+					},
+
+				"lowerdeathcd": {'attrs': [
+						(u"lower(location) = 'hp' AND lower(death) = 'cd'", u'At Hospital'),
+						(u"(lower(location) = 'cl' OR lower(location) = 'hc') AND lower(death) = 'cd'", u'At Health Centre'),
+						(u"lower(location) = 'or' AND lower(death) = 'cd'", u'En Route'),
+						(u"lower(location) = 'ho' AND lower(death) = 'cd'", u'At home'),
+					
+					],
+
+				'query_str': " (lower(death) = 'cd') AND ((lower(location) = 'hp') OR (lower(location) = 'cl'  OR lower(location) = 'hc') OR (lower(location) = 'or') OR (lower(location) = 'ho'))",
+					}
+				
+				},
 
                 'bylocs': {
 				'attrs': [
 						(u"lower(location) = 'hp'", u'At Hospital'),
-						(u"lower(location) = 'cl'", u'At Health Centre'),
-						(u"lower(location) = 'or'", u'On Route'),
+						(u"lower(location) = 'cl' OR lower(location) = 'hc'", u'At Health Centre'),
+						(u"lower(location) = 'or'", u'En Route'),
 						(u"lower(location) = 'ho'", u'At home'),
 											
 					],
 
-				'query_str': "((lower(death) = 'md') OR (lower(death) = 'nd') OR (lower(death) = 'cd')) AND ((lower(location) = 'hp') OR (lower(location) = 'cl') OR (lower(location) = 'or') OR (lower(location) = 'ho'))",
+				'query_str': "((lower(death) = 'md') OR (lower(death) = 'nd') OR (lower(death) = 'cd')) AND ((lower(location) = 'hp') OR (lower(location) = 'cl'  OR lower(location) = 'hc') OR (lower(location) = 'or') OR (lower(location) = 'ho'))",
 
 				}
 
@@ -405,7 +459,28 @@ RED_DATA = {
 				(u'red_symptom_ps IS NOT NULL', u'Labour with Previous C-Section') ,
 				(u'red_symptom_sc IS NOT NULL', u'Serious Condition but Unknown') ,
 				(u'red_symptom_sl IS NOT NULL', u'Stroke during Labor') ,
-				(u'red_symptom_un IS NOT NULL', u'Unconscious'), 
+				(u'red_symptom_un IS NOT NULL', u'Unconscious'),
+				( u'red_symptom_shp IS NOT NULL', u'Severe headache and/or blurry vision' ), 
+				 ( u'red_symptom_bsp IS NOT NULL', u'Bad/foul smelling vaginal discharge' ), 
+				 ( u'red_symptom_wu IS NOT NULL', u'Weak or unconscious or unresponsive to touch' ), 
+				 ( u'red_symptom_hbt IS NOT NULL', u'High body temperature' ), 
+				 ( u'red_symptom_lbt IS NOT NULL', u'Low body temperature or cold' ), 
+				 ( u'red_symptom_fb IS NOT NULL', u'Fast or dicult breathing' ), 
+				 ( u'red_symptom_cdg IS NOT NULL', u'Chest in-drawing or gasping' ), 
+				 ( u'red_symptom_cop IS NOT NULL', u'Convulsions or is unconscious' ), 
+				 ( u'red_symptom_hfp IS NOT NULL', u'High fever' ), 
+				 ( u'red_symptom_con IS NOT NULL', u'Convulsion or fit' ), 
+				 ( u'red_symptom_sbp IS NOT NULL', u'Sever bleeding' ), 
+				 ( u'red_symptom_nuf IS NOT NULL', u'Not able to feed since birth/stopped feeding well' ), 
+				 ( u'red_symptom_ucb IS NOT NULL', u'Umbilical cord bleeding' ), 
+				 ( u'red_symptom_iuc IS NOT NULL', u'Infected umbilical cord' ), 
+				 ( u'red_symptom_rv IS NOT NULL', u'Repeated Vomiting ' ), 
+				 ( u'red_symptom_ads IS NOT NULL', u'Abdominal distension and stool arrest' ), 
+				 ( u'red_symptom_nsc IS NOT NULL', u'Non stop crying' ), 
+				 ( u'red_symptom_nbf IS NOT NULL', u'Bulging fontanel ' ), 
+				 ( u'red_symptom_nhe IS NOT NULL', u'Hemorrhage ' ), 
+				 ( u'red_symptom_ys IS NOT NULL', u'Yellow soles' ), 
+				 ( u'red_symptom_sp IS NOT NULL', u'Skin pustules' ),  
 			],
 
 		'query_str': '((red_symptom_ap IS NOT NULL) OR  (red_symptom_co IS NOT NULL) OR  (red_symptom_he IS NOT NULL) OR  (red_symptom_la IS NOT NULL) OR  (red_symptom_mc IS NOT NULL) OR  (red_symptom_pa IS NOT NULL) OR  (red_symptom_ps IS NOT NULL) OR  (red_symptom_sc IS NOT NULL) OR  (red_symptom_un IS NOT NULL)) AND ( (intervention_field IS NULL) AND (emergency_date IS NULL) )'
@@ -429,8 +504,8 @@ RAR_DATA = {
 DELIVERY_DATA = {
 		'attrs': [
 				(u"lower(location) = 'hp'", u'At Hospital'),
-				(u"lower(location) = 'cl'", u'At Clinic'),
-				(u"lower(location) = 'or'", u'On Route'),
+				(u"lower(location) = 'cl'", u'At Health Centre'),
+				(u"lower(location) = 'or'", u'En Route'),
 				(u"lower(location) = 'ho'", u'At home'),
 									
 			],

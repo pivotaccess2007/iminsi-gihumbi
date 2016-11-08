@@ -9,7 +9,10 @@ pygrowup==0.7.6b0
 unicodecsv==0.9.4
 xlrd==0.9.0
 xlwt==0.7.4
-hl7
-pycurl
-python-dateutil
-django-piston
+hl7==0.3.3
+pycurl==7.43.0
+python-dateutil==2.5.3
+django-piston==0.2.3
+django-admin-flexselect==0.4.1
+xlsxwriter==0.8.6
+tqdm==4.8.4
